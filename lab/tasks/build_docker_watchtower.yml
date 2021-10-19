@@ -1,0 +1,10 @@
+---
+  - name: docker | Deploy | Watchtower
+    tags: docker_install
+    community.docker.docker_container:
+      name: watchtower
+      image: containrrr/watchtower:latest
+      command: --schedule "0 0 4 * * *" --debug
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+      restart_policy: unless-stopped

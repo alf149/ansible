@@ -1,0 +1,31 @@
+# Used in geerlingguy.security
+security_sudoers_passwordless:
+  - labadmin
+  - deploy
+
+# Used in geerlingguy.firewall
+firewall_state: stopped
+firewall_enabled_at_boot: false
+firewall_disable_firewalld: true
+firewall_disable_ufw: true
+
+## geerlingguy.firewall is used
+firewall_allowed_tcp_ports:
+  - "22"
+  - "80"
+  - "443"
+  - "9443" # Portainer in docker exposed on localhost
+  - "8001" # Homer in Docker
+
+# Used in geerlingguy.ntp
+ntp_timezone: Europe/Copenhagen
+
+# Used in geerlingguy.pip
+
+pip_install_packages:
+      - name: docker
+      - name: docker-compose
+
+# Used in geerlingguy.docker
+docker_users:
+  - deploy

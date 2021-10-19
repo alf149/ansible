@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  tasks: 
+  - name: Add Ansible inventory mappings to /etc/hosts
+    become: true
+    blockinfile:
+      path: /etc/hosts
+      block: |
+        {% for host in groups['all'] %}
+        {{ hostvars[host].ansible_host }}   {{ host }}    {{ hostvars[host].inventory_hostname_short }}
+        {% endfor %}

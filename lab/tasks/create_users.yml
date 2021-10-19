@@ -1,0 +1,100 @@
+---
+  - name: Ensure group 'wheel' exists
+    ansible.builtin.group:
+      name: wheel
+      state: present
+
+  - name: Allow 'wheel' group to have passwordless sudo.
+    lineinfile:
+      dest: /etc/sudoers
+      state: present
+      regexp: git on host'^%wheel'
+      line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+      validate: visudo -cf %s
+
+  - name: Add the user 'LabAdmin' with a specific uid and a primary group of 'wheel'.
+    ansible.builtin.user:
+      name: labadmin
+      comment: Lab Admin
+      create_home: true
+      shell: /bin/bash
+      state: present
+      groups: wheel
+      append: yes
+
+  - name: Set authorized key for 'labadmin' from local file.
+    authorized_key:
+      user: labadmin
+      state: present
+      key: "{{ lookup('file', '~/.ssh/labadmin.pub') }}"
+
+  - name: copy '.bash_aliases' file.
+    copy:
+      src: files/dot_files/.bash_aliases
+      dest: /home/labadmin/.bash_aliases
+      owner: labadmin
+      mode: '600'
+  
+  - name: Add the user 'pi' with a specific uid and a primary group of 'wheel'.
+    ansible.builtin.user:
+      name: pi
+      comment: Pi User
+      create_home: true
+      shell: /bin/bash
+      state: present
+      groups: wheel
+      append: yes
+
+  - name: Set authorized key for 'pi' from local file.
+    authorized_key:
+      user: pi
+      state: present
+      key: "{{ lookup('file', '~/.ssh/pi.pub') }}"
+
+  - name: copy '.bash_aliases' file.
+    copy:
+      src: files/dot_files/.bash_aliases
+      dest: /home/pi/.bash_aliases
+      owner: pi
+      mode: '600'
+  
+  - name: Add the user 'deploy' with a specific uid and a primary group of 'wheel'.
+    ansible.builtin.user:
+      name: deploy
+      comment: Deploy User
+      create_home: true
+      shell: /bin/bash
+      state: present
+      groups: wheel
+      append: yes
+
+  - name: Set authorized key for 'deploy' from local file.
+    authorized_key:
+      user: deploy
+      state: present
+      key: "{{ lookup('file', '~/.ssh/deploy.pub') }}"
+
+  - name: copy '.bash_aliases' file.
+    copy:
+      src: files/dot_files/.bash_aliases
+      dest: /home/deploy/.bash_aliases
+      owner: deploy
+      mode: '600'
+  
+  - name: Set authorized key for 'vagrant' from local file.
+    authorized_key:
+      user: deploy
+      state: present
+      key: "{{ lookup('file', '~/.vagrant.d/insecure_key.pub') }}"
+  
+  - name: copy '.bash_aliases' file to root user.
+    copy:
+      src: files/dot_files/.bash_aliases
+      dest: /root/.bash_aliases
+      owner: root
+      mode: '600'
+
+
+      
+
+ 

@@ -1,0 +1,14 @@
+---
+roles:
+  - geerlingguy.repo-epel
+  - geerlingguy.security
+  - geerlingguy.firewall
+  - geerlingguy.ntp  
+  - geerlingguy.pip
+  - geerlingguy.docker
+  - geerlingguy.ansible
+  - geerlingguy.raspberry-pi
+
+collections:
+  - community.docker
+  

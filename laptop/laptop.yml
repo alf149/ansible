@@ -1,0 +1,93 @@
+---
+- hosts: localhost
+  connection: local
+  become: yes
+  pre_tasks:
+    - name: Set timezone to Europe/Copenhagen.
+      timezone:
+        name: Europe/Copenhagen
+    
+    - name: stop service cups-browsed on debian, if running.
+      systemd: name=cups-browsed state=stopped enabled=false
+    
+    - name: stop service cups on debian, if running.
+      systemd: name=cups state=stopped enabled=false
+        
+    - name: Update cache on OS.
+      include_tasks: tasks/update-cache-os.yml
+
+  roles:
+       - geerlingguy.pip
+
+  tasks:
+
+  - name: Install a list of dependencies.
+    apt:
+      name: "{{ packages }}"
+    vars:
+      packages:
+        - nmap
+        - curl
+        - iperf
+        - apt-transport-https
+        - dnsutils
+        - nano
+        - net-tools
+        - jq
+        - tree
+        - htop
+        - snapd
+        - unzip
+        - python3
+        - python3-pip
+        - python3-dev
+
+  - name: Enable and start snapd service.
+    service:
+      name: snapd
+      enabled: true
+      state: started
+
+  - name: Install Keepassxc, codem vlc as snap.
+    snap:
+      name: 
+        - keepassxc
+        - code
+        - vlc
+        - signal-desktop
+        - obs-studio
+        - discord
+        - duf-utility
+  
+  - name: Creating a home/rolf/bin.
+    file:
+      path: /home/rolf/bin
+      state: directory
+      owner: rolf
+      group: rolf
+  
+  - name: Creating a home/rolf/Tools.
+    file:
+      path: /home/rolf/Tools
+      state: directory
+      owner: rolf
+      group: rolf
+
+  - name: copy bin/mycrt file.
+    copy:
+     src: files/mycrt
+     dest: /home/rolf/bin/mycrt
+     owner: rolf
+     group: rolf
+     mode: '+x'
+  
+  - name: copy .bash_aliases file
+    copy:
+     src: files/.bash_aliases
+     dest: /home/rolf/.bash_aliases
+     owner: rolf
+     group: rolf
+  
+
+
+  

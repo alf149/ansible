@@ -1,0 +1,8 @@
+### Vagrant ###
+.vagrant/
+.cache/
+roles/
+collections/
+backup/
+ansible.log
+

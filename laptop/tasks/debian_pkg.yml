@@ -1,0 +1,13 @@
+---
+- name: Install a list of dependencies apt.
+  apt:
+    pkg: 
+    - apt-transport-https
+    - curl
+    - nano
+    - htop
+    - unzip
+    - git
+    - python3
+    - python3-pip
+    - python3-dev

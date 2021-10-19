@@ -1,0 +1,20 @@
+---
+  - name: Docker | Deploy | Homer
+    tags: docker_install
+    community.docker.docker_container:
+      name: homer
+      image: b4bz/homer:latest
+      ports: 
+        - "8001:8080/tcp"
+      volumes:
+        - /portainer/config/homer/assets:/www/assets
+      restart_policy: unless-stopped
+  
+  - name: Docker | Homer | config files
+    tags: docker_install
+    copy:
+      src: files/{{ item.src }}
+      dest: /{{ item.dest }}
+      mode: 0644
+    with_items:
+      - { src: 'homer/assets/config.yml', dest: '/portainer/config/homer/assets/config.yml' }

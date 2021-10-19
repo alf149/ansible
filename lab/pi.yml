@@ -1,0 +1,49 @@
+--- 
+  - name: PI | Docker Install | 
+    hosts: pi01.test
+    become: true
+    gather_facts: true
+
+    tasks:
+    
+    ### Docker Build ###
+    - name: Docker | Build | Portainer - Include task
+      include_tasks: tasks/build_docker_portainer.yml
+      tags: docker_build
+
+    - name: Docker | Build | WatchTowser - Include task
+      include_tasks: tasks/build_docker_watchtower.yml
+      tags: docker_build
+
+    - name: Docker | Build | Homer - Include task
+      include_tasks: tasks/build_docker_homer.yml
+      tags: docker_build
+    
+    - name: Docker | Build | Uptime-Kuma - Include task
+      include_tasks: tasks/build_docker_uptime_kuma.yml
+      tags: docker_build
+    
+    # - name: Docker | Build | PI Monitor - Include task
+    #   include_tasks: tasks/build_docker_pi_monitor.yml
+    #   tags: docker_build
+
+    ## Docker Archive ###
+    - name: Docker | Archive | Include task
+      include_tasks: tasks/backup_docker_container.yml
+      tags: docker_archive
+
+    - name: Docker | Archive | Data - Include task
+      include_tasks: tasks/backup_docker_data.yml
+      tags: backup_docker_data
+    
+    ## Backup to master
+    - name: Backup | Archive | to Master - Include task
+      include_tasks: tasks/backup_remote_to_master.yml
+      tags: backup_remote_to_master
+      
+
+      
+
+    
+   
+
