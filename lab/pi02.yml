@@ -1,0 +1,22 @@
+--- 
+  - name: PI | Docker Install | 
+    hosts: pi02.test
+    become: true
+    gather_facts: true
+
+    tasks:
+    
+    ### Docker Build ###
+    - name: Docker | Build | Portainer - Include task
+      include_tasks: tasks/build_docker_portainer.yml
+      tags: docker_build
+
+    # - name: Docker | Build | WatchTowser - Include task
+    #   include_tasks: tasks/build_docker_watchtower.yml
+    #   tags: docker_build
+
+      
+
+    
+   
+
