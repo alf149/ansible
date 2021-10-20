@@ -14,8 +14,8 @@ firewall_allowed_tcp_ports:
   - "22"
   - "80"
   - "443"
-  - "9443" # Portainer in docker exposed on localhost
-  - "8001" # Homer in Docker
+  - "9000" # Portainer in docker exposed on localhost
+  
 
 # Used in geerlingguy.ntp
 ntp_timezone: Europe/Copenhagen
