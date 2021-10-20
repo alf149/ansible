@@ -43,3 +43,19 @@
       image: portainer/portainer-ce:latest
       restart: yes
     when: not portainer_file.stat.exists
+  
+  - name: Docker | Archive | Portainer - container image as a tarball exists
+    tags: dockbackup_docker_dataer_archive_images
+    stat:
+      path: /home/deploy/backup/{{ ansible_date_time.date }}_portainer_ce_latest.tar
+    register: portainer_backup_file
+
+  - name: Docker | Archive | Portainer  - container image as a tarball  
+    tags: docker_archive_images
+    docker_image:
+      name: portainer/portainer-ce:latest
+      archive_path: /home/deploy/backup/{{ ansible_date_time.date }}_portainer_ce_latest.tar
+      source: pull
+      state: present
+    when: not portainer_backup_file.stat.exists
+  

@@ -93,6 +93,17 @@
       dest: /root/.bash_aliases
       owner: root
       mode: '600'
+  
+  - name: Folder | Create | Backup
+    tags: docker_install
+    file:
+      path: /home/deploy/{{ item.dir }}
+      state: directory
+      owner: deploy
+      group: deploy
+      mode: 0755
+    with_items:
+      - { dir: 'backup' } 
 
 
       

@@ -41,3 +41,18 @@
       image: louislam/uptime-kuma:latest
       restart: yes
     when: not kuma_file.stat.exists
+  
+  - name: Docker | Archive | Uptime-Kuma - container image as a tarball exists
+    tags: docker_archive_images
+    stat:
+      path: /home/deploy/backup/{{ ansible_date_time.date }}_uptime_kuma_latest.tar
+    register: uptime_kuma_backup_file
+
+  - name: Docker | Archive | Uptime-Kuma - container image as a tarball
+    tags: docker_archive_images
+    docker_image:
+      name: louislam/uptime-kuma:latest
+      archive_path: /home/deploy/backup/{{ ansible_date_time.date }}_uptime_kuma_latest.tar
+      source: pull
+      state: present
+    when: not uptime_kuma_backup_file.stat.exists

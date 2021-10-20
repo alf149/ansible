@@ -7,13 +7,11 @@
     tasks:
     
     ### Docker Build ###
-    - name: Docker | Build | Portainer - Include task
-      include_tasks: tasks/build_docker_portainer.yml
+    - include_tasks: tasks/build_docker_portainer.yml
       tags: docker_build
 
-    # - name: Docker | Build | WatchTowser - Include task
-    #   include_tasks: tasks/build_docker_watchtower.yml
-    #   tags: docker_build
+    - include_tasks: tasks/build_docker_watchtower.yml
+      tags: docker_build
 
       
 

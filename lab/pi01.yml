@@ -1,0 +1,35 @@
+--- 
+  - name: PI | Docker Install | 
+    hosts: pi01.test
+    become: true
+    gather_facts: true
+
+    tasks:
+    
+    ### Docker Build ###
+    - include_tasks: tasks/build_docker_portainer.yml
+      tags: docker_build
+
+    - include_tasks: tasks/build_docker_watchtower.yml
+      tags: docker_build
+
+    - include_tasks: tasks/build_docker_homer.yml
+      tags: docker_build
+    
+    - include_tasks: tasks/build_docker_uptime_kuma.yml
+      tags: docker_build
+    
+    ## Docker Archive ###
+    - include_tasks: tasks/backup_docker_data.yml
+      tags: backup_docker_data
+    
+    ## Backup to master
+    - include_tasks: tasks/backup_remote_to_master.yml
+      tags: backup_remote_to_master
+      
+
+      
+
+    
+   
+

@@ -1,6 +1,5 @@
 --- 
-  - name: talk to all hosts just so we can learn about them
-    hosts: all
+  - hosts: all
     become: true
     gather_facts: true
 
@@ -20,10 +19,17 @@
         update_cache: true
         cache_valid_time: 3600
       when: ansible_os_family | lower == "debian"
+    
+    tasks:
+    - include_tasks: tasks/debian_pkg.yml
+    - include_tasks: tasks/create_users.yml
 
-    - name: Install default pkg's on debian OS
-      include_tasks: tasks/debian_pkg.yml
+  - hosts: pi01.test
+    tasks:
+    - include_tasks: pi01.yml
+  
+  - hosts: pi02.test
+    tasks:
+    - include_tasks: pi02.test.yml
 
-    - name: Cerate 'Labadmin', 'Pi' 'Ansible' user.
-      include_tasks: tasks/create_users.yml
     

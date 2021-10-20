@@ -18,3 +18,19 @@
       mode: 0644
     with_items:
       - { src: 'homer/assets/config.yml', dest: '/portainer/config/homer/assets/config.yml' }
+  
+  - name: Docker | Archive | Homer - container image as a tarball exists
+    tags: docker_archive_images
+    stat:
+      path: /home/deploy/backup/{{ ansible_date_time.date }}_homer_latest.tar
+    register: homer_backup_file
+
+  - name: Docker | Archive | Homer - container image as a tarball
+    tags: docker_archive_images
+    docker_image:
+      name: b4bz/homer:latest
+      archive_path: /home/deploy/backup/{{ ansible_date_time.date }}_homer_latest.tar
+      source: pull
+      state: present
+    when: not homer_backup_file.stat.exists
+  

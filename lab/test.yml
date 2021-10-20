@@ -1,0 +1,8 @@
+--- 
+  - hosts: pi02.test
+    become: true
+    
+  - tasks:
+    - include_tasks: pi02.test.yml
+    ignore_unreachable: yes
+
