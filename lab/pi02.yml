@@ -1,12 +1,16 @@
---- 
-- tasks:
-  
-  ### Docker Build ###
-  - include_tasks: tasks/build_docker_portainer.yml
-    tags: docker_build
+---  
+  - hosts: pi02.test
+    become: true
+    gather_facts: true
 
-  - include_tasks: tasks/build_docker_watchtower.yml
-    tags: docker_build
+    tasks:
+    
+    ### Docker Build ###
+    - include_tasks: tasks/build_docker_portainer.yml
+      tags: docker_build
+
+    - include_tasks: tasks/build_docker_watchtower.yml
+      tags: docker_build
 
       
 

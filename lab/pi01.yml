@@ -1,26 +1,9 @@
 --- 
-  - hosts: all
+  - hosts: pi01.test
     become: true
     gather_facts: true
 
-    # collections:
-    #    - community.docker
-
-    # roles:
-    #    - geerlingguy.security
-    #    - geerlingguy.ntp
-    #    - geerlingguy.pip
-    #    - geerlingguy.docker
-
-    pre_tasks:
-    
-    - name: Update Debian cache.
-      apt:
-        update_cache: true
-        cache_valid_time: 3600
-      when: ansible_os_family | lower == "debian"
-  
-  - tasks:
+    tasks:
     
     ### Docker Build ###
     - include_tasks: tasks/build_docker_portainer.yml
