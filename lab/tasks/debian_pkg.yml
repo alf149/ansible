@@ -8,6 +8,11 @@
     - nano
     - htop
     - unzip
+    - nmap
+    - dnsutils
+    - net-tools
+    - rsync
+    - netcat
     - git
     - python3
     - python3-pip
