@@ -14,7 +14,6 @@
       name: "{{ packages }}"
     vars:
       packages:
-        - nmap
         - curl
         - iperf
         - apt-transport-https
@@ -25,14 +24,6 @@
         - tree
         - htop
         - unzip
-  
-  - name: copy .bash_aliases file
-    become: false
-    copy:
-     src: files/.bash_aliases
-     dest: /home/rolf/.bash_aliases
-     owner: rolf
-     group: rolf
 
   - name: Creating a home/bin and home/Tools
     become: false
@@ -46,11 +37,5 @@
       state: directory
       owner: rolf
       group: rolf
-  
-  - name: copy mycrt script to bin
-    become: false
-    copy:
-     src: files/mycrt
-     dest: /home/rolf/bin/mycrt
   
 
