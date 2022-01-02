@@ -7,10 +7,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Default Virtualbox settings
   config.vm.box_check_update = true
-  config.ssh.insert_key = false
+  config.ssh.insert_key = true
   config.vm.synced_folder ".", "/vagrant", disabled: true
 
   # Defaults RAM and CPU for all
+  
   config.vm.provider "virtualbox" do |v|
     v.gui = false
     v.memory = 2048
@@ -22,32 +23,26 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
    
   # Raspberry 1.
   config.vm.define "pi01.test", autostart: true do |pi01|
-    pi01.vm.box = "geerlingguy/ubuntu2004"
+    pi01.vm.box = "generic/ubuntu2004"
     pi01.vm.box_check_update = true
     pi01.vm.hostname = "pi01.test"
+    config.vm.network "public_network"
     pi01.vm.network :private_network, ip: "192.168.56.11", hostname: true
-    pi01.vm.provider "virtualbox" do |vb|
-      vb.memory = 2048
-      vb.cpus = 2
-    end
-    pi01.vm.provision "ansible" do |ansible|
-      ansible.compatibility_mode = "2.0"
-      ansible.config_file = "ansible.cfg"
+    #pi01.vm.provision "ansible" do |ansible|
+    #  ansible.compatibility_mode = "2.0"
+    #  ansible.config_file = "ansible.cfg"
       #ansible.galaxy_role_file = "requirements.yml"
-      ansible.playbook = "main.yml"
-    end
+      #ansible.playbook = "main.yml"
+    #end
   end
 
 
   # Raspberry 2.
   config.vm.define "pi02.test", autostart: true do |pi02|
-    pi02.vm.box = "geerlingguy/ubuntu2004"
+    pi02.vm.box = "generic/ubuntu2004"
     pi02.vm.hostname = "pi02.test"
-    pi02.vm.network :private_network, ip: "192.168.56.12", hostname: true
-    pi02.vm.provider "virtualbox" do |vb|
-      vb.memory = 2048
-      vb.cpus = 2
-    end
+    config.vm.network "public_network"
+    #pi02.vm.network :private_network, ip: "192.168.56.12", hostname: true
     pi02.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.config_file = "ansible.cfg"
@@ -58,9 +53,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # App 01.
   config.vm.define "app01.test", autostart: false do |app01|
-    app01.vm.box = "geerlingguy/ubuntu2004"
+    app01.vm.box = "generic/ubuntu2004"
     app01.vm.hostname = "app01.test"
-    app01.vm.network :private_network, ip: "192.168.56.21", hostname: true
+    #app01.vm.network :private_network, ip: "192.168.56.21", hostname: true
     app01.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.config_file = "ansible.cfg"
@@ -72,9 +67,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # App 02.
   config.vm.define "app02.test", autostart: false do |app02|
-    app02.vm.box = "geerlingguy/ubuntu2004"
+    app02.vm.box = "generic/ubuntu2004"
     app02.vm.hostname = "app02.test"
-    app02.vm.network :private_network, ip: "192.168.56.22", hostname: true
+    #app02.vm.network :private_network, ip: "192.168.56.22", hostname: true
     app02.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.config_file = "ansible.cfg"
@@ -85,9 +80,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # DB 01.
   config.vm.define "db01.test", autostart: false do |db01|
-    db01.vm.box = "geerlingguy/ubuntu2004"
+    db01.vm.box = "generic/ubuntu2004"
     db01.vm.hostname = "db01.test"
-    db01.vm.network :private_network, ip: "192.168.56.31", hostname: true
+    #db01.vm.network :private_network, ip: "192.168.56.31", hostname: true
     db01.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.config_file = "ansible.cfg"
