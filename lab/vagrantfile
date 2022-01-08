@@ -46,7 +46,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     pi02.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.config_file = "ansible.cfg"
-      #ansible.galaxy_role_file = "requirements.yml"
       ansible.playbook = "main.yml"
     end
   end
@@ -59,7 +58,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     app01.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.config_file = "ansible.cfg"
-      #ansible.galaxy_role_file = "requirements.yml"
       ansible.playbook = "main.yml"
     end
   end
@@ -73,21 +71,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     app02.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.config_file = "ansible.cfg"
-      #ansible.galaxy_role_file = "requirements.yml"
       ansible.playbook = "main.yml"
     end
   end
 
-  # DB 01.
-  config.vm.define "db01.test", autostart: false do |db01|
-    db01.vm.box = "generic/ubuntu2004"
-    db01.vm.hostname = "db01.test"
-    #db01.vm.network :private_network, ip: "192.168.56.31", hostname: true
-    db01.vm.provision "ansible" do |ansible|
-      ansible.compatibility_mode = "2.0"
-      ansible.config_file = "ansible.cfg"
-      #ansible.galaxy_role_file = "requirements.yml"
-      ansible.playbook = "main.yml"
-    end
-  end
 end
