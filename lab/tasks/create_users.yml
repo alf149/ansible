@@ -81,11 +81,11 @@
       owner: deploy
       mode: '600'
   
-  - name: Set authorized key for 'vagrant' from local file.
-    authorized_key:
-      user: deploy
-      state: present
-      key: "{{ lookup('file', '~/.vagrant.d/insecure_key.pub') }}"
+  # - name: Set authorized key for 'vagrant' from local file.
+  #   authorized_key:
+  #     user: deploy
+  #     state: present
+  #     key: "{{ lookup('file', '~/.vagrant.d/insecure_key.pub') }}"
   
   - name: copy '.bash_aliases' file to root user.
     copy:
