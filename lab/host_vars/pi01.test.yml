@@ -1,6 +1,13 @@
+# User settings
+username: rolf
+password: "Changeme2022!"
+sudo_group: sudo
+ssh_public_key: "{{ lookup('file', '~/.ssh/deploy.pub') }}"
+shell: bash
+
+
 # Used in geerlingguy.security
 security_sudoers_passwordless:
-  - labadmin
   - deploy
 
 # Used in geerlingguy.firewall
