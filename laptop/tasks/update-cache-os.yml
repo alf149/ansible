@@ -4,11 +4,3 @@
     update_cache: true
     cache_valid_time: 3600
   when: ansible_os_family | lower == "debian"
-
-- name: update all yum packages.
-  yum:
-    name: '*'
-    update_cache: yes
-    update_only: yes
-    state: latest
-  when: ansible_os_family | lower == "redhat"
