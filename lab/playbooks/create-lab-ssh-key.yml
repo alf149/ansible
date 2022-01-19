@@ -1,18 +1,4 @@
----
-  - name: generate 'labadmin' SSH key.
-    hosts: localhost
-    connection: local
-    vars:
-      ssh_key_filename: labadmin
-    tasks:
-      - name: generate SSH key "{{ ssh_key_filename }}"
-        openssh_keypair:
-          path: "~/.ssh/{{ ssh_key_filename }}"
-          type: rsa
-          size: 4096
-          state: present
-          force: no
-  
+---  
   - name: generate 'deploy' SSH key.
     hosts: localhost
     connection: local
@@ -22,21 +8,19 @@
       - name: generate SSH key "{{ ssh_key_filename }}"
         openssh_keypair:
           path: "~/.ssh/{{ ssh_key_filename }}"
-          type: rsa
-          size: 4096
+          type: ed25519
           state: present
           force: no
   
-  - name: generate 'pi' SSH key.
-    hosts: localhost
-    connection: local
-    vars:
-      ssh_key_filename: pi
-    tasks:
-      - name: generate SSH key "{{ ssh_key_filename }}"
-        openssh_keypair:
-          path: "~/.ssh/{{ ssh_key_filename }}"
-          type: rsa
-          size: 4096
-          state: present
-          force: no
+  # - name: generate 'pi' SSH key.
+  #   hosts: localhost
+  #   connection: local
+  #   vars:
+  #     ssh_key_filename: pi
+  #   tasks:
+  #     - name: generate SSH key "{{ ssh_key_filename }}"
+  #       openssh_keypair:
+  #         path: "~/.ssh/{{ ssh_key_filename }}"
+  #         type: ed25519
+  #         state: present
+  #         force: no
