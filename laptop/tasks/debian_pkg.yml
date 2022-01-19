@@ -10,4 +10,8 @@
     - git
     - python3
     - python3-pip
-    - python3-dev
+    - nmap
+    - iperf
+    - dnsutils
+    - net-tools
+    - jq

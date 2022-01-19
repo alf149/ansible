@@ -1,5 +1,0 @@
-Nice commands
-
-##Scan local net fast and show only alive ip. 
-nmap -sn -T4 192.168.0.0/24 | awk '/Nmap scan/{gsub(/[()]/,"",$NF); print $NF}'
-
