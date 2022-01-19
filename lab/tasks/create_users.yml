@@ -3,7 +3,7 @@
     become: yes
     user:
       name: "{{ username }}"
-      password: "{{ password }}"
+      password: "{{ userpassword | password_hash('sha512') }}"
       groups: 
         - "{{ sudo_group }}"
         - users

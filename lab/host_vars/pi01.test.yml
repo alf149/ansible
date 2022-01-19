@@ -1,9 +1,9 @@
 # User settings
-username: rolf
-password: "Changeme2022!"
+username: deploy
+userpassword: "Changeme2022!"
 sudo_group: sudo
 ssh_public_key: "{{ lookup('file', '~/.ssh/deploy.pub') }}"
-shell: bash
+shell: /bin/bash
 
 
 # Used in geerlingguy.security
