@@ -1,31 +1,33 @@
 # User settings
 username: deploy
+
 userpassword: "Changeme2022!"
+
 sudo_group: sudo
+
 ssh_public_key: "{{ lookup('file', '~/.ssh/deploy.pub') }}"
+
 shell: /bin/bash
 
 
 # Used in geerlingguy.security
-security_sudoers_passwordless:
-  - deploy
+security_sudoers_passwordless: [ "{{ username }}" ]
 
 # Used in geerlingguy.firewall
 firewall_state: stopped
+
 firewall_enabled_at_boot: false
+
 firewall_disable_firewalld: true
+
 firewall_disable_ufw: true
 
-## geerlingguy.firewall is used
 firewall_allowed_tcp_ports:
   - "22"
   - "80"
   - "443"
   - "9443" # Portainer in docker exposed on localhost
   - "8001" # Homer in Docker
-
-# Used in geerlingguy.ntp
-ntp_timezone: Europe/Copenhagen
 
 # Used in geerlingguy.pip
 
@@ -36,3 +38,110 @@ pip_install_packages:
 # Used in geerlingguy.docker
 docker_users:
   - deploy
+
+#
+# Networks
+#
+vpn_network: "10.0.10.0/24"
+
+lan_network: "192.168.0.0/24"
+
+swag_network: "10.0.0.0/27"
+
+swag_gateway: "{{ '.'.join(swag_network.split('.')[0:3]) }}.1"
+
+lan_address: "{{ '.'.join(lan_network.split('.')[0:3]) }}.230"
+
+lan_gateway: "{{ '.'.join(lan_network.split('.')[0:3]) }}.1"
+
+macvlan_address: "{{ '.'.join(lan_gateway.split('.')[0:3]) }}.2"
+
+dmz_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.44.0/24"
+
+dmz_gateway: "{{ '.'.join(dmz_network.split('.')[0:3]) }}.1"
+
+iot_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.32.0/24"
+
+
+
+#
+# Misc
+#
+hostname: "{{ inventory_hostname }}"
+
+timezone: Europe/Copenhagen
+
+ntp_timezone: "{{ timezone }}"
+
+dns_nameservers: ["1.1.1.3", "1.0.0.3"]
+
+keyboard_layout: dk
+
+guid: "1000"
+
+docker_dir: /opt/docker/data
+
+#
+# Packages
+#
+extra_packages:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - nano
+  - htop
+  - unzip
+  - nmap
+  - dnsutils
+  - net-tools
+  - rsync
+  - netcat
+  - git
+  - python3
+  - python3-pip
+
+
+#
+# Enable/disable functionality
+#
+
+
+enable_swag: true
+
+enable_wireguard: true
+
+enable_homer: true
+
+enable_pihole: true
+
+enable_watchtower: true
+
+#
+# Security
+#
+enable_crowdsec: true
+
+enable_iptables: true
+
+enable_fail2ban: true
+
+### BEGIN Secret variables (encrypt and put into vault.yml)
+cloudflare_dns_token: ''
+cloudflare_firewall_token: ''
+email_password: ''
+host: ''
+host_local: ''
+ikev2_excludedssids: ''
+namecheap_host: ''
+namecheap_token: ''
+password: ''
+photoprism_password: ''
+pihole_password: ''
+pikvm_password: ''
+piped_postgresql_password: ''
+#ssh_public_key: ''
+swag_htpasswd_password: ''
+swag_htpasswd_user: ''
+vpn_host: ''
+vpn_password: ''
+### END Secret variables (encrypt and put into vault.yml)

@@ -1,14 +1,14 @@
 ### Vagrant ###
 .vagrant/
 .cache/
-roles/geerlingguy.security/
-roles/geerlingguy.firewall/
-roles/geerlingguy.ntp/
-roles/geerlingguy.pip/
-roles/geerlingguy.docker/
-roles/geerlingguy.containerd/
-collections/community.docker/
-collections/ansible_collections/
+roles/geerlingguy.security
+roles/geerlingguy.firewall
+roles/geerlingguy.ntp
+roles/geerlingguy.pip
+roles/geerlingguy.docker
+roles/geerlingguy.containerd
+collections/community.docker
+collections/ansible_collections
 backup/
 ansible.log
 
