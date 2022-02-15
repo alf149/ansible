@@ -1,29 +1,60 @@
---- 
-  - hosts: all
-    become: true
-    gather_facts: true
+---
+#
+# Tasks and roles for all hosts
+#
+- hosts: all
+  gather_facts: yes
+  become: yes
+  
+  # collections:
+  #   - community.docker
 
-    collections:
-       - community.docker
-
-    roles:
-       - geerlingguy.security
-       - geerlingguy.ntp
-       - geerlingguy.pip
-       - geerlingguy.docker
-
-    pre_tasks:
+  roles:
+    - geerlingguy.security
+    - geerlingguy.ntp
+    - geerlingguy.docker
+  
+    - role: system
+      tags: 
+        - system
     
-    - name: Update Debian cache.
-      apt:
-        update_cache: true
-        cache_valid_time: 3600
-      when: ansible_os_family | lower == "debian"
+    - role: docker
+      tags: 
+        - docker
     
-    tasks:
-    - include_tasks: tasks/debian_pkg.yml
-    - include_tasks: tasks/create_users.yml
-
-
-
+    - role: network/pihole
+      when: enable_pihole | default(False)
+      tags:
+        - pihole 
+        - containers
     
+    - role: network/wireguard
+      tags: 
+        - wireguard
+        - containers
+      when: enable_wireguard | default(False)
+
+    # - role: network/swag
+    #   tags: 
+    #     - swag
+    #     - containers
+    #   when: enable_swag | default(False)
+
+    - role: containers/system/watchtower
+      tags:
+        - watchtower
+        - containers
+      when: enable_watchtower
+    
+    - role: containers/system/portainer
+      tags:
+        - portainer
+        - containers
+      when: enable_portainer
+                
+    - role: security/crowdsec
+      tags:
+        - crowdsec
+      when: enable_crowdsec
+  
+

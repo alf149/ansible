@@ -116,6 +116,8 @@ enable_pihole: false
 
 enable_watchtower: true
 
+enable_portainer: true
+
 #
 # Security
 #

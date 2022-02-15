@@ -1,0 +1,45 @@
+---
+- name: Ubuntu specific tasks
+  become: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+  block:
+  - name: Remove cloud-config to avoid boot delay
+    apt:
+      name: cloud-config
+      state: absent
+
+- name: Update and upgrade apt packages (Debian and Ubuntu)
+  when: ansible_os_family == 'Debian'
+  apt:
+    upgrade: yes
+    autoremove: yes
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install extra packages
+  package:
+    name: "{{ extra_packages }}"
+    state: present
+
+- name: Set the hostname
+  hostname:
+    name: "{{ inventory_hostname }}"
+
+- name: Replace the hostname entry with our own
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    insertafter: ^127\.0\.0\.1 *localhost
+    line: "127.0.0.1 {{ inventory_hostname }}"
+    owner: root
+    group: root
+    mode: '0644'
+
+# - name: Disable cron e-mail notifications
+#   cron:
+#     name: MAILTO
+#     user: "{{ item }}"
+#     env: yes
+#     job: ""
+#   with_items:
+#     - root
+#     - "{{ username }}"

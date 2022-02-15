@@ -28,6 +28,8 @@ firewall_allowed_tcp_ports:
   - "443"
   - "9443" # Portainer in docker exposed on localhost
   - "8001" # Homer in Docker
+  - "6060" # Crowdsec
+  - "8080" # Crowdsec 
 
 # Used in geerlingguy.pip
 
@@ -50,18 +52,15 @@ swag_network: "10.0.0.0/27"
 
 swag_gateway: "{{ '.'.join(swag_network.split('.')[0:3]) }}.1"
 
-lan_address: "{{ '.'.join(lan_network.split('.')[0:3]) }}.230"
+lan_address: "{{ '.'.join(lan_network.split('.')[0:3]) }}.2"
 
 lan_gateway: "{{ '.'.join(lan_network.split('.')[0:3]) }}.1"
 
-macvlan_address: "{{ '.'.join(lan_gateway.split('.')[0:3]) }}.2"
+# macvlan_address: "{{ '.'.join(lan_gateway.split('.')[0:3]) }}.2"
 
-dmz_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.44.0/24"
+# Look at swag dmz_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.44.0/24"
 
-dmz_gateway: "{{ '.'.join(dmz_network.split('.')[0:3]) }}.1"
-
-iot_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.32.0/24"
-
+# Look at Swag dmz_gateway: "{{ '.'.join(dmz_network.split('.')[0:3]) }}.1"
 
 
 #
@@ -115,6 +114,8 @@ enable_homer: true
 enable_pihole: true
 
 enable_watchtower: true
+
+enable_portainer: true
 
 #
 # Security

@@ -1,0 +1,66 @@
+---    
+  - name: Create a login user
+    become: yes
+    user:
+      name: "{{ username }}"
+      password: "{{ userpassword | password_hash('sha512') }}"
+      groups: 
+        - "{{ sudo_group }}"
+        - users
+      state: present
+      append: true
+  
+  - name: Ensure group "{{ username }}" exists
+    become: yes
+    group:
+      name: "{{ username }}"
+      state: present
+  
+  - name: Allow 'sudo' group to have passwordless sudo
+    become: yes
+    lineinfile:
+      path: /etc/sudoers
+      state: present
+      regexp: '^%{{ sudo_group }}'
+      line: '%{{ sudo_group }} ALL=(ALL) NOPASSWD: ALL'
+      validate: '/usr/sbin/visudo -cf %s'
+
+  - name: Copy the public SSH key 
+    become: yes
+    authorized_key:
+      user: "{{ username }}"
+      state: present
+      key: "{{ ssh_public_key }}"
+
+  - name: Set the default shell
+    user: 
+      name: "{{ username }}"
+      shell: "{{ shell }}"
+
+  - name: Suppress login messages
+    file:
+      name: /home/{{ username }}/.hushlogin
+      mode: 0644
+      state: touch
+      modification_time: preserve
+      access_time: preserve
+  
+  - name: copy '.bash_aliases' file. to user
+    copy:
+      src: files/dot_files/.bash_aliases
+      dest: /home/{{ username }}/.bash_aliases
+      owner: deploy
+      mode: 0644
+  
+  - name: copy '.bash_aliases' file to root user.
+    copy:
+      src: files/dot_files/.bash_aliases
+      dest: /root/.bash_aliases
+      owner: root
+      mode: 0644
+  
+
+
+      
+
+ 

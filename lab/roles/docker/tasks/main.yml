@@ -1,0 +1,61 @@
+---
+  - name: Switch to iptables-legacy
+    alternatives:
+      name: iptables
+      path: /usr/sbin/iptables-legacy
+
+  - name: Switch to ip6tables-legacy
+    alternatives:
+      name: ip6tables
+      path: /usr/sbin/ip6tables-legacy
+
+  # - name: Switch to pip3
+  #   alternatives:
+  #     name: pip
+  #     link: /usr/bin/pip
+  #     path: /usr/bin/pip3
+
+  # - name: Switch to python3
+  #   alternatives:
+  #     name: python
+  #     link: /usr/bin/python
+  #     path: /usr/bin/python3
+
+  # - name: Ensure group docker exists
+  #   group:
+  #     name: docker
+  #     state: present
+
+  # - name: Add user "{{ username }}" to group docker
+  #   user:
+  #     name: '{{ username }}'
+  #     groups:
+  #       - docker
+  #     append: yes
+
+  - name: Docker | tasks | Install Docker Module for Python
+    pip:
+      name: docker
+
+  - name: Docker | tasks | Make sure Docker is running and enabled
+    service:
+      name: docker
+      state: started
+      enabled: yes
+
+  # - name: Create the persistent data folder on the remote machine
+  #   file:
+  #     dest: "{{ docker_dir }}"
+  #     state: directory
+  #     owner: "{{ username }}"
+  #     group: "{{ username }}"
+  #     mode: 0755
+  #     recurse: yes
+  # - name: Chmod the data folder
+  #   become: yes
+  #   file:
+  #     dest: "{{ docker_dir }}"
+  #     state: directory
+  #     owner: "{{ username }}"
+  #     group: "{{ username }}"
+  #     recurse: yes

@@ -22,7 +22,18 @@
     - role: docker
       tags: 
         - docker
-
+  - role: containers/system/watchtower
+      become: no
+      tags:
+        - watchtower
+        - containers
+  
+  - role: containers/system/portainer
+      become: no
+      tags:
+        - portainer
+        - containers
+              
     - role: security/crowdsec
       tags:
         - crowdsec

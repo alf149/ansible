@@ -1,5 +1,4 @@
 ### Vagrant ###
 .vagrant/
 .cache/
-roles/
 
