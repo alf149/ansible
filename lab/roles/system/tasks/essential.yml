@@ -11,7 +11,7 @@
 - name: Update and upgrade apt packages (Debian and Ubuntu)
   when: ansible_os_family == 'Debian'
   apt:
-    upgrade: yes
+    upgrade: no
     autoremove: yes
     update_cache: yes
     cache_valid_time: 3600
@@ -34,12 +34,4 @@
     group: root
     mode: '0644'
 
-# - name: Disable cron e-mail notifications
-#   cron:
-#     name: MAILTO
-#     user: "{{ item }}"
-#     env: yes
-#     job: ""
-#   with_items:
-#     - root
-#     - "{{ username }}"
+

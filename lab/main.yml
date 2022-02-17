@@ -5,28 +5,34 @@
 - hosts: all
   gather_facts: yes
   become: yes
-  
-  # collections:
-  #   - community.docker
 
+  pre_tasks:
+    - name: update debian chache.
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+      when: ansible_os_family | lower == "debian"
+  
   roles:
     - geerlingguy.security
+    - geerlingguy.firewall
     - geerlingguy.ntp
+    - geerlingguy.pip
     - geerlingguy.docker
-  
+    
+
     - role: system
       tags: 
         - system
     
-    - role: docker
-      tags: 
-        - docker
-    
+    #- role: geerlingguy.pip
+  
+        
     - role: network/pihole
-      when: enable_pihole | default(False)
       tags:
         - pihole 
         - containers
+      when: enable_pihole | default(False)
     
     - role: network/wireguard
       tags: 
@@ -34,27 +40,22 @@
         - containers
       when: enable_wireguard | default(False)
 
-    # - role: network/swag
-    #   tags: 
-    #     - swag
-    #     - containers
-    #   when: enable_swag | default(False)
-
     - role: containers/system/watchtower
       tags:
         - watchtower
         - containers
-      when: enable_watchtower
+      when: enable_watchtower | default(False)
     
     - role: containers/system/portainer
       tags:
         - portainer
         - containers
-      when: enable_portainer
+      when: enable_portainer | default(False)
                 
     - role: security/crowdsec
       tags:
         - crowdsec
-      when: enable_crowdsec
+        - security
+      when: enable_crowdsec | default(False)
   
 
