@@ -15,7 +15,8 @@
 
 - name: Crowdsec Add Repository
   apt_repository:
-    repo: deb https://packagecloud.io/crowdsec/crowdsec/ubuntu focal main
+    repo: "deb https://packagecloud.io/crowdsec/crowdsec/{{ ansible_distribution | lower  }} {{ansible_distribution_release | lower}} main"
+    #repo: deb https://packagecloud.io/crowdsec/crowdsec/ubuntu focal main ## Testing
     state: present
     
 - name: Crowdsec Apt update and install Crowdsec and crowdsec-firewall-bouncer-iptables
@@ -31,7 +32,7 @@
     cmd: cscli hub update
   changed_when: false
     
-- name: Crowdsec install the necessary collections
+- name: Crowdsec install collections
   command:
     cmd: "sudo cscli collections install crowdsecurity/{{ item }}"
   with_items:
@@ -44,7 +45,7 @@
   register: collections_install_result
   changed_when: "'overwrite' not in collections_install_result.stderr"
 
-- name: Crowdsec install the necessary scenarios
+- name: Crowdsec install scenarios
   command:
     cmd: "sudo cscli scenarios install crowdsecurity/{{ item }}"
   with_items:
@@ -53,7 +54,7 @@
   register: scenarios_install_result
   changed_when: "'overwrite' not in scenarios_install_result.stderr"
 
-- name: Crowdsec install the necessary parsers
+- name: Crowdsec install parsers
   command:
     cmd: "sudo cscli parsers install crowdsecurity/{{ item }}"
   with_items:
@@ -62,7 +63,7 @@
   register: parsers_install_result
   changed_when: "'overwrite' not in parsers_install_result.stderr"
 
-- name: Crowdsec install the necessary postoverflows
+- name: Crowdsec install postoverflows
   command:
     cmd: "sudo cscli postoverflows install crowdsecurity/{{ item }}"
   with_items:
@@ -94,7 +95,7 @@
   notify:
     - Restart crowdsec
 
-- name: Crowdsec cscli completion
+- name: Crowdsec cscli bash completion
   ansible.builtin.shell: cscli completion bash | sudo tee /etc/bash_completion.d/cscli
 
 - name: Crowdsec start and enable Crowdsec services

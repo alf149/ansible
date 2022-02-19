@@ -16,6 +16,8 @@ guid: "1000"
 security_sudoers_passwordless: [ "{{ username }}" ]
 
 # Used in geerlingguy.pip
+pip_package: python3-pip
+pip_executable: "{{ 'pip3' if pip_package.startswith('python3') else 'pip' }}"
 pip_install_packages:
       - name: docker
       - name: docker-compose

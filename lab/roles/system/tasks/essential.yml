@@ -1,17 +1,8 @@
 ---
-- name: Ubuntu specific tasks
-  become: yes
-  when: ansible_facts['distribution'] == 'Ubuntu'
-  block:
-  - name: Remove cloud-config to avoid boot delay
-    apt:
-      name: cloud-config
-      state: absent
-
 - name: Update and upgrade apt packages (Debian and Ubuntu)
-  when: ansible_os_family == 'Debian'
+  when: ansible_os_family | lower == "debian"
   apt:
-    upgrade: no
+    upgrade: yes
     autoremove: yes
     update_cache: yes
     cache_valid_time: 3600
@@ -20,6 +11,14 @@
   package:
     name: "{{ extra_packages }}"
     state: present
+
+- name: Install Cockpit
+  package:
+    name: cockpit
+    state: present
+  when: 
+    - enable_cockpit is defined
+    - enable_cockpit == true
 
 - name: Set the hostname
   hostname:

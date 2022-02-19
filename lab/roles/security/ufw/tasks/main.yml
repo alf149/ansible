@@ -116,11 +116,11 @@
     - enable_portainer is defined
     - enable_portainer == true
 
-# Cokpit
-- name: Cokpit (9090)
+# Cockpit
+- name: Cockpit (9090)
   tags: ufw
   ufw:
-    comment: Cokpit (9001)
+    comment: Cockpit (9001)
     rule: allow
     port: '9090'
     proto: tcp
@@ -132,8 +132,8 @@
     - 192.168.0.0/16 
     - fd00::/8
   when:
-    - enable_cokpit is defined
-    - enable_cokpit == true
+    - enable_cockpit is defined
+    - enable_cockpit == true
 
 # Crowdsec
 - name: Crowdsec (6060)

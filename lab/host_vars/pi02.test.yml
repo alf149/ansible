@@ -1,10 +1,10 @@
 enable_ufw: true
 enable_crowdsec: true
 enable_portainer: true
-enable_watchtower: false
-enable_cokpit: true
+enable_watchtower: true
 enable_pihole: false
 enable_wireguard: false
+enable_cockpit: true
 
 extra_packages:
   - apt-transport-https
@@ -21,4 +21,3 @@ extra_packages:
   - net-tools
   - rsync
   - netcat
-  - cockpit

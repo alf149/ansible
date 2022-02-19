@@ -14,15 +14,20 @@
       when: ansible_os_family | lower == "debian"
   
   roles:
+    - system
     - geerlingguy.security
     - geerlingguy.ntp
-    - geerlingguy.pip
-    - geerlingguy.docker
     
-    - role: system
-      tags: 
-        - system
-         
+    - role: geerlingguy.pip
+      tags:
+        - containers
+      when: enable_portainer or enable_watchtower or enable_pihole
+      
+    - role: geerlingguy.docker
+      tags:
+        - containers
+      when: enable_portainer or enable_watchtower or enable_pihole
+             
     - role: security/ufw
       tags:
         - ufw
@@ -34,7 +39,6 @@
         - crowdsec
         - security
       when: enable_crowdsec | default(False)
-
 
     - role: containers/system/portainer
       tags:
