@@ -22,4 +22,7 @@
     - debug: var=ansible_ssh_host_key_rsa_public
     - debug: var=ansible_date_time
     - debug: var=ansible_date_time.iso8601
+    - debug: var=ansible_distribution
+    - debug: var=ansible_distribution_release
+    - debug: var=ansible_distribution_version
     #- debug: var=hostvars

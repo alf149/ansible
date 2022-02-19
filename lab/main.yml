@@ -19,7 +19,6 @@
     - geerlingguy.pip
     - geerlingguy.docker
     
-
     - role: system
       tags: 
         - system
