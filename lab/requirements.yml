@@ -1,10 +1,6 @@
 ---
 roles:
   - geerlingguy.security
-  - geerlingguy.firewall
   - geerlingguy.ntp  
   - geerlingguy.pip
   - geerlingguy.docker
-  - geerlingguy.containerd
-collections:
-  - community.docker
