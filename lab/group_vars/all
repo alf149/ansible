@@ -15,16 +15,6 @@ guid: "1000"
 # Used in geerlingguy.security
 security_sudoers_passwordless: [ "{{ username }}" ]
 
-# Used in geerlingguy.firewall
-firewall_state: started
-firewall_enabled_at_boot: true
-firewall_disable_firewalld: true
-firewall_disable_ufw: false
-firewall_flush_rules_and_chains: true
-firewall_log_dropped_packets: true
-firewall_allowed_tcp_ports:
-  - "22"
-
 # Used in geerlingguy.pip
 pip_install_packages:
       - name: docker
@@ -50,36 +40,14 @@ extra_packages:
 
 # Security
 enable_crowdsec: true
-enable_iptables: true
-enable_fail2ban: true
 
-### BEGIN Secret variables (encrypt and put into vault.yml)
-cloudflare_dns_token: ''
-cloudflare_firewall_token: ''
-email_password: ''
-host: ''
-host_local: ''
-ikev2_excludedssids: ''
-namecheap_host: ''
-namecheap_token: ''
-password: ''
-photoprism_password: ''
-pihole_password: ''
-pikvm_password: ''
-piped_postgresql_password: ''
-ssh_public_key: ''
-swag_htpasswd_password: ''
-swag_htpasswd_user: ''
-vpn_host: ''
-vpn_password: ''
-### END Secret variables (encrypt and put into vault.yml)
 
 #
 # Networks
 #
 vpn_network: "10.1.1.0/24"
 
-lan_network: "192.168.2.0/24"
+lan_network: "192.168.56.0/24"
 
 swag_network: "10.0.0.0/27"
 
@@ -97,4 +65,13 @@ dmz_gateway: "{{ '.'.join(dmz_network.split('.')[0:3]) }}.1"
 
 iot_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.32.0/24"
 
-hass_ip: 192.168.32.168
+
+
+### BEGIN Secret variables (encrypt and put into vault.yml)
+host: ''
+host_local: ''
+pihole_password: ''
+vpn_host: ''
+vpn_password: ''
+### END Secret variables (encrypt and put into vault.yml)
+

@@ -1,0 +1,179 @@
+---
+- name: ufw | install package
+  tags: ufw
+  package:
+    state: latest
+    name: ufw
+  notify:
+    - restart_ufw
+
+# openssh
+- name: allow ssh (home network)
+  tags: ufw
+  ufw:
+    comment: allow ssh (home network)
+    rule: allow
+    port: 22
+    proto: tcp
+    src: '{{ item }}'
+  loop:
+    - 10.0.0.0/8 
+    - 172.16.0.0/12
+    - 10.10.10.10/24
+    - 192.168.0.0/16 
+    - fd00::/8
+    
+# dns
+- name: allow dns (tcp)
+  tags: ufw
+  ufw:
+    comment: allow dns (tcp)
+    rule: allow
+    port: '53'
+    proto: tcp
+    src: '{{ item }}'
+  loop:
+    - 10.0.0.0/8 
+    - 172.16.0.0/12
+    - 10.10.10.10/24
+    - 192.168.0.0/16 
+    - fd00::/8
+  when:
+    - enable_pihole is defined
+    - enable_pihole == true
+
+- name: allow dns (udp)
+  tags: ufw
+  ufw:
+    comment: allow dns (udp)
+    rule: allow
+    port: '53'
+    proto: udp
+    src: '{{ item }}'
+  loop:
+    - 10.0.0.0/8 
+    - 172.16.0.0/12
+    - 10.10.10.10/24
+    - 192.168.0.0/16 
+    - fd00::/8
+  when:
+    - enable_pihole is defined
+    - enable_pihole == true
+
+# web server
+- name: web server allow http (80)
+  tags: ufw
+  ufw:
+    comment: web server allow http (80)
+    rule: allow
+    port: '80'
+    proto: tcp
+    src: '{{ item }}'
+  loop:
+    - 10.0.0.0/8 
+    - 172.16.0.0/12
+    - 10.10.10.10/24
+    - 192.168.0.0/16 
+    - fd00::/8
+  when:
+    - enable_swag is defined
+    - enable_swag == true
+
+- name: web server allow https (443)
+  tags: ufw
+  ufw:
+    comment: web server allow https (443)
+    rule: allow
+    port: '443'
+    proto: tcp
+    src: '{{ item }}'
+  loop:
+    - 10.0.0.0/8 
+    - 172.16.0.0/12
+    - 10.10.10.10/24
+    - 192.168.0.0/16 
+    - fd00::/8
+  when:
+    - enable_swag is defined
+    - enable_swag == true
+
+# Portainer
+- name: Portainer (9000)
+  tags: ufw
+  ufw:
+    comment: Portainer (9000)
+    rule: allow
+    port: '9000'
+    proto: tcp
+    src: '{{ item }}'
+  loop:
+    - 10.0.0.0/8 
+    - 172.16.0.0/12
+    - 10.10.10.10/24
+    - 192.168.0.0/16 
+    - fd00::/8
+  when:
+    - enable_portainer is defined
+    - enable_portainer == true
+
+# Cokpit
+- name: Cokpit (9090)
+  tags: ufw
+  ufw:
+    comment: Cokpit (9001)
+    rule: allow
+    port: '9090'
+    proto: tcp
+    src: '{{ item }}'
+  loop:
+    - 10.0.0.0/8 
+    - 172.16.0.0/12
+    - 10.10.10.10/24
+    - 192.168.0.0/16 
+    - fd00::/8
+  when:
+    - enable_cokpit is defined
+    - enable_cokpit == true
+
+# Crowdsec
+- name: Crowdsec (6060)
+  tags: ufw
+  ufw:
+    comment: Crowdsec (6060)
+    rule: allow
+    port: '6060'
+    proto: tcp
+    src: '{{ item }}'
+  loop:
+    - 10.0.0.0/8 
+    - 172.16.0.0/12
+    - 10.10.10.10/24
+    - 192.168.0.0/16 
+    - fd00::/8
+  when:
+    - enable_crowdsec is defined
+    - enable_crowdsec == true
+
+# Crowdsec
+- name: Crowdsec (6080)
+  tags: ufw
+  ufw:
+    comment: Crowdsec (6080)
+    rule: allow
+    port: '6080'
+    proto: tcp
+    src: '{{ item }}'
+  loop:
+    - 10.0.0.0/8 
+    - 172.16.0.0/12
+    - 10.10.10.10/24
+    - 192.168.0.0/16 
+    - fd00::/8
+  when:
+    - enable_crowdsec is defined
+    - enable_crowdsec == true
+
+# all rules set, enable
+- name: enable firewall
+  ufw:
+    state: enabled

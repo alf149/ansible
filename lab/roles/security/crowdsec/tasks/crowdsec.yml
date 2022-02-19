@@ -8,7 +8,7 @@
     name:
       - crowdsec
       - crowdsec-firewall-bouncer-iptables
-      - prometheus
+      #- prometheus
     state: present
 
 - name: Crowdsec cscli completion

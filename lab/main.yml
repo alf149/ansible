@@ -15,7 +15,6 @@
   
   roles:
     - geerlingguy.security
-    - geerlingguy.firewall
     - geerlingguy.ntp
     - geerlingguy.pip
     - geerlingguy.docker
@@ -24,10 +23,32 @@
     - role: system
       tags: 
         - system
-    
-    #- role: geerlingguy.pip
-  
-        
+         
+    - role: security/ufw
+      tags:
+        - ufw
+        - security
+      when: enable_ufw | default(False)
+
+    - role: security/crowdsec
+      tags:
+        - crowdsec
+        - security
+      when: enable_crowdsec | default(False)
+
+
+    - role: containers/system/portainer
+      tags:
+        - portainer
+        - containers
+      when: enable_portainer | default(False)
+
+    - role: containers/system/watchtower
+      tags:
+        - watchtower
+        - containers
+      when: enable_watchtower | default(False)
+      
     - role: network/pihole
       tags:
         - pihole 
@@ -40,22 +61,7 @@
         - containers
       when: enable_wireguard | default(False)
 
-    - role: containers/system/watchtower
-      tags:
-        - watchtower
-        - containers
-      when: enable_watchtower | default(False)
     
-    - role: containers/system/portainer
-      tags:
-        - portainer
-        - containers
-      when: enable_portainer | default(False)
                 
-    - role: security/crowdsec
-      tags:
-        - crowdsec
-        - security
-      when: enable_crowdsec | default(False)
-  
+    
 

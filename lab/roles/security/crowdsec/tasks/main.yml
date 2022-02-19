@@ -1,1 +1,108 @@
-- include_tasks: crowdsec.yml
+---
+- name: Update apt and install Crowdsec curl gnupg apt-transport-https
+  apt: 
+    update_cache: yes 
+    name:
+      - curl 
+      - gnupg 
+      - apt-transport-https
+    state: present
+
+- name: Crowdsec Add GPG apt Key
+  apt_key:
+    url: https://packagecloud.io/crowdsec/crowdsec/gpgkey
+    state: present
+
+- name: Crowdsec Add Repository
+  apt_repository:
+    repo: deb https://packagecloud.io/crowdsec/crowdsec/ubuntu focal main
+    state: present
+    
+- name: Crowdsec Apt update and install Crowdsec and crowdsec-firewall-bouncer-iptables
+  apt: 
+    update_cache: yes 
+    name:
+      - crowdsec
+      - crowdsec-firewall-bouncer-iptables
+    state: present
+
+- name: Crowdsec cscli hub update
+  command:
+    cmd: cscli hub update
+  changed_when: false
+    
+- name: Crowdsec install the necessary collections
+  command:
+    cmd: "sudo cscli collections install crowdsecurity/{{ item }}"
+  with_items:
+    - nginx
+    - apache2 
+    - sshd
+    - linux
+    - iptables
+    - http-cve
+  register: collections_install_result
+  changed_when: "'overwrite' not in collections_install_result.stderr"
+
+- name: Crowdsec install the necessary scenarios
+  command:
+    cmd: "sudo cscli scenarios install crowdsecurity/{{ item }}"
+  with_items:
+    - apache_log4j2_cve-2021-44228
+    - http-cve-2021-42013
+  register: scenarios_install_result
+  changed_when: "'overwrite' not in scenarios_install_result.stderr"
+
+- name: Crowdsec install the necessary parsers
+  command:
+    cmd: "sudo cscli parsers install crowdsecurity/{{ item }}"
+  with_items:
+    - docker-logs
+    - apache2-logs
+  register: parsers_install_result
+  changed_when: "'overwrite' not in parsers_install_result.stderr"
+
+- name: Crowdsec install the necessary postoverflows
+  command:
+    cmd: "sudo cscli postoverflows install crowdsecurity/{{ item }}"
+  with_items:
+    - cdn-whitelist
+    - seo-bots-whitelist 
+  register: postoverflows_install_result
+  changed_when: "'overwrite' not in postoverflows_install_result.stderr"
+
+- name: Crowdsec enable the Prometheus endpoint
+  lineinfile:
+    path: "/etc/crowdsec/config.yaml"
+    line: "  enabled: true"
+    search_string: "enabled: false"
+    insertafter: "^prometeus:.*$"
+  notify:
+    - Restart crowdsec
+
+- name: Crowdsec cscli hub upgrade
+  command:
+    cmd: cscli hub upgrade
+  changed_when: false
+
+- name: Crowdsec ajust ban time
+  replace:
+    path: "/etc/crowdsec/profiles.yaml"
+    regexp: 'duration: [0-9]h'
+    #replace: 'duration: 96h' ## Prod 
+    replace: 'duration: 30m' ## Testing 
+  notify:
+    - Restart crowdsec
+
+- name: Crowdsec cscli completion
+  ansible.builtin.shell: cscli completion bash | sudo tee /etc/bash_completion.d/cscli
+
+- name: Crowdsec start and enable Crowdsec services
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  with_items:
+      - crowdsec
+      - crowdsec-firewall-bouncer
+

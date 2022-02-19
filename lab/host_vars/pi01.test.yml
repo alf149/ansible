@@ -1,5 +1,7 @@
+firewall_state: started
+firewall_enabled_at_boot: true
+firewall_disable_firewalld: true
 firewall_disable_ufw: false
-
 firewall_allowed_tcp_ports:
   - "22"
   - "53"    # pi-hole
@@ -37,5 +39,7 @@ extra_packages:
   - cockpit
 
 # Enable/disable functionality
+enable_portainer: true
+enable_watchtower: true
+enable_wireguard: true
 enable_pihole: true
-host: ''
