@@ -55,7 +55,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "app01.test", autostart: false do |app01|
     app01.vm.box = "generic/ubuntu2004"
     app01.vm.hostname = "app01.test"
-    app01.vm.network :private_network, ip: "192.168.56.21", hostname: true
+    #app01.vm.network :public_network, bridge: "LAB"
+    #app01.vm.network :private_network, ip: "192.168.56.21", hostname: true
     app01.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.config_file = "ansible.cfg"

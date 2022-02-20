@@ -1,6 +1,6 @@
 # User settings
 username: deploy
-userpassword: "Changeme2022!"
+userpassword: "Changeme2022!" # Only for testing
 sudo_group: sudo
 ssh_public_key: "{{ lookup('file', '~/.ssh/deploy.pub') }}"
 shell: /bin/bash
@@ -41,35 +41,10 @@ extra_packages:
   - python3
   - python3-pip
 
-#
-# Networks
-#
-vpn_network: "10.1.1.0/24"
-
-lan_network: "192.168.56.0/24"
-
-swag_network: "10.0.0.0/27"
-
-swag_gateway: "{{ '.'.join(swag_network.split('.')[0:3]) }}.1"
-
-lan_address: "{{ '.'.join(lan_network.split('.')[0:3]) }}.230"
-
-lan_gateway: "{{ '.'.join(lan_network.split('.')[0:3]) }}.1"
-
-macvlan_address: "{{ '.'.join(lan_gateway.split('.')[0:3]) }}.2"
-
-dmz_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.44.0/24"
-
-dmz_gateway: "{{ '.'.join(dmz_network.split('.')[0:3]) }}.1"
-
-iot_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.32.0/24"
-
-
-
 ### BEGIN Secret variables (encrypt and put into vault.yml)
 host: ''
 host_local: ''
-pihole_password: ''
+pihole_password: 'Changeme2022!'
 vpn_host: ''
 vpn_password: ''
 ### END Secret variables (encrypt and put into vault.yml)

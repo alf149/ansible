@@ -2,7 +2,7 @@
 - name: Update and upgrade apt packages (Debian and Ubuntu)
   when: ansible_os_family | lower == "debian"
   apt:
-    upgrade: yes
+    upgrade: no
     autoremove: yes
     update_cache: yes
     cache_valid_time: 3600

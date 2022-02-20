@@ -24,6 +24,25 @@
     - fd00::/8
     
 # dns
+# pi-hole
+- name: allow 81 (tcp)
+  tags: ufw
+  ufw:
+    comment: allow dns (tcp)
+    rule: allow
+    port: '81'
+    proto: tcp
+    src: '{{ item }}'
+  loop:
+    - 10.0.0.0/8 
+    - 172.16.0.0/12
+    - 10.10.10.10/24
+    - 192.168.0.0/16 
+    - fd00::/8
+  when:
+    - enable_pihole is defined
+    - enable_pihole == true
+
 - name: allow dns (tcp)
   tags: ufw
   ufw:

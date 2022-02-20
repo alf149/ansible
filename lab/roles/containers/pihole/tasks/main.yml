@@ -5,26 +5,35 @@
     image: "pihole/pihole"
     privileged: yes
     hostname: "{{ inventory_hostname }}"
-    domainname: "{{ host }}"
     pull: true
+
+- name: Pi-hole Restart systemd-resolved
+  systemd:
+    state: stopped
+    enabled: no
+    name: systemd-resolved
+    #daemon_reload: yes
+    
+- name: Make sure the {{ container_name }} container is created and running
+  docker_container:
+    name: 'pihole'
+    image: "pihole/pihole"
+    privileged: yes
+    hostname: "{{ inventory_hostname }}"
+    #domainname: "{{ host }}"
+    pull: false
     state: 'started'
     env:
-      "ServerIP": "192.168.56.11"
       "TZ": "{{ timezone }}"
       "WEBPASSWORD": "{{ pihole_password }}"
-      "REV_SERVER": "true"
-      "REV_SERVER_DOMAIN": "box"
-      "REV_SERVER_TARGET": "{{ lan_gateway }}"
-      "REV_SERVER_CIDR": "{{ lan_network }}"
       "DNS1": "1.1.1.3" 
       "DNS2": "1.0.0.3" 
-      "DNSSEC": "true" 
-      "DOMAIN_NAME": "pihole.box"
-      "PIHOLE_DNS_": "10.0.0.3;1.1.1.3"
+      "DNSSEC": "false" 
+      "PIHOLE_DNS": "1.1.1.3;1.0.0.3"
     volumes:
-      - "{{ docker_dir }}/{{ container_name }}/pihole:/etc/pihole"
+      - "{{ docker_dir }}/pihole:/etc/pihole"
     ports:
       - "81:80/tcp"
-      - "192.168.56.11:53:53/tcp"
-      - "192.168.56.11:53:53/udp"
+      - "53:53/tcp"
+      - "53:53/udp"
     restart_policy: unless-stopped

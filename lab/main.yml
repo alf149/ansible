@@ -51,20 +51,23 @@
         - watchtower
         - containers
       when: enable_watchtower | default(False)
-      
-    - role: containers/pihole
-      tags:
-        - pihole 
-        - containers
-      when: enable_pihole | default(False)
-    
+          
     - role: containers/wireguard
       tags: 
         - wireguard
         - containers
       when: enable_wireguard | default(False)
 
-    
-                
+- hosts: pi01.test
+  gather_facts: yes
+  become: yes
+
+  roles:
+             
+    - role: containers/pihole
+      tags:
+        - pihole 
+        - containers
+      when: enable_pihole | default(False)
     
 
