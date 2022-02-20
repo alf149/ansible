@@ -40,25 +40,25 @@
         - security
       when: enable_crowdsec | default(False)
 
-    - role: containers/system/portainer
+    - role: containers/portainer
       tags:
         - portainer
         - containers
       when: enable_portainer | default(False)
 
-    - role: containers/system/watchtower
+    - role: containers/watchtower
       tags:
         - watchtower
         - containers
       when: enable_watchtower | default(False)
       
-    - role: network/pihole
+    - role: containers/pihole
       tags:
         - pihole 
         - containers
       when: enable_pihole | default(False)
     
-    - role: network/wireguard
+    - role: containers/wireguard
       tags: 
         - wireguard
         - containers

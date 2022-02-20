@@ -95,6 +95,22 @@
   notify:
     - Restart crowdsec
 
+- name: Crowdsec add jounalctl ssh to acquis.yaml
+  blockinfile:
+    path: /etc/crowdsec/acquis.yaml
+    insertafter: EOF
+    block: |
+      ---
+      source: journalctl
+      journalctl_filter:
+        - "_SYSTEMD_UNIT=ssh.service"
+      labels:
+        type: journald"
+      ---
+    backup: yes
+  notify:
+    - Restart crowdsec
+  
 - name: Crowdsec cscli bash completion
   ansible.builtin.shell: cscli completion bash | sudo tee /etc/bash_completion.d/cscli
 
@@ -106,4 +122,4 @@
   with_items:
       - crowdsec
       - crowdsec-firewall-bouncer
-
+  

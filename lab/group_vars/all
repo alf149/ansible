@@ -23,6 +23,7 @@ pip_install_packages:
       - name: docker-compose
 
 # Used in geerlingguy.docker
+docker_daemon_options: {"iptables": false}
 docker_users:
   - deploy
 
@@ -39,10 +40,6 @@ extra_packages:
   - git
   - python3
   - python3-pip
-
-# Security
-enable_crowdsec: true
-
 
 #
 # Networks
