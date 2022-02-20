@@ -1,0 +1,7 @@
+enable_ufw: false
+enable_crowdsec: false
+enable_portainer: false
+enable_watchtower: false
+enable_pihole: false
+enable_wireguard: false
+enable_cockpit: false
