@@ -1,0 +1,54 @@
+---
+galaxy_info:
+  role_name: crowdsec
+  author: Alf149
+  description: Install Crowdsec incl. default parsers, bouncers and configuration for Linux.
+  license: license (GPL-2.0-or-later, MIT, etc)
+  min_ansible_version: 2.4
+  platforms:
+    # Not tested
+    # - name: Fedora
+    #    versions:
+    #    - 25
+    # Not tested
+    # - name: Debian
+    #   versions:
+    #     - stretch
+    #     - buster
+    #     - bullseye
+    - name: Ubuntu
+      versions:
+        - xenial # Not tested
+        - bionic
+        - focal
+  galaxy_tags: 
+    - system
+    - security
+    - server
+galaxy_info:
+  role_name: crowdsec
+  author: Alf149
+  description: Install Crowdsec incl. default parsers, bouncers and configuration for Linux.
+  license: license (GPL-2.0-or-later, MIT, etc)
+  company: 
+  min_ansible_version: 2.4
+  platforms:
+    # Not tested
+    # - name: Fedora
+    #    versions:
+    #    - 25
+    # Not tested
+    # - name: Debian
+    #   versions:
+    #     - stretch
+    #     - buster
+    #     - bullseye
+    - name: Ubuntu
+      versions:
+        - xenial # Not tested
+        - bionic
+        - focal
+  galaxy_tags: 
+    - system
+    - security
+    - hardening

@@ -16,7 +16,6 @@
 - name: Crowdsec Add Repository
   apt_repository:
     repo: "deb https://packagecloud.io/crowdsec/crowdsec/{{ ansible_distribution | lower  }} {{ansible_distribution_release | lower}} main"
-    #repo: deb https://packagecloud.io/crowdsec/crowdsec/ubuntu focal main ## Testing
     state: present
     
 - name: Crowdsec Apt update and install Crowdsec and crowdsec-firewall-bouncer-iptables
