@@ -1,7 +1,7 @@
 Crowdsec
 =========
 
-Ansible role to install and configure Crowdsec, incl parser, bouncers and more. 
+Install Crowdsec incl. hub, collections, scenarios, postoverflows, parsers, bouncers and prometheus endpoint.
 
 Requirements
 ------------
