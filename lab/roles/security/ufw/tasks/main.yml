@@ -192,6 +192,26 @@
     - enable_crowdsec is defined
     - enable_crowdsec == true
 
+# Crowdsec
+- name: Crowdsec (8080)
+  tags: ufw
+  ufw:
+    comment: Crowdsec (8080)
+    rule: allow
+    port: '8080'
+    proto: tcp
+    src: '{{ item }}'
+  loop:
+    - 10.0.0.0/8 
+    - 172.16.0.0/12
+    - 10.10.10.10/24
+    - 192.168.0.0/16 
+    - fd00::/8
+  when:
+    - enable_crowdsec is defined
+    - enable_crowdsec == true
+
+
 # all rules set, enable
 - name: enable firewall
   ufw:

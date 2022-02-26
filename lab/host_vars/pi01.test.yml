@@ -1,23 +1,5 @@
-enable_ufw: true
-enable_crowdsec: false
-enable_portainer: true
+enable_portainer: false
 enable_watchtower: false
 enable_pihole: false
 enable_wireguard: false
-enable_cockpit: true
-
-extra_packages:
-  - apt-transport-https
-  - ca-certificates
-  - curl
-  - nano
-  - htop
-  - unzip
-  - git
-  - python3
-  - python3-pip
-  - nmap
-  - dnsutils
-  - net-tools
-  - rsync
-  - netcat
+enable_cockpit: false

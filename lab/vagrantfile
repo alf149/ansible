@@ -2,28 +2,36 @@
 # vi: set ft=ruby :
 
 VAGRANTFILE_API_VERSION = "2"
-ENV['VAGRANT_DEFAULT_PROVIDER'] = 'libvirt'
+#ENV['VAGRANT_DEFAULT_PROVIDER'] = 'libvirt'
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  # Default Virtualbox settings
-  config.vm.box_check_update = true
-  config.ssh.insert_key = true
-  config.vm.synced_folder ".", "/vagrant", disabled: true
+  # # Default Virtualbox settings
+  # config.vm.box_check_update = true
+  # config.ssh.insert_key = true
+  # config.vm.synced_folder ".", "/vagrant", disabled: true
 
   # Defaults RAM and CPU for all
   
-  config.vm.provider "libvirt" do |v|
-    #v.gui = false
-    v.memory = 2048
-    v.cpus = 2
-    #v.linked_clone = true
-    #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-    #v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-  end
+  # config.vm.provider "libvirt" do |v|
+  #   #v.gui = false
+  #   v.memory = 2048
+  #   v.cpus = 2
+  #   #v.linked_clone = true
+  #   #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  #   #v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+  # end
    
   # Raspberry 1.
   config.vm.define "pi01.test", autostart: true do |pi01|
+    pi01.vm.provider "virtualbox" do |v|
+      v.memory = 1024
+      v.cpus = 1
+      v.linked_clone = true
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+    end
     pi01.vm.box = "generic/ubuntu2004"
     pi01.vm.box_check_update = true
     pi01.vm.hostname = "pi01.test"
@@ -38,6 +46,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Raspberry 2.
   config.vm.define "pi02.test", autostart: true do |pi02|
+    pi02.vm.provider "virtualbox" do |v|
+      v.memory = 1024
+      v.cpus = 1
+      v.linked_clone = true
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+    end
     pi02.vm.box = "generic/ubuntu2004"
     pi02.vm.box_check_update = true
     pi02.vm.hostname = "pi02.test"
@@ -48,27 +63,41 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       ansible.playbook = "main.yml"
     end
   end
-
-  # ap01
-  config.vm.define "app01.test", autostart: false do |app01|
-    app01.vm.box = "generic/ubuntu2004"
-    app01.vm.box_check_update = true
-    app01.vm.hostname = "app01.test"
-    app01.vm.network :private_network, ip: "192.168.56.21", hostname: true
-    app01.vm.provision "ansible" do |ansible|
+  
+  # Raspberry 3.
+  config.vm.define "pi03.test", autostart: true do |pi03|
+    pi03.vm.provider "virtualbox" do |v|
+      v.memory = 1024
+      v.cpus = 1
+      v.linked_clone = true
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+    end
+    pi03.vm.box = "generic/ubuntu2004"
+    pi03.vm.box_check_update = true
+    pi03.vm.hostname = "pi03.test"
+    pi03.vm.network :private_network, ip: "192.168.56.13", hostname: true
+    pi03.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.config_file = "ansible.cfg"
       ansible.playbook = "main.yml"
     end
   end
 
-  # app02
-  config.vm.define "app02.test", autostart: true do |app02|
-    app02.vm.box = "generic/ubuntu2004"
-    app02.vm.box_check_update = true
-    app02.vm.hostname = "app02.test"
-    app02.vm.network :private_network, ip: "192.168.121.22", hostname: true
-    app02.vm.provision "ansible" do |ansible|
+  # Raspberry 4.
+  config.vm.define "pi04.test", autostart: true do |pi04|
+    pi04.vm.provider "virtualbox" do |v|
+      v.memory = 1024
+      v.cpus = 1
+      v.linked_clone = true
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+    end
+    pi04.vm.box = "generic/ubuntu2004"
+    pi04.vm.box_check_update = true
+    pi04.vm.hostname = "pi04.test"
+    pi04.vm.network :private_network, ip: "192.168.56.14", hostname: true
+    pi04.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.config_file = "ansible.cfg"
       ansible.playbook = "main.yml"
