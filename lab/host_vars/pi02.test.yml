@@ -1,2 +1,2 @@
-enable_ufw: true
 enable_crowdsec: true
+enable_lynis: true
