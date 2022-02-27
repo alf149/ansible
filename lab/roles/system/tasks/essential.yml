@@ -1,17 +1,28 @@
 ---
-- name: Update and upgrade apt packages (Debian and Ubuntu)
+- name: Update apt packages (Debian and Ubuntu)
   when: ansible_os_family | lower == "debian"
   apt:
     upgrade: no
-    autoremove: yes
+    autoremove: no
     update_cache: yes
     cache_valid_time: 3600
 
+# extra packages
 - name: Install extra packages
   package:
     name: "{{ extra_packages }}"
     state: present
 
+# packages net-tools
+- name: Install extra packages net-tools
+  package:
+    name: "{{ extra_packages_nettools }}"
+    state: present
+  when: 
+    - enable_extra_packages_nettools is defined
+    - enable_extra_packages_nettools == true
+
+# Cockpit
 - name: Install Cockpit
   package:
     name: cockpit
@@ -19,6 +30,93 @@
   when: 
     - enable_cockpit is defined
     - enable_cockpit == true
+
+- name: Remove Cockpit
+  package:
+    name: cockpit
+
+  when: 
+    - enable_cockpit is defined
+    - enable_cockpit == false
+
+# auditd
+- name: Install auditd
+  package:
+    name: 
+      - auditd
+      - libauparse0
+      - audispd-plugins
+    state: present
+  when: 
+    - enable_auditd is defined
+    - enable_auditd == true
+
+- name: Remove auditd
+  package:
+    name: 
+      - auditd
+      - libauparse0
+      - audispd-plugins
+    state: absent
+  when: 
+    - enable_auditd is defined
+    - enable_auditd == false
+
+# rkhunter
+- name: Install rkhunter
+  package:
+    name: 
+      - rkhunter
+    state: present
+  when: 
+    - enable_rkhunter is defined
+    - enable_rkhunter == true
+    
+- name: Remove rkhunter
+  package:
+    name: 
+      - rkhunter
+    state: absent
+  when: 
+    - enable_rkhunter is defined
+    - enable_rkhunter == false
+
+# aide
+- name: Install aide
+  package:
+    name: 
+      - aide
+    state: present
+  when: 
+    - enable_aide is defined
+    - enable_auditd == true
+
+- name: Remove aide
+  package:
+    name: 
+      - aide
+    state: absent
+  when: 
+    - enable_aide is defined
+    - enable_auditd == false
+
+# Lynis
+- name: Git Clone Lynis
+  ansible.builtin.git:
+    repo: 'https://github.com/CISOfy/lynis.git'
+    dest: /opt/lynis
+    update: yes
+  when: 
+    - enable_lynis is defined
+    - enable_lynis == true
+
+- name: Remove Lynis
+  ansible.builtin.file:
+    path: /opt/lynis
+    state: absent
+  when: 
+    - enable_lynis is defined
+    - enable_lynis == false
 
 - name: Set the hostname
   hostname:

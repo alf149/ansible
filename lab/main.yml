@@ -14,18 +14,33 @@
       when: ansible_os_family | lower == "debian"
   
   roles:
-    - system
-    - geerlingguy.security
-    - geerlingguy.ntp
+
+    - role: system
+      tags:
+        - system
+        - security
+        - users
+
+    - role: geerlingguy.security
+      tags:
+        - system
+        - security
+    
+    - role: geerlingguy.ntp
+      tags:
+        - system
+        - ntp
     
     - role: geerlingguy.pip
       tags:
         - containers
+        - pip
       when: enable_portainer or enable_watchtower or enable_pihole
       
     - role: geerlingguy.docker
       tags:
         - containers
+        - docker
       when: enable_portainer or enable_watchtower or enable_pihole
              
     - role: security/ufw
@@ -57,6 +72,19 @@
         - wireguard
         - containers
       when: enable_wireguard | default(False)
+  
+  tasks:
+    - name: Upgrade apt packages (Debian and Ubuntu)
+      apt:
+        upgrade: yes
+        autoremove: yes
+        update_cache: yes
+        cache_valid_time: 3600
+      tags:
+        - system
+        - security
+      when: ansible_os_family | lower == "debian" and enable_osupgrade | default(False)
+      
 
 - hosts: pi01.test
   gather_facts: yes

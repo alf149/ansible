@@ -1,5 +1,5 @@
 ---
-- name: ufw | install package
+- name: Install package
   tags: ufw
   package:
     state: latest
@@ -7,74 +7,49 @@
   notify:
     - restart_ufw
 
-# openssh
-- name: allow ssh (home network)
+# reset
+- name: rest ufw rules
+  include_tasks: ufw_reset.yml
+  when: 
+    - resetufw is defined
+    - resetufw == true
+
+# dns pi-hole
+- name: allow 81 pihole (tcp)
   tags: ufw
   ufw:
-    comment: allow ssh (home network)
-    rule: allow
-    port: 22
-    proto: tcp
-    src: '{{ item }}'
-  loop:
-    - 10.0.0.0/8 
-    - 172.16.0.0/12
-    - 10.10.10.10/24
-    - 192.168.0.0/16 
-    - fd00::/8
-    
-# dns
-# pi-hole
-- name: allow 81 (tcp)
-  tags: ufw
-  ufw:
-    comment: allow dns (tcp)
+    comment: allow 81 pihole  (tcp)
     rule: allow
     port: '81'
     proto: tcp
     src: '{{ item }}'
-  loop:
-    - 10.0.0.0/8 
-    - 172.16.0.0/12
-    - 10.10.10.10/24
-    - 192.168.0.0/16 
-    - fd00::/8
+  loop: "{{ local_lan }}"
   when:
     - enable_pihole is defined
     - enable_pihole == true
 
-- name: allow dns (tcp)
+- name: allow dns pihole (tcp)
   tags: ufw
   ufw:
-    comment: allow dns (tcp)
+    comment: allow dns pihole (tcp)
     rule: allow
     port: '53'
     proto: tcp
     src: '{{ item }}'
-  loop:
-    - 10.0.0.0/8 
-    - 172.16.0.0/12
-    - 10.10.10.10/24
-    - 192.168.0.0/16 
-    - fd00::/8
+  loop: "{{ local_lan }}"
   when:
     - enable_pihole is defined
     - enable_pihole == true
 
-- name: allow dns (udp)
+- name: allow dns pihole (udp)
   tags: ufw
   ufw:
-    comment: allow dns (udp)
+    comment: allow dns pihole (udp)
     rule: allow
     port: '53'
     proto: udp
     src: '{{ item }}'
-  loop:
-    - 10.0.0.0/8 
-    - 172.16.0.0/12
-    - 10.10.10.10/24
-    - 192.168.0.0/16 
-    - fd00::/8
+  loop: "{{ local_lan }}"
   when:
     - enable_pihole is defined
     - enable_pihole == true
@@ -88,15 +63,10 @@
     port: '80'
     proto: tcp
     src: '{{ item }}'
-  loop:
-    - 10.0.0.0/8 
-    - 172.16.0.0/12
-    - 10.10.10.10/24
-    - 192.168.0.0/16 
-    - fd00::/8
+  loop: "{{ local_lan }}"
   when:
-    - enable_swag is defined
-    - enable_swag == true
+    - enable_web80 is defined
+    - enable_web80 == true
 
 - name: web server allow https (443)
   tags: ufw
@@ -106,15 +76,10 @@
     port: '443'
     proto: tcp
     src: '{{ item }}'
-  loop:
-    - 10.0.0.0/8 
-    - 172.16.0.0/12
-    - 10.10.10.10/24
-    - 192.168.0.0/16 
-    - fd00::/8
+  loop: "{{ local_lan }}"
   when:
-    - enable_swag is defined
-    - enable_swag == true
+    - enable_web443 is defined
+    - enable_web443 == true
 
 # Portainer
 - name: Portainer (9000)
@@ -125,12 +90,7 @@
     port: '9000'
     proto: tcp
     src: '{{ item }}'
-  loop:
-    - 10.0.0.0/8 
-    - 172.16.0.0/12
-    - 10.10.10.10/24
-    - 192.168.0.0/16 
-    - fd00::/8
+  loop: "{{ local_lan }}"
   when:
     - enable_portainer is defined
     - enable_portainer == true
@@ -144,12 +104,7 @@
     port: '9090'
     proto: tcp
     src: '{{ item }}'
-  loop:
-    - 10.0.0.0/8 
-    - 172.16.0.0/12
-    - 10.10.10.10/24
-    - 192.168.0.0/16 
-    - fd00::/8
+  loop: "{{ local_lan }}"
   when:
     - enable_cockpit is defined
     - enable_cockpit == true
@@ -163,12 +118,7 @@
     port: '6060'
     proto: tcp
     src: '{{ item }}'
-  loop:
-    - 10.0.0.0/8 
-    - 172.16.0.0/12
-    - 10.10.10.10/24
-    - 192.168.0.0/16 
-    - fd00::/8
+  loop: "{{ local_lan }}"
   when:
     - enable_crowdsec is defined
     - enable_crowdsec == true
@@ -182,12 +132,7 @@
     port: '6080'
     proto: tcp
     src: '{{ item }}'
-  loop:
-    - 10.0.0.0/8 
-    - 172.16.0.0/12
-    - 10.10.10.10/24
-    - 192.168.0.0/16 
-    - fd00::/8
+  loop: "{{ local_lan }}"
   when:
     - enable_crowdsec is defined
     - enable_crowdsec == true
@@ -201,19 +146,14 @@
     port: '8080'
     proto: tcp
     src: '{{ item }}'
-  loop:
-    - 10.0.0.0/8 
-    - 172.16.0.0/12
-    - 10.10.10.10/24
-    - 192.168.0.0/16 
-    - fd00::/8
+  loop: "{{ local_lan }}"
   when:
     - enable_crowdsec is defined
     - enable_crowdsec == true
 
-
 # all rules set, enable
 - name: enable firewall
   ufw:
+    logging: on
     state: enabled
     

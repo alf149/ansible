@@ -1,0 +1,35 @@
+---
+- block:
+  - name: Reset UFW
+    ufw: 
+      state: reset
+
+  - name: Allow outgoing
+    ufw: 
+      comment: default allow outgoing
+      default: allow
+      direction: outgoing
+
+  - name: Disallow ingoing
+    ufw: 
+      comment: default deny incoming
+      default: deny
+      direction: incoming
+
+  always:
+    - name: Grant ssh access
+      ufw:
+        comment: allow ssh 
+        rule: allow
+        direction: in
+        port: '22'
+        proto: tcp
+        src: '{{ item }}'
+      loop: "{{ local_lan }}"  
+
+    - name: Enable Firewall
+      ufw: 
+        logging: on
+        state: enabled
+      notify:
+        - restart_ufw
