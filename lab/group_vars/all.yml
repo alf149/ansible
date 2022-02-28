@@ -72,7 +72,7 @@ vpn_password: ''
 ### END Secret variables (encrypt and put into vault.yml)
 
 enable_ufw: true
-resetufw: true
+resetufw: false
 enable_crowdsec: false
 enable_auditd: false
 enable_aide: false

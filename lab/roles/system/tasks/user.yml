@@ -3,19 +3,27 @@
   become: true
   user:
     name: "{{ username }}"
+    create_home: yes
     password: "{{ userpassword | password_hash('sha512') }}"
     groups: 
       - "{{ sudo_group }}"
+      - "{{ username }}"
       - users
     state: present
     append: true
+  tags:
+    - system
+    - users
 
 - name: Ensure group "{{ username }}" exists
   become: true
   group:
     name: "{{ username }}"
     state: present
-
+  tags:
+    - system
+    - users
+  
 - name: Allow 'sudo' group to have passwordless sudo
   become: true
   lineinfile:
@@ -24,19 +32,28 @@
     regexp: '^%{{ sudo_group }}'
     line: '%{{ sudo_group }} ALL=(ALL) NOPASSWD: ALL'
     validate: '/usr/sbin/visudo -cf %s'
-
+  tags:
+    - system
+    - users
+  
 - name: Copy the public SSH key 
   become: true
   authorized_key:
     user: "{{ username }}"
     state: present
     key: "{{ ssh_public_key }}"
-
+  tags:
+    - system
+    - users
+  
 - name: Set the default shell
   user: 
     name: "{{ username }}"
     shell: "{{ shell }}"
-
+  tags:
+    - system
+    - users
+  
 - name: Suppress login messages
   file:
     name: /home/{{ username }}/.hushlogin
@@ -44,21 +61,30 @@
     state: touch
     modification_time: preserve
     access_time: preserve
-
+  tags:
+    - system
+    - users
+  
 - name: copy '.bash_aliases' file. to user
   copy:
     src: files/dot_files/.bash_aliases
     dest: /home/{{ username }}/.bash_aliases
     owner: deploy
     mode: 0644
-
+  tags:
+    - system
+    - users
+  
 - name: copy '.bash_aliases' file to root user.
   copy:
     src: files/dot_files/.bash_aliases
     dest: /root/.bash_aliases
     owner: root
     mode: 0644
-
+  tags:
+    - system
+    - users
+  
 
 
       
