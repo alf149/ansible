@@ -1,1 +1,31 @@
 ---
+Crowdsec_services:
+  - crowdsec                    # IDS
+  - crowdsec-firewall-bouncer   # IPS
+
+#ban_duration: "duration: 24h" # PROD 
+ban_duration: "duration: 10m" # TEST 
+
+prometheus_endpoint: "enabled: true"
+#prometheus_endpoint: "enabled false"
+
+collections_list:
+  - nginx
+  - apache2 
+  - sshd
+  - linux
+  - iptables
+  - http-cve
+
+scenarios_list:
+  - apache_log4j2_cve-2021-44228
+  - http-cve-2021-42013
+
+parsers_list:
+  - docker-logs
+  - apache2-logs
+
+postoverflows_list:
+  - cdn-whitelist
+  - seo-bots-whitelist
+

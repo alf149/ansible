@@ -1,0 +1,10 @@
+---
+- hosts: all
+  gather_facts: yes
+  become: yes
+    
+  tasks:
+  
+  - name: Include task create user
+    include_tasks: roles/system/tasks/user.yml
+

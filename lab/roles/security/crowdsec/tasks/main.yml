@@ -30,67 +30,60 @@
   command:
     cmd: cscli hub update
   changed_when: false
+
+- name: Crowdsec cscli hub upgrade
+  command:
+    cmd: cscli hub upgrade
+  changed_when: false
     
 - name: Crowdsec install collections
   command:
     cmd: "sudo cscli collections install crowdsecurity/{{ item }}"
-  with_items:
-    - nginx
-    - apache2 
-    - sshd
-    - linux
-    - iptables
-    - http-cve
+  with_items: "{{ collections_list }}"
   register: collections_install_result
   changed_when: "'overwrite' not in collections_install_result.stderr"
 
 - name: Crowdsec install scenarios
   command:
     cmd: "sudo cscli scenarios install crowdsecurity/{{ item }}"
-  with_items:
-    - apache_log4j2_cve-2021-44228
-    - http-cve-2021-42013
+  with_items: "{{ scenarios_list }}"
   register: scenarios_install_result
   changed_when: "'overwrite' not in scenarios_install_result.stderr"
 
 - name: Crowdsec install parsers
   command:
     cmd: "sudo cscli parsers install crowdsecurity/{{ item }}"
-  with_items:
-    - docker-logs
-    - apache2-logs
+  with_items: "{{ parsers_list }}"
+
   register: parsers_install_result
   changed_when: "'overwrite' not in parsers_install_result.stderr"
 
 - name: Crowdsec install postoverflows
   command:
     cmd: "sudo cscli postoverflows install crowdsecurity/{{ item }}"
-  with_items:
-    - cdn-whitelist
-    - seo-bots-whitelist 
+  with_items: "{{ postoverflows_list }}"
+ 
   register: postoverflows_install_result
   changed_when: "'overwrite' not in postoverflows_install_result.stderr"
 
-- name: Crowdsec enable the Prometheus endpoint
-  lineinfile:
+### Config files
+- name: Crowdsec enable/disable the Prometheus endpoint
+  replace:
     path: "/etc/crowdsec/config.yaml"
-    line: "  enabled: true"
-    search_string: "enabled: false"
-    insertafter: "^prometeus:.*$"
+    after: "prometheus:"
+    regexp: 'enabled:.*$'
+    replace: "{{ prometheus_endpoint }}"
+    backup: yes
   notify:
     - Restart crowdsec
-
-- name: Crowdsec cscli hub upgrade
-  command:
-    cmd: cscli hub upgrade
-  changed_when: false
 
 - name: Crowdsec ajust ban time
   replace:
     path: "/etc/crowdsec/profiles.yaml"
-    regexp: 'duration: [0-9]h'
-    #replace: 'duration: 96h' ## Prod 
-    replace: 'duration: 30m' ## Testing 
+    after: "- type: ban"
+    regexp: 'duration: [0-9].*$'
+    replace: "{{ ban_duration }}"
+    backup: yes
   notify:
     - Restart crowdsec
 
@@ -109,16 +102,18 @@
     backup: yes
   notify:
     - Restart crowdsec
-  
-- name: Crowdsec cscli bash completion
-  ansible.builtin.shell: cscli completion bash | sudo tee /etc/bash_completion.d/cscli
 
+- name: Crowdsec cscli bash completion
+  ansible.builtin.shell: "cscli completion bash | sudo tee /etc/bash_completion.d/cscli"
+  register: bash_completion_result
+  changed_when: "'# bash completion for' not in bash_completion_result.stdout"
+  failed_when: "'Error' in bash_completion_result.stderr"
+  
 - name: Crowdsec start and enable Crowdsec services
   service:
     name: "{{ item }}"
     state: started
     enabled: true
-  with_items:
-      - crowdsec
-      - crowdsec-firewall-bouncer
+  with_items: "{{ Crowdsec_services }}"
+
   

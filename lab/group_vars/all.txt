@@ -71,6 +71,7 @@ vpn_host: ''
 vpn_password: ''
 ### END Secret variables (encrypt and put into vault.yml)
 
+apt_update: true
 enable_ufw: true
 resetufw: false
 enable_crowdsec: false

@@ -12,6 +12,9 @@
   package:
     name: "{{ extra_packages }}"
     state: present
+  when: 
+    - enable_extra_packages is defined
+    - enable_extra_packages == true
 
 # packages net-tools
 - name: Install extra packages net-tools
@@ -36,8 +39,8 @@
     name: cockpit
 
   when: 
-    - enable_cockpit is defined
-    - enable_cockpit == false
+    - diable_cockpit is defined
+    - diable_cockpit == true
 
 # auditd
 - name: Install auditd
@@ -59,8 +62,8 @@
       - audispd-plugins
     state: absent
   when: 
-    - enable_auditd is defined
-    - enable_auditd == false
+    - diable_auditd is defined
+    - diable_auditd == true
 
 # rkhunter
 - name: Install rkhunter
@@ -78,8 +81,8 @@
       - rkhunter
     state: absent
   when: 
-    - enable_rkhunter is defined
-    - enable_rkhunter == false
+    - diable_rkhunter is defined
+    - diable_rkhunter == true
 
 # aide
 - name: Install aide
@@ -97,8 +100,8 @@
       - aide
     state: absent
   when: 
-    - enable_aide is defined
-    - enable_auditd == false
+    - diable_aide is defined
+    - diable_auditd == true
 
 # Lynis
 - name: Git Clone Lynis
@@ -115,20 +118,6 @@
     path: /opt/lynis
     state: absent
   when: 
-    - enable_lynis is defined
-    - enable_lynis == false
-
-- name: Set the hostname
-  hostname:
-    name: "{{ inventory_hostname }}"
-
-- name: Replace the hostname entry with our own
-  ansible.builtin.lineinfile:
-    path: /etc/hosts
-    insertafter: ^127\.0\.0\.1 *localhost
-    line: "127.0.0.1 {{ inventory_hostname }}"
-    owner: root
-    group: root
-    mode: '0644'
-
+    - diable_lynis is defined
+    - diable_lynis == true
 

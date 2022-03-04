@@ -1,5 +1,5 @@
 ---
-- name: Install package
+- name: Install package ufw
   tags: ufw
   package:
     state: latest
@@ -7,12 +7,38 @@
   notify:
     - restart_ufw
 
-# reset
-- name: rest ufw rules
-  include_tasks: ufw_reset.yml
-  when: 
+- name: Reset UFW
+  ufw: 
+    logging: on
+    state: reset
+  notify:
+    - restart_ufw
+  when:
     - resetufw is defined
     - resetufw == true
+
+- name: Allow outgoing
+  ufw: 
+    comment: default allow outgoing
+    default: allow
+    direction: outgoing
+
+- name: Disallow ingoing
+  ufw: 
+    comment: default deny incoming
+    default: deny
+    direction: incoming
+
+# SSH 
+- name: Grant ssh access
+  ufw:
+    comment: allow ssh 
+    rule: allow
+    direction: in
+    port: '22'
+    proto: tcp
+    src: '{{ item }}'
+  loop: "{{ local_lan }}" 
 
 # dns pi-hole
 - name: allow 81 pihole (tcp)
@@ -151,9 +177,12 @@
     - enable_crowdsec is defined
     - enable_crowdsec == true
 
-# all rules set, enable
-- name: enable firewall
-  ufw:
+- name: Enable Firewall ufw
+  ufw: 
     logging: on
     state: enabled
+  notify:
+    - restart_ufw
+
+
     

@@ -7,12 +7,10 @@
     password: "{{ userpassword | password_hash('sha512') }}"
     groups: 
       - "{{ sudo_group }}"
-      - "{{ username }}"
       - users
     state: present
     append: true
   tags:
-    - system
     - users
 
 - name: Ensure group "{{ username }}" exists
@@ -21,7 +19,6 @@
     name: "{{ username }}"
     state: present
   tags:
-    - system
     - users
   
 - name: Allow 'sudo' group to have passwordless sudo
@@ -33,7 +30,6 @@
     line: '%{{ sudo_group }} ALL=(ALL) NOPASSWD: ALL'
     validate: '/usr/sbin/visudo -cf %s'
   tags:
-    - system
     - users
   
 - name: Copy the public SSH key 
@@ -43,7 +39,6 @@
     state: present
     key: "{{ ssh_public_key }}"
   tags:
-    - system
     - users
   
 - name: Set the default shell
@@ -51,7 +46,6 @@
     name: "{{ username }}"
     shell: "{{ shell }}"
   tags:
-    - system
     - users
   
 - name: Suppress login messages
@@ -62,7 +56,6 @@
     modification_time: preserve
     access_time: preserve
   tags:
-    - system
     - users
   
 - name: copy '.bash_aliases' file. to user
@@ -72,7 +65,6 @@
     owner: deploy
     mode: 0644
   tags:
-    - system
     - users
   
 - name: copy '.bash_aliases' file to root user.
@@ -82,7 +74,6 @@
     owner: root
     mode: 0644
   tags:
-    - system
     - users
   
 
