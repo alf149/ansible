@@ -35,44 +35,42 @@
       tags:
         - containers
         - pip
-      when: enable_portainer or enable_watchtower or enable_pihole
+        - portainer
+        - watchtower
+        - pihole
       
     - role: geerlingguy.docker
       tags:
         - containers
         - docker
-      when: enable_portainer or enable_watchtower or enable_pihole
+        - portainer
+        - watchtower
+        - pihole
              
     - role: security/ufw
       tags:
         - ufw
         - security
-      when: enable_ufw | default(False)
 
     - role: security/crowdsec
       tags:
         - crowdsec
         - security
-      when: enable_crowdsec | default(False)
 
     - role: containers/portainer
       tags:
         - portainer
         - containers
-      when: enable_portainer | default(False)
 
     - role: containers/watchtower
       tags:
         - watchtower
         - containers
-      when: enable_watchtower | default(False)
           
     - role: containers/wireguard
       tags: 
         - wireguard
-        - containers
-      when: enable_wireguard | default(False)
-  
+        - containers  
   tasks:
     - name: Upgrade apt packages (Debian and Ubuntu)
       apt:
@@ -83,7 +81,8 @@
       tags:
         - system
         - security
-      when: ansible_os_family | lower == "debian" and enable_osupgrade | default(False)
+        - enable_osupgrade
+      when: ansible_os_family | lower == "debian" 
       
 
 - hosts: pi01.test
@@ -94,8 +93,9 @@
              
     - role: containers/pihole
       tags:
+        - dns
         - pihole 
         - containers
-      when: enable_pihole | default(False)
+
     
 

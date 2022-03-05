@@ -1,0 +1,23 @@
+---
+enable_ufw: false
+resetufw: false
+enable_crowdsec: true
+enable_auditd: false
+enable_aide: false
+enable_lynis: false
+enable_rkhunter: false
+enable_web80: false
+enable_web443: false
+enable_extra_packages_nettools: false
+enable_portainer: false
+enable_watchtower: false
+enable_pihole: false
+enable_wireguard: false
+enable_cockpit: false
+
+local_lan_ufw:
+  - 10.0.0.0/8 
+  - 172.16.0.0/12
+  - 10.10.10.10/24
+  - 192.168.0.0/16 
+  - fd00::/8

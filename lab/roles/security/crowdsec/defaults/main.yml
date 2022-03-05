@@ -1,13 +1,12 @@
 ---
-Crowdsec_services:
-  - crowdsec                    # IDS
-  - crowdsec-firewall-bouncer   # IPS
+crowdsec_services_install:
+  - crowdsec                              # IDS
+  - crowdsec-firewall-bouncer-iptables    # IPS
+  #- crowdsec-firewall-bouncer-iptables    # IPS
 
-#ban_duration: "duration: 24h" # PROD 
-ban_duration: "duration: 10m" # TEST 
-
-prometheus_endpoint: "enabled: true"
-#prometheus_endpoint: "enabled false"
+crowdsec_services_start:
+  - crowdsec                     # IDS
+  - crowdsec-firewall-bouncer    # IPS
 
 collections_list:
   - nginx
@@ -28,4 +27,21 @@ parsers_list:
 postoverflows_list:
   - cdn-whitelist
   - seo-bots-whitelist
+
+#ban_duration: "duration: 24h" # PROD 
+ban_duration: "duration: 10m" # TEST 
+
+prometheus_endpoint: "enabled: true"
+#prometheus_endpoint: "enabled: false"
+
+acquis_addon: |
+      ---
+      source: journalctl
+      journalctl_filter:
+        - "_SYSTEMD_UNIT=ssh.service"
+      labels:
+        type: journald"
+      ---
+
+
 

@@ -3,15 +3,16 @@
   apt:
     pkg: 
     - apt-transport-https
+    - ca-certificates
     - curl
     - nano
     - htop
     - unzip
+    - nmap
+    - dnsutils
+    - net-tools
+    - rsync
+    - netcat
     - git
     - python3
     - python3-pip
-    - nmap
-    - iperf
-    - dnsutils
-    - net-tools
-    - jq

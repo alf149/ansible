@@ -25,7 +25,7 @@
         port: '22'
         proto: tcp
         src: '{{ item }}'
-      loop: "{{ local_lan }}"  
+      loop: "{{ local_lan_ufw }}"  
 
     - name: Enable Firewall
       ufw: 

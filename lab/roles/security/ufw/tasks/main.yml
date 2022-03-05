@@ -6,7 +6,29 @@
     name: ufw
   notify:
     - restart_ufw
+  when:
+    - enable_ufw is defined
+    - enable_ufw == true
 
+- name: Allow outgoing
+  ufw: 
+    comment: default allow outgoing
+    default: allow
+    direction: outgoing
+  when:
+    - enable_ufw is defined
+    - enable_ufw == true
+
+- name: Disallow ingoing
+  ufw: 
+    comment: default deny incoming
+    default: deny
+    direction: incoming
+  when:
+    - enable_ufw is defined
+    - enable_ufw == true
+
+#reset UFW
 - name: Reset UFW
   ufw: 
     logging: on
@@ -14,20 +36,10 @@
   notify:
     - restart_ufw
   when:
+    - enable_ufw is defined 
     - resetufw is defined
+    - enable_ufw == true
     - resetufw == true
-
-- name: Allow outgoing
-  ufw: 
-    comment: default allow outgoing
-    default: allow
-    direction: outgoing
-
-- name: Disallow ingoing
-  ufw: 
-    comment: default deny incoming
-    default: deny
-    direction: incoming
 
 # SSH 
 - name: Grant ssh access
@@ -38,7 +50,10 @@
     port: '22'
     proto: tcp
     src: '{{ item }}'
-  loop: "{{ local_lan }}" 
+  loop: "{{ local_lan_ufw }}"
+  when:
+    - enable_ufw is defined
+    - enable_ufw == true
 
 # dns pi-hole
 - name: allow 81 pihole (tcp)
@@ -49,10 +64,11 @@
     port: '81'
     proto: tcp
     src: '{{ item }}'
-  loop: "{{ local_lan }}"
+  loop: "{{ local_lan_ufw }}"
   when:
     - enable_pihole is defined
     - enable_pihole == true
+    - enable_ufw == true
 
 - name: allow dns pihole (tcp)
   tags: ufw
@@ -62,10 +78,11 @@
     port: '53'
     proto: tcp
     src: '{{ item }}'
-  loop: "{{ local_lan }}"
+  loop: "{{ local_lan_ufw }}"
   when:
     - enable_pihole is defined
     - enable_pihole == true
+    - enable_ufw == true
 
 - name: allow dns pihole (udp)
   tags: ufw
@@ -75,10 +92,11 @@
     port: '53'
     proto: udp
     src: '{{ item }}'
-  loop: "{{ local_lan }}"
+  loop: "{{ local_lan_ufw }}"
   when:
     - enable_pihole is defined
-    - enable_pihole == true
+    - enable_pihole == true 
+    - enable_ufw == true
 
 # web server
 - name: web server allow http (80)
@@ -89,10 +107,11 @@
     port: '80'
     proto: tcp
     src: '{{ item }}'
-  loop: "{{ local_lan }}"
+  loop: "{{ local_lan_ufw }}"
   when:
     - enable_web80 is defined
-    - enable_web80 == true
+    - enable_web80 == true 
+    - enable_ufw == true
 
 - name: web server allow https (443)
   tags: ufw
@@ -102,10 +121,11 @@
     port: '443'
     proto: tcp
     src: '{{ item }}'
-  loop: "{{ local_lan }}"
+  loop: "{{ local_lan_ufw }}"
   when:
     - enable_web443 is defined
-    - enable_web443 == true
+    - enable_web443 == true 
+    - enable_ufw == true
 
 # Portainer
 - name: Portainer (9000)
@@ -116,10 +136,11 @@
     port: '9000'
     proto: tcp
     src: '{{ item }}'
-  loop: "{{ local_lan }}"
+  loop: "{{ local_lan_ufw }}"
   when:
     - enable_portainer is defined
-    - enable_portainer == true
+    - enable_portainer == true 
+    - enable_ufw == true
 
 # Cockpit
 - name: Cockpit (9090)
@@ -130,10 +151,11 @@
     port: '9090'
     proto: tcp
     src: '{{ item }}'
-  loop: "{{ local_lan }}"
+  loop: "{{ local_lan_ufw }}"
   when:
     - enable_cockpit is defined
-    - enable_cockpit == true
+    - enable_cockpit == true 
+    - enable_ufw == true
 
 # Crowdsec
 - name: Crowdsec (6060)
@@ -144,10 +166,11 @@
     port: '6060'
     proto: tcp
     src: '{{ item }}'
-  loop: "{{ local_lan }}"
+  loop: "{{ local_lan_ufw }}"
   when:
     - enable_crowdsec is defined
-    - enable_crowdsec == true
+    - enable_crowdsec == true 
+    - enable_ufw == true
 
 # Crowdsec
 - name: Crowdsec (6080)
@@ -158,10 +181,11 @@
     port: '6080'
     proto: tcp
     src: '{{ item }}'
-  loop: "{{ local_lan }}"
+  loop: "{{ local_lan_ufw }}"
   when:
     - enable_crowdsec is defined
-    - enable_crowdsec == true
+    - enable_crowdsec == true 
+    - enable_ufw == true
 
 # Crowdsec
 - name: Crowdsec (8080)
@@ -172,10 +196,11 @@
     port: '8080'
     proto: tcp
     src: '{{ item }}'
-  loop: "{{ local_lan }}"
+  loop: "{{ local_lan_ufw }}"
   when:
     - enable_crowdsec is defined
-    - enable_crowdsec == true
+    - enable_crowdsec == true 
+    - enable_ufw == true
 
 - name: Enable Firewall ufw
   ufw: 
@@ -183,6 +208,8 @@
     state: enabled
   notify:
     - restart_ufw
-
+  when:
+    - enable_ufw is defined
+    - enable_ufw == true
 
     

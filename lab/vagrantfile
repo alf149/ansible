@@ -60,7 +60,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     pi02.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.config_file = "ansible.cfg"
-      ansible.playbook = "main.yml"
+      ansible.playbook = "provision.yml"
     end
   end
   
@@ -80,7 +80,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     pi03.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.config_file = "ansible.cfg"
-      ansible.playbook = "main.yml"
+      ansible.playbook = "provision.yml"
     end
   end
 
@@ -100,7 +100,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     pi04.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.config_file = "ansible.cfg"
-      ansible.playbook = "main.yml"
+      ansible.playbook = "provision.yml"
     end
   end
 

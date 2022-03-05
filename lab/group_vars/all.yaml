@@ -1,14 +1,3 @@
-# User settings
-username: deploy
-userpassword: "Changeme2022!" # Only for testing
-sudo_group: sudo
-ssh_public_key: "{{ lookup('file', '~/.ssh/deploy.pub') }}"
-shell: /bin/bash
-hostname: "{{ inventory_hostname }}"
-dns_nameservers: ["1.1.1.3", "1.0.0.3"]
-keyboard_layout: dk
-guid: "1000"
-
 # Used in Geerlingguy.ntp
 ntp_servers:
   - 0.dk.pool.ntp.org
@@ -56,13 +45,6 @@ extra_packages_nettools:
   - dnsutils
   - net-tools
 
-local_lan:
-  - 10.0.0.0/8 
-  - 172.16.0.0/12
-  - 10.10.10.10/24
-  - 192.168.0.0/16 
-  - fd00::/8
-
 ### BEGIN Secret variables (encrypt and put into vault.yml)
 host: ''
 host_local: ''
@@ -70,21 +52,3 @@ pihole_password: 'Changeme2022!'
 vpn_host: ''
 vpn_password: ''
 ### END Secret variables (encrypt and put into vault.yml)
-
-apt_update: true
-enable_ufw: true
-resetufw: false
-enable_crowdsec: false
-enable_auditd: false
-enable_aide: false
-enable_lynis: false
-enable_rkhunter: false
-enable_osupgrade: false
-enable_web80: false
-enable_web443: false
-enable_extra_packages_nettools: false
-enable_portainer: false
-enable_watchtower: false
-enable_pihole: false
-enable_wireguard: false
-enable_cockpit: false

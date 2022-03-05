@@ -18,12 +18,10 @@
     repo: "deb https://packagecloud.io/crowdsec/crowdsec/{{ ansible_distribution | lower  }} {{ansible_distribution_release | lower}} main"
     state: present
     
-- name: Crowdsec Apt update and install Crowdsec and crowdsec-firewall-bouncer-iptables
+- name: Crowdsec Apt update and install Crowdsec and Crowdsec-firewall-bouncer-iptables
   apt: 
     update_cache: yes 
-    name:
-      - crowdsec
-      - crowdsec-firewall-bouncer-iptables
+    name: "{{ crowdsec_services_install }}"
     state: present
 
 - name: Crowdsec cscli hub update
@@ -54,7 +52,6 @@
   command:
     cmd: "sudo cscli parsers install crowdsecurity/{{ item }}"
   with_items: "{{ parsers_list }}"
-
   register: parsers_install_result
   changed_when: "'overwrite' not in parsers_install_result.stderr"
 
@@ -62,7 +59,6 @@
   command:
     cmd: "sudo cscli postoverflows install crowdsecurity/{{ item }}"
   with_items: "{{ postoverflows_list }}"
- 
   register: postoverflows_install_result
   changed_when: "'overwrite' not in postoverflows_install_result.stderr"
 
@@ -91,14 +87,7 @@
   blockinfile:
     path: /etc/crowdsec/acquis.yaml
     insertafter: EOF
-    block: |
-      ---
-      source: journalctl
-      journalctl_filter:
-        - "_SYSTEMD_UNIT=ssh.service"
-      labels:
-        type: journald"
-      ---
+    block: "{{ acquis_addon }}"
     backup: yes
   notify:
     - Restart crowdsec
@@ -114,6 +103,6 @@
     name: "{{ item }}"
     state: started
     enabled: true
-  with_items: "{{ Crowdsec_services }}"
+  with_items: "{{ crowdsec_services_start }}"
 
   
