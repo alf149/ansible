@@ -1,3 +1,6 @@
+# Used in pihole
+pihole_password: 'Changeme2022!'
+
 # Used in Geerlingguy.ntp
 ntp_servers:
   - 0.dk.pool.ntp.org
@@ -38,17 +41,3 @@ extra_packages:
   - git
   - python3
   - python3-pip
-
-extra_packages_nettools:
-  - nmap
-  - netcat
-  - dnsutils
-  - net-tools
-
-### BEGIN Secret variables (encrypt and put into vault.yml)
-host: ''
-host_local: ''
-pihole_password: 'Changeme2022!'
-vpn_host: ''
-vpn_password: ''
-### END Secret variables (encrypt and put into vault.yml)

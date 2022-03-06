@@ -40,20 +40,19 @@ extra_packages:
   - python3-pip
 
 extra_packages_nettools:
-  - nmap
-  - netcat
-  - dnsutils
-  - net-tools
+#   - nmap
+#   - netcat
+#   - dnsutils
+#   - net-tools
 
-### BEGIN Secret variables (encrypt and put into vault.yml)
-host: ''
-host_local: ''
-pihole_password: 'Changeme2022!'
-vpn_host: ''
-vpn_password: ''
-### END Secret variables (encrypt and put into vault.yml)
+# ### BEGIN Secret variables (encrypt and put into vault.yml)
+# host: ''
+# host_local: ''
+# pihole_password: 'Changeme2022!'
+# vpn_host: ''
+# vpn_password: ''
+# ### END Secret variables (encrypt and put into vault.yml)
 
-enable_ufw: true
-enable_crowdsec: true
-enable_web443: true
-#resetufw: true
+# enable_ufw: true
+# enable_crowdsec: true
+# enable_web443: true

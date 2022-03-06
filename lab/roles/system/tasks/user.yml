@@ -20,18 +20,18 @@
     state: present
   tags:
     - users
-  
-- name: Allow 'sudo' group to have passwordless sudo
-  become: true
+
+- name: Add configured user accounts to passwordless sudoers.
   lineinfile:
-    path: /etc/sudoers
+    dest: /etc/sudoers
+    regexp: '^{{ item }}'
+    line: '{{ item }} ALL=(ALL) NOPASSWD: ALL'
     state: present
-    regexp: '^%{{ sudo_group }}'
-    line: '%{{ sudo_group }} ALL=(ALL) NOPASSWD: ALL'
-    validate: '/usr/sbin/visudo -cf %s'
-  tags:
-    - users
-  
+    validate: 'visudo -cf %s'
+    mode: 0644
+  with_items: "{{ security_sudoers_passwordless }}"
+  when: security_sudoers_passwordless | length > 0
+
 - name: Copy the public SSH key 
   become: true
   authorized_key:
