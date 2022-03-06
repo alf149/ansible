@@ -6,7 +6,6 @@
     update_cache: yes
     cache_valid_time: 3600
   tags:
-    - system
     - update_cache
 
 # extra packages
@@ -15,7 +14,6 @@
     name: "{{ extra_packages }}"
     state: present
   tags:
-    - system
     - extra_packages
     
 # packages net-tools
@@ -24,5 +22,4 @@
     name: "{{ extra_packages_nettools }}"
     state: present
   tags:
-    - system
     - extra_packages_nettools

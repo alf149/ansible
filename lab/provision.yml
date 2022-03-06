@@ -1,20 +1,13 @@
----
 - hosts: all
   gather_facts: yes
   become: yes
-    
-  tasks:
-  
-  - name: Include task create user
-    include_tasks: roles/system/tasks/user.yml
-    vars:
-      username: deploy
-      userpassword: "Changeme2022!"
-      sudo_group: sudo
-      ssh_public_key: "{{ lookup('file', '~/.ssh/deploy.pub') }}"
-      shell: /bin/bash
-      dns_nameservers: ["1.1.1.3", "1.0.0.3"]
-      keyboard_layout: dk
-      guid: "1000"
-      security_sudoers_passwordless: "{{ username }}"
+ 
+  roles:
 
+    - role: system
+      tags:
+        - user
+
+    - role: geerlingguy.security
+      tags:
+        - security

@@ -1,42 +1,27 @@
----
-#
-# Tasks and roles for all hosts
-#
 - hosts: all
   gather_facts: yes
   become: yes
-
-  pre_tasks:
-    - name: update debian chache.
-      apt:
-        update_cache: true
-        cache_valid_time: 3600
-      when: ansible_os_family | lower == "debian"
-  
+ 
   roles:
 
     - role: system
       tags:
-        - system
-        - security
-        - users
+        - user
 
     - role: geerlingguy.security
       tags:
-        - system
         - security
     
     - role: geerlingguy.ntp
       tags:
-        - system
         - ntp
                
-    - role: security/ufw
+    - role: ufw
       tags:
         - ufw
         - security
 
-    - role: security/crowdsec
+    - role: crowdsec
       tags:
         - crowdsec
         - security

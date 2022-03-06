@@ -47,12 +47,12 @@
         - watchtower
         - pihole
              
-    - role: security/ufw
+    - role: ufw
       tags:
         - ufw
         - security
 
-    - role: security/crowdsec
+    - role: crowdsec
       tags:
         - crowdsec
         - security

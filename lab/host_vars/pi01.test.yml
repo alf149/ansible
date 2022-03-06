@@ -56,3 +56,4 @@ extra_packages_nettools:
 # enable_ufw: true
 # enable_crowdsec: true
 # enable_web443: true
+# enable_osupgrade: true

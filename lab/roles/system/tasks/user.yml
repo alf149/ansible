@@ -10,16 +10,28 @@
       - users
     state: present
     append: true
-  tags:
-    - users
+  tags: users
 
 - name: Ensure group "{{ username }}" exists
   become: true
   group:
     name: "{{ username }}"
     state: present
-  tags:
-    - users
+  tags: users
+  
+- name: Copy the public SSH key 
+  become: true
+  authorized_key:
+    user: "{{ username }}"
+    state: present
+    key: "{{ ssh_public_key }}"
+  tags: users
+  
+- name: Set the default shell
+  user: 
+    name: "{{ username }}"
+    shell: "{{ shell }}"
+  tags: users
 
 - name: Add configured user accounts to passwordless sudoers.
   lineinfile:
@@ -31,22 +43,7 @@
     mode: 0644
   with_items: "{{ security_sudoers_passwordless }}"
   when: security_sudoers_passwordless | length > 0
-
-- name: Copy the public SSH key 
-  become: true
-  authorized_key:
-    user: "{{ username }}"
-    state: present
-    key: "{{ ssh_public_key }}"
-  tags:
-    - users
-  
-- name: Set the default shell
-  user: 
-    name: "{{ username }}"
-    shell: "{{ shell }}"
-  tags:
-    - users
+  tags: users
   
 - name: Suppress login messages
   file:
@@ -55,8 +52,7 @@
     state: touch
     modification_time: preserve
     access_time: preserve
-  tags:
-    - users
+  tags: users
   
 - name: copy '.bash_aliases' file. to user
   copy:
@@ -64,20 +60,12 @@
     dest: /home/{{ username }}/.bash_aliases
     owner: deploy
     mode: 0644
-  tags:
-    - users
-  
+  tags: users
+
 - name: copy '.bash_aliases' file to root user.
   copy:
     src: files/dot_files/.bash_aliases
     dest: /root/.bash_aliases
     owner: root
     mode: 0644
-  tags:
-    - users
-  
-
-
-      
-
- 
+  tags: users
