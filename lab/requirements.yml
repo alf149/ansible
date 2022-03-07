@@ -4,3 +4,4 @@ roles:
   - geerlingguy.ntp  
   - geerlingguy.pip
   - geerlingguy.docker
+  - alf149.crowdsec
