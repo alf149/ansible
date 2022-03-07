@@ -1,4 +1,5 @@
 ---
+# Change to https://github.com/Oefenweb/ansible-ufw
 - name: Install package ufw
   tags: ufw
   package:
@@ -17,6 +18,17 @@
     direction: outgoing
   when:
     - enable_ufw is defined
+    - enable_ufw == true
+    - enable_ufw_deny_out == false
+
+- name: Deny outgoing
+  ufw: 
+    comment: default allow outgoing
+    default: deny
+    direction: outgoing
+  when:
+    - enable_ufw is defined
+    - enable_ufw_deny_out == true
     - enable_ufw == true
 
 - name: Disallow ingoing
@@ -40,6 +52,66 @@
     - resetufw is defined
     - enable_ufw == true
     - resetufw == true
+
+# Outgoing roules
+# - name: Out allow 22
+#   ufw:
+#     comment: allow ssh 
+#     rule: allow
+#     direction: out
+#     port: '22'
+#     proto: tcp
+#   when:
+#     - enable_ufw is defined
+#     - enable_ufw_deny_out == true
+#     - enable_ufw == true
+
+- name: Out allow 53 DNS
+  ufw:
+    comment: allow ssh 
+    rule: allow
+    direction: out
+    port: '53'
+  when:
+    - enable_ufw is defined
+    - enable_ufw_deny_out == true
+    - enable_ufw == true
+
+- name: Out allow 123 NTP
+  ufw:
+    comment: allow ssh 
+    rule: allow
+    direction: out
+    port: '123'
+    proto: udp
+  when:
+    - enable_ufw is defined
+    - enable_ufw_deny_out == true
+    - enable_ufw == true
+
+- name: Out allow 80 http
+  ufw:
+    comment: allow ssh 
+    rule: allow
+    direction: out
+    port: '80'
+    proto: tcp
+  when:
+    - enable_ufw is defined
+    - enable_ufw_deny_out == true
+    - enable_ufw == true
+
+- name: Out allow 443 https
+  ufw:
+    comment: allow ssh 
+    rule: allow
+    direction: out
+    port: '443'
+    proto: tcp
+  when:
+    - enable_ufw is defined
+    - enable_ufw_deny_out == true
+    - enable_ufw == true
 
 # SSH 
 - name: Grant ssh access

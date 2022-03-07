@@ -1,34 +1,48 @@
-Crowdsec
+# Crowdsec
 =========
 
 Install Crowdsec incl. hub, collections, scenarios, postoverflows, parsers, bouncers and prometheus endpoint.
 
-Requirements
+## Requirements
 ------------
 Testet on Ubuntu 20.04 LTS server
 
-Role Variables
+## Role Variables
 --------------
 
-Dependencies
+Available variables with default values (see `defaults/main.yml`):
+
+## Dependencies
 ------------
+None
 
-
-Example Playbook
+## Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - hosts: servers
-      roles:
-         - { role: crowdsec }
+```yaml
+- hosts: all
 
-License
+  vars:
+    ban_duration: "duration: 4h" # PROD eg. 10m for testing
+
+  roles:
+    - crowdsec
+ 
+```
+## TODO
+------
+Test on mere Debian based distros 
+Test on Redhat based distros 
+
+
+
+## License
 -------
 
 MiT
 
-Author Information
+## Author Information
 ------------------
 
-Alf149
+Rolf Amfelt

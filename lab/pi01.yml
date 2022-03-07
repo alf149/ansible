@@ -1,12 +1,15 @@
 - hosts: all
   gather_facts: yes
   become: yes
- 
+
   roles:
 
     - role: system
       tags:
-        - user
+        - users
+        - update_cache
+        - extra_packages
+        - extra_packages_nettools
 
     - role: geerlingguy.security
       tags:
@@ -24,9 +27,10 @@
     - role: crowdsec
       tags:
         - crowdsec
-        - security
+        - crowdsec_upgrade
 
   tasks:
+
     - name: Upgrade apt packages (Debian and Ubuntu)
       apt:
         upgrade: yes
@@ -34,7 +38,6 @@
         update_cache: yes
         cache_valid_time: 3600
       tags:
-        - system
         - security
       when: ansible_os_family | lower == "debian" and enable_osupgrade | default(False)
       

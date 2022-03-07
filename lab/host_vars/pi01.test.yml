@@ -53,7 +53,13 @@ extra_packages_nettools:
 # vpn_password: ''
 # ### END Secret variables (encrypt and put into vault.yml)
 
-# enable_ufw: true
+
+
+enable_ufw: true
+enable_ufw_deny_out: true
+resetufw: false
+ 
+
 # enable_crowdsec: true
 # enable_web443: true
 # enable_osupgrade: true
