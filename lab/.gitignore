@@ -1,8 +1,8 @@
 ### Vagrant ###
 .vagrant/
 .cache/
-roles/geerlingguy.**
 roles/alf149.**
+roles/geerlingguy.**
 collections/
 backup/
 ansible.log
