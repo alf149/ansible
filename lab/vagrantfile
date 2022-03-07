@@ -64,44 +64,45 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
   
-  # Raspberry 3.
-  config.vm.define "pi03.test", autostart: true do |pi03|
-    pi03.vm.provider "virtualbox" do |v|
+  # ora01
+  config.vm.define "ora01.test", autostart: true do |ora01|
+    ora01.vm.provider "virtualbox" do |v|
       v.memory = 1024
       v.cpus = 1
       v.linked_clone = true
       v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
-    pi03.vm.box = "generic/ubuntu2004"
-    pi03.vm.box_check_update = true
-    pi03.vm.hostname = "pi03.test"
-    pi03.vm.network :private_network, ip: "192.168.56.13", hostname: true
-    pi03.vm.provision "ansible" do |ansible|
+    ora01.vm.box = "generic/oracle8"
+    ora01.vm.box_check_update = true
+    ora01.vm.hostname = "ora01.test"
+    ora01.vm.network :private_network, ip: "192.168.56.21", hostname: true
+    ora01.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.config_file = "ansible.cfg"
       ansible.playbook = "provision.yml"
     end
   end
 
-  # Raspberry 4.
-  config.vm.define "pi04.test", autostart: true do |pi04|
-    pi04.vm.provider "virtualbox" do |v|
+  # ora02
+  config.vm.define "ora02.test", autostart: true do |ora02|
+    ora02.vm.provider "virtualbox" do |v|
       v.memory = 1024
       v.cpus = 1
       v.linked_clone = true
       v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
-    pi04.vm.box = "generic/ubuntu2004"
-    pi04.vm.box_check_update = true
-    pi04.vm.hostname = "pi04.test"
-    pi04.vm.network :private_network, ip: "192.168.56.14", hostname: true
-    pi04.vm.provision "ansible" do |ansible|
+    ora02.vm.box = "generic/oracle8"
+    ora02.vm.box_check_update = true
+    ora02.vm.hostname = "ora02.test"
+    ora02.vm.network :private_network, ip: "192.168.56.22", hostname: true
+    ora02.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.config_file = "ansible.cfg"
       ansible.playbook = "provision.yml"
     end
   end
+  
 
 end
