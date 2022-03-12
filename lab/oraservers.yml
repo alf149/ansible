@@ -5,41 +5,11 @@
   roles:
 
     - role: system
-      tags:
-        - users
-        - update_cache
-        - extra_packages
-        - extra_packages_nettools
-
     - role: geerlingguy.security
-      tags:
-        - security
-    
-    - role: geerlingguy.ntp
-      tags:
-        - ntp
-               
-    # - role: ufw
-    #   tags:
-    #     - ufw
-    #     - security
-
-    - role: alf149.crowdsec
+    - role: crowdsec_dev
       tags:
         - crowdsec
-  tasks:
-
-    - name: Upgrade apt packages (Debian and Ubuntu)
-      apt:
-        upgrade: yes
-        autoremove: yes
-        update_cache: yes
-        cache_valid_time: 3600
-      tags:
-        - security
-      when: ansible_os_family | lower == "debian" and enable_osupgrade | default(False)
-      
-
+ 
 
     
 

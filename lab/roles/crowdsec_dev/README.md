@@ -9,7 +9,6 @@ Testet on Ubuntu 20.04 LTS server
 
 ## Role Variables
 --------------
-
 Available variables with default values (see `defaults/main.yml`):
 
 ## Dependencies
@@ -27,13 +26,13 @@ None
     ban_duration: "duration: 4h" # PROD eg. 10m for testing
 
   roles:
-    - crowdsec
+    - alf149.crowdsec
  
 ```
 ## TODO
 ------
-Test on mere Debian based distros 
-Test on Redhat based distros 
+- Test on mere Debian based distros 
+- Test on Redhat based distros 
 
 
 
@@ -45,4 +44,4 @@ MiT
 ## Author Information
 ------------------
 
-Rolf Amfelt
+Alf149

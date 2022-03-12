@@ -1,15 +1,8 @@
 sudo_group: wheel
 
 # Used in Geerlingguy.ntp
-ntp_servers:
-  - 0.dk.pool.ntp.org
-  - 1.dk.pool.ntp.org
-  - 2.dk.pool.ntp.org
-  - 3.dk.pool.ntp.org
-
+ntp_servers: []
 timezone: Europe/Copenhagen
-ntp_tinker_panic: true
-ntp_manage_config: true
 ntp_timezone: "{{ timezone }}"
 
 # Used in geerlingguy.security
@@ -30,15 +23,15 @@ docker_users:
 docker_dir: /opt/docker/data
 
 # Packages
-extra_packages:
-  - ca-certificates
-  - curl
-  - nano
-  - htop
-  - unzip
-  - git
-  - python3
-  - python3-pip
+extra_packages: []
+  # - ca-certificates
+  # - curl
+  # - nano
+  # - htop
+  # - unzip
+  # - git
+  # - python3
+  # - python3-pip
 
 extra_packages_nettools: []
 #   - nmap
@@ -61,6 +54,6 @@ extra_packages_nettools: []
 #resetufw: false
  
 
-# enable_crowdsec: true
+enable_crowdsec: true
 # enable_web443: true
 # enable_osupgrade: true

@@ -1,0 +1,15 @@
+---
+
+- name: download crowdsec repo install script
+  get_url: url=https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.rpm.sh dest=/root/crowdsecinstaller.sh mode=0755
+  become: yes
+
+- name: execute crowdsec repo install script
+  shell: /root/crowdsecinstaller.sh
+  become: yes
+
+- name: install Crowdsec and Crowdsec-firewall-bouncer
+  yum: 
+    name: "{{ crowdsec_services_install }}"
+    state: present
+    update_cache: yes

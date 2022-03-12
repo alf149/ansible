@@ -1,7 +1,7 @@
 ---
 # extra packages
 - name: Install epel-release
-  package:
+  yum:
     name: epel-release
     state: present
   tags:
@@ -10,16 +10,16 @@
 
 # extra packages
 - name: Install extra packages
-  package:
+  yum:
     name: "{{ extra_packages }}"
     state: present
   tags:
     - extra_packages
     
-# packages net-tools
-- name: Install extra packages net-tools
-  package:
-    name: "{{ extra_packages_nettools }}"
-    state: present
-  tags:
-    - extra_packages_nettools
+# # packages net-tools
+# - name: Install extra packages net-tools
+#   package:
+#     name: "{{ extra_packages_nettools }}"
+#     state: present
+#   tags:
+#     - extra_packages_nettools
