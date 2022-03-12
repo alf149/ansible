@@ -19,10 +19,10 @@
       tags:
         - ntp
                
-    - role: ufw
-      tags:
-        - ufw
-        - security
+    # - role: ufw
+    #   tags:
+    #     - ufw
+    #     - security
 
     - role: alf149.crowdsec
       tags:

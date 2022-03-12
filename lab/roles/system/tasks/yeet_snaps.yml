@@ -4,7 +4,9 @@
     manager: "auto"
 
 - name: Remove snap functionality
-  when: "'snapd' in ansible_facts.packages"
+  when: 
+    - "'snapd' in ansible_facts.packages"
+    - ansible_os_family == 'Debian'
   block:
   - name: Unmount the core* snaps
     mount:

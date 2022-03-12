@@ -1,0 +1,25 @@
+---
+# extra packages
+- name: Install epel-release
+  package:
+    name: epel-release
+    state: present
+  tags:
+    - epel-release
+    
+
+# extra packages
+- name: Install extra packages
+  package:
+    name: "{{ extra_packages }}"
+    state: present
+  tags:
+    - extra_packages
+    
+# packages net-tools
+- name: Install extra packages net-tools
+  package:
+    name: "{{ extra_packages_nettools }}"
+    state: present
+  tags:
+    - extra_packages_nettools
