@@ -55,11 +55,11 @@ extra_packages_nettools:
 
 
 
-enable_ufw: true
-enable_ufw_deny_out: true
-resetufw: false
+enable_ufw: false
+#enable_ufw_deny_out: true
+#resetufw: false
  
 
-# enable_crowdsec: true
+enable_crowdsec: true
 # enable_web443: true
 # enable_osupgrade: true

@@ -23,10 +23,9 @@ docker_users:
 docker_dir: /opt/docker/data
 
 # Packages
-extra_packages: []
-  # - ca-certificates
-  # - curl
-  # - nano
+extra_packages: 
+  - curl
+  - nano
   # - htop
   # - unzip
   # - git

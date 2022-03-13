@@ -142,8 +142,8 @@
 - name: Crowdsec start and enable Crowdsec services
   service:
     name: "{{ item }}"
-    state: started
-    enabled: true
+    state: restarted
+    enabled: yes
   with_items: "{{ crowdsec_services_start }}"
 
   
