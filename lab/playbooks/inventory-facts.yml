@@ -3,27 +3,45 @@
 - name: Network Getting Started First Playbook
   gather_facts: true
   hosts: all  
+
   tasks:
+    - name: Get services facts
+      service_facts:
+
+    - debug: var=ansible_facts.services['crowdsec.service'] 
+      when:
+        - ansible_facts.services['crowdsec.service']['status'] == 'enabled'
+        - ansible_facts.services['crowdsec.service']['state'] == 'running'
+
+    - debug: var=ansible_facts.services['crowdsec-firewall-bouncer.service'] 
+      when:
+        - ansible_facts.services['crowdsec-firewall-bouncer.service']['status'] == 'enabled'
+        - ansible_facts.services['crowdsec-firewall-bouncer.service']['state'] == 'running'
+
   
-    - debug: var=inventory_hostname
-    - debug: var=ansible_hostname
-    - debug: var=ansible_distribution
-    - debug: var=ansible_distribution_file_variety
-    - debug: var=ansible_os_family
-    - debug: var=ansible_dns
-    - debug: var=ansible_domain
-    - debug: var=ansible_eth0
-    - debug: var=ansible_all_ipv4_addresses
-    - debug: var=ansible_default_ipv4
-    - debug: var=ansible_fqdn
-    - debug: var=ansible_selinux
-    - debug: var=ansible_ssh_host_key_ecdsa_public
-    - debug: var=ansible_ssh_host_key_ed25519_public
-    - debug: var=ansible_ssh_host_key_rsa_public
-    - debug: var=ansible_date_time
-    - debug: var=ansible_date_time.iso8601
-    - debug: var=ansible_distribution
-    - debug: var=ansible_distribution_release
-    - debug: var=ansible_distribution_version
-    - debug: var=docker_container_info
-    #- debug: var=hostvars
+  #tasks:
+  
+    # - debug: var=inventory_hostname
+    # - debug: var=ansible_hostname
+    # - debug: var=ansible_distribution
+    # - debug: var=ansible_distribution_file_variety
+    # - debug: var=ansible_os_family
+    # - debug: var=ansible_distribution_major_version
+    # # - debug: var=ansible_dns
+    # - debug: var=ansible_domain
+    # - debug: var=ansible_eth0
+    # - debug: var=ansible_all_ipv4_addresses
+    # - debug: var=ansible_default_ipv4
+    # - debug: var=ansible_fqdn
+    # - debug: var=ansible_selinux
+    # - debug: var=ansible_ssh_host_key_ecdsa_public
+    # - debug: var=ansible_ssh_host_key_ed25519_public
+    # - debug: var=ansible_ssh_host_key_rsa_public
+    # - debug: var=ansible_date_time
+    # - debug: var=ansible_date_time.iso8601
+    # - debug: var=ansible_distribution
+    # - debug: var=ansible_distribution_release
+    # - debug: var=ansible_distribution_version
+    # - debug: var=docker_container_info
+    # #- debug: var=hostvars
+  
