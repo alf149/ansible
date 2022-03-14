@@ -1,25 +1,10 @@
+---
+security_fail2ban_enabled: false
+enable_crowdsec: true
 
 # Packages
-extra_packages:
-  - apt-transport-https
-  - ca-certificates
+extra_packages: 
   - curl
   - nano
-  - htop
-  - unzip
-  - git
-  - python3
-  - python3-pip
+  
 
-extra_packages_nettools:
-  - nmap
-  - netcat
-  - dnsutils
-  - net-tools
-
-
-enable_ufw: false
-enable_ufw_deny_out: false
-#resetufw: false
-
-enable_crowdsec: true

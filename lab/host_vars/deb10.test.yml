@@ -1,9 +1,8 @@
+---
 enable_crowdsec: true
 
 # Packages
 extra_packages: 
   - curl
   - nano
-
-extra_packages_nettools: []
-
+  

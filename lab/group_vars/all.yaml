@@ -1,3 +1,4 @@
+---
 # Used in pihole
 pihole_password: 'Changeme2022!'
 
@@ -29,3 +30,7 @@ docker_users:
   - deploy
 
 docker_dir: /opt/docker/data
+
+extra_packages: []
+
+extra_packages_nettools: []

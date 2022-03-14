@@ -1,5 +1,5 @@
 ---
-- name: Update apt packages (Debian and Ubuntu)
+- name: Update apt packages cache (Debian and Ubuntu)
   apt:
     upgrade: no
     autoremove: no

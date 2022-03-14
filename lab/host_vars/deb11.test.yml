@@ -4,5 +4,4 @@ enable_crowdsec: true
 extra_packages: 
   - curl
   - nano
-
-extra_packages_nettools: []
+  
