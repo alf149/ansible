@@ -26,7 +26,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #### Home lab
   # ubt2004
   # srv01
-  config.vm.define "srv01.test", autostart: true do |srv01|
+  config.vm.define "srv01.test", autostart: false do |srv01|
     srv01.vm.provider "virtualbox" do |v|
       v.memory = 1024
       v.cpus = 1
@@ -47,7 +47,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   # srv02
-  config.vm.define "srv02.test", autostart: true do |srv02|
+  config.vm.define "srv02.test", autostart: false do |srv02|
     srv02.vm.provider "virtualbox" do |v|
       v.memory = 1024
       v.cpus = 1

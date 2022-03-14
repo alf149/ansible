@@ -7,7 +7,3 @@
     - role: system
       tags:
         - user
-
-    - role: geerlingguy.security
-      tags:
-        - security
