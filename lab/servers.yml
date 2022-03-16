@@ -6,14 +6,17 @@
 
     - role: system
       tags:
+        - system
         - user
+    
     - role: geerlingguy.security
       tags:
         - security
+    
     - role: geerlingguy.ntp
       tags:
         - ntp  
-    #- role: crowdsec_dev
+    
     - role: alf149.crowdsec
       tags:
         - crowdsec

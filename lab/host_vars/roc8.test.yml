@@ -1,6 +1,5 @@
 ---
 sudo_group: wheel
-security_fail2ban_enabled: false
 enable_crowdsec: true
 
 # Packages

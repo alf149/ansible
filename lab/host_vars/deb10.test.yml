@@ -5,4 +5,4 @@ enable_crowdsec: true
 extra_packages: 
   - curl
   - nano
-  
+  - python3

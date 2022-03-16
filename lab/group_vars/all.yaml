@@ -16,6 +16,8 @@ ntp_timezone: "{{ timezone }}"
 
 # Used in geerlingguy.security
 security_sudoers_passwordless: [ "{{ username }}" ]
+security_fail2ban_enabled: false
+
 
 # Used in geerlingguy.pip
 pip_package: python3-pip

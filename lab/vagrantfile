@@ -177,6 +177,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.linked_clone = true
       v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+      v.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
+      v.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
     end
     ora8.vm.box = "generic/oracle8"
     ora8.vm.box_check_update = true
@@ -197,6 +199,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.linked_clone = true
       v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+      v.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
+      v.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
     end
     ora7.vm.box = "generic/oracle7"
     ora7.vm.box_check_update = true

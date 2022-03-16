@@ -8,7 +8,6 @@ extra_packages:
   - nano
   
 ---
-security_fail2ban_enabled: false
 enable_crowdsec: true
 
 # Packages
