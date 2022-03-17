@@ -1,0 +1,20 @@
+---
+enable_crowdsec: true
+
+# Packages
+extra_packages: 
+  - curl
+  - nano
+
+local_lan_ufw:
+  - 192.168.0.0/16 
+  - fd00::/8
+
+enable_ufw: true
+resetufw: false
+enable_web80: true
+enable_web443: true
+enable_portainer: true
+enable_watchtower: true
+enable_cockpit: true
+

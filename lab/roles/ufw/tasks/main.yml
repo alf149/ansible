@@ -218,7 +218,7 @@
 - name: Cockpit (9090)
   tags: ufw
   ufw:
-    comment: Cockpit (9001)
+    comment: Cockpit (9090)
     rule: allow
     port: '9090'
     proto: tcp

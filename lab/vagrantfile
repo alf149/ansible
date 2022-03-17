@@ -24,6 +24,26 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # end
   
   #### Home lab
+  # docker01
+  config.vm.define "docker01.test", autostart: false do |docker01|
+    docker01.vm.provider "virtualbox" do |v|
+      v.memory = 1024
+      v.cpus = 1
+      v.linked_clone = true
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+    end
+    docker01.vm.box = "generic/ubuntu2004"
+    docker01.vm.box_check_update = true
+    docker01.vm.hostname = "docker01.test"
+    docker01.vm.network :private_network, ip: "192.168.56.10", hostname: true
+    docker01.vm.provision "ansible" do |ansible|
+      ansible.compatibility_mode = "2.0"
+      ansible.config_file = "ansible.cfg"
+      #ansible.galaxy_role_file = "requirements.yml"
+      ansible.playbook = "provision.yml"
+    end
+  end
   # ubt2004
   # srv01
   config.vm.define "srv01.test", autostart: false do |srv01|

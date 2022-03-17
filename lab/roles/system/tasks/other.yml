@@ -37,7 +37,6 @@
 - name: Remove Cockpit
   package:
     name: cockpit
-
   when: 
     - diable_cockpit is defined
     - diable_cockpit == true
