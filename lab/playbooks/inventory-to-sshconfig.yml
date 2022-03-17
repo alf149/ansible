@@ -6,7 +6,27 @@
     blockinfile:
       path: /home/rolf/.ssh/config
       block: |
-        {% for host in groups['all'] %}
+        {% for host in groups['servers'] %}
+        host {{ hostvars[host].inventory_hostname_short }}
+            HostName {{ hostvars[host].ansible_host }} 
+            User deploy
+            Port 22
+            IdentityFile ~/.ssh/deploy
+            StrictHostKeyChecking no
+            UserKnownHostsFile /dev/null
+        
+        {% endfor %}
+        {% for host in groups['test'] %}
+        host {{ hostvars[host].inventory_hostname_short }}
+            HostName {{ hostvars[host].ansible_host }} 
+            User deploy
+            Port 22
+            IdentityFile ~/.ssh/deploy
+            StrictHostKeyChecking no
+            UserKnownHostsFile /dev/null
+        
+        {% endfor %}
+        {% for host in groups['windows'] %}
         host {{ hostvars[host].inventory_hostname_short }}
             HostName {{ hostvars[host].ansible_host }} 
             User deploy
