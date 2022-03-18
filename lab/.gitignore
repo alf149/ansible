@@ -6,5 +6,6 @@ roles/geerlingguy.**
 collections/
 backup/
 out/
+facts/
 ansible.log
 
