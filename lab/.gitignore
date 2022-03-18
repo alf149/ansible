@@ -5,6 +5,5 @@ roles/alf149.**
 roles/geerlingguy.**
 collections/
 backup/
-out/
 ansible.log
 
