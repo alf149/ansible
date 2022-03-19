@@ -31,7 +31,7 @@
 ## 2 - Build the Virtual Machine
 * Download this project and put it wherever you want.
 * Open Terminal, cd to this directory.
-* ! Run `ansible-playbook playbooks/create-lab-ssh-key.yml` once, to create the local ssh keys used for this lab(labadmin, deploy, pi). 
+* *  Run `ansible-playbook playbooks/create-lab-ssh-key.yml` once, to create the local ssh keys used for this lab(labadmin, deploy, pi). 
 this does not work on Windows server. 
 * ! On first run `ansible-galaxy install -r requirements.yml` to download role requirements
 * ! run `ansible-playbook playbooks/inventory-to-hostfile.yml -K and provide localhost sudo password` once, to get vagrant host in local /etc/hosts 
