@@ -31,15 +31,15 @@
 ## 2 - Build the Virtual Machine
 * Download this project and put it wherever you want.
 * Open Terminal, cd to this directory.
-* *  Run `ansible-playbook playbooks/create-lab-ssh-key.yml` once, to create the local ssh keys used for this lab(labadmin, deploy, pi). 
-this does not work on Windows server. 
-* ! On first run `ansible-galaxy install -r requirements.yml` to download role requirements
-* ! run `ansible-playbook playbooks/inventory-to-hostfile.yml -K and provide localhost sudo password` once, to get vagrant host in local /etc/hosts 
+*  Run `ansible-playbook playbooks/create-lab-ssh-key.yml` once, to create the local ssh keys used for this lab(deploy).This does not work on Windows server. 
+* On first run `ansible-galaxy install -r requirements.yml` to download role requirements
+* run `ansible-playbook playbooks/inventory-to-hostfile.yml -K and provide localhost sudo password` once, to get vagrant host in local /etc/hosts 
+* run `ansible-playbook playbooks/inventory-to-sshconfig.yml -K and provide localhost sudo password` once, to get vagrant host in local ~/.ssh/config 
 
 * use Vagrant to start stop hosts.
   * **up/start**
-    * `vagrant up HOSTNAME` eg. `vagrant up pi01.test` single host
-    * `vagrant up HOSTNAME` eg. `vagrant up pi01.test pi02.test` multiple hosts
+    * `vagrant up HOSTNAME` eg. `vagrant up srv01.test` single host
+    * `vagrant up HOSTNAME` eg. `vagrant up srv01.test srv02.test` multiple hosts
   * **halt/stop**
     * `vagrant halt HOSTNAME` to stop single host
     * `vagrant halt HOSTNAME1 HOSTNAME2` to stop multiple hosts
@@ -50,28 +50,9 @@ this does not work on Windows server.
     * `vagrant destroy -f` to remove all hosts
 
 ## 3 - My basic ansible setup 
-* Create 'labadmin'/'deploy'/'pi' ssh keys on ansible master in ~/.ssh/labadmin (Only use this in lab)
-* Update os cache
-* Cerate 'Lab Admin'/'deploy'/'pi' users and 'Wheel' group
-  - copy files/.bash_aliases to new users 
-* setup of basic security, firewall, ntp(danish)
-* roles from others that i use. 
-  - geerlingguy.security (Secure ssh)
-  - geerlingguy.firewall defined pr host in host_vars
-    - default (port 22, 80, 443) pi01 and pi02 dont have filrewall. 
-  - geerlingguy.ntp (Danish - Europe/Copenhagen)
-  - geerlingguy.pip
-* Upgrade os
-* Install basic packages 
-  - apt-transport-https
-  - ca-certificates
-  - curl
-  - nano
-  - htop
-  - unzip
-  - git
-  - python3
-  - python3-pip
+* Cerate 'deploy' user part og wheel og sudo. 
+  - copy files/.bash_aliases to new user 
+* setup of basic security, ssh
 
 ## 4 - Ansible inventory and Adhoc commands.
 > Vagrant name eg. pi01 ansible host is pi01.test (with domain)
