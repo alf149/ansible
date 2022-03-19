@@ -14,11 +14,11 @@
 
 
 ### Vagrant host in this lab.
-#### Home test setup 
+>Home test setup 
 * docker01 (ubuntu 20.04 server, with docker and some containers)
 * srv01 (ubuntu 20.04 server)
 * srv02 (ubuntu 20.04 server)
-#### test server to test ansible roles
+>test server to test ansible roles
 * roc8 (Rocky linux)
 * alma8 (Alma Linux)
 * ora8 (Oracle Linux 8)
@@ -55,14 +55,16 @@
 * setup of basic security, ssh
 
 ## 4 - Ansible inventory and Adhoc commands.
-> Vagrant name eg. pi01 ansible host is pi01.test (with domain)
+> Vagrant name eg. srv01 ansible host is srv01.test (with domain)
 * read more about adhoc at [docs.ansible.com](https://docs.ansible.com/ansible/latest/user_guide/intro_adhoc.html)
-* ping single host `ansible pi01.test -m ping`
-* ping selected hosts `ansible "pi01.test,pi02.test" -m ping `
+* ping single host `ansible srv01.test -m ping`
+* ping selected hosts `ansible "srv01.test,pi02.test" -m ping `
 * ping all hosts `ansible all -m ping`
-* get free memory on host `ansible pi01.test -m shell -a 'free -m'`
-* reboot a host `ansible pi01.test -m shell -a 'sudo reboot -h now'`
-* get host uptime `ansible pi01.test -m shell -a 'uptime'`
+* get free memory on host `ansible srv01.test -m shell -a 'free -m'`
+* reboot a host `ansible srv01.test -m shell -a 'sudo reboot -h now'`
+* get host uptime `ansible srv01.test -m shell -a 'uptime'`
+
+## 5 - Ansible cmdb and Adhoc commands.
 
 
 
