@@ -13,15 +13,18 @@
    - `sudo pip3 install ansible` install globally, read more on [docs.ansible.com](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html).
 
 
-**Vagrant host in this lab.**
-> No HOST starts automatic
-* pi01 (ubuntu 20.04 server, not at rasberry)
-* pi02 (ubuntu 20.04  server, not at rasberry)
-* app01 (ubuntu 20.04  server)
-* app02 (ubuntu 20.04  server)
-* db01 (ubuntu 20.04  server)
-* ora01 (oraclelinux8  server)
-* cen01 (centos linux8 server)
+## Vagrant host in this lab.**
+*** Home test setup
+* docker01 (ubuntu 20.04 server, with docker and some containers)
+* srv01 (ubuntu 20.04 server)
+* srv02 (ubuntu 20.04 server)
+* roc8
+* alma8
+* ora8
+* ora7
+* deb11
+* deb10
+* ubt2110 (ubuntu 21.10 server)
 
 ### 2 - Build the Virtual Machine
 * Download this project and put it wherever you want.
