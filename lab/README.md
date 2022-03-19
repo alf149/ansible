@@ -14,22 +14,25 @@
 
 
 ### Vagrant host in this lab.
-##### Home test setup 
+#### Home test setup 
 * docker01 (ubuntu 20.04 server, with docker and some containers)
 * srv01 (ubuntu 20.04 server)
 * srv02 (ubuntu 20.04 server)
-* roc8
-* alma8
-* ora8
-* ora7
-* deb11
-* deb10
+#### test server to test ansible roles
+* roc8 (Rocky linux)
+* alma8 (Alma Linux)
+* ora8 (Oracle Linux 8)
+* ora7 (Oracle Linux 7)
+* deb11 (Debian 11)
+* deb10 (Debian 10)
 * ubt2110 (ubuntu 21.10 server)
+* win2019 (Windows server 2019/2022)
 
 ## 2 - Build the Virtual Machine
 * Download this project and put it wherever you want.
 * Open Terminal, cd to this directory.
 * ! Run `ansible-playbook playbooks/create-lab-ssh-key.yml` once, to create the local ssh keys used for this lab(labadmin, deploy, pi). 
+this does not work on Windows server. 
 * ! On first run `ansible-galaxy install -r requirements.yml` to download role requirements
 * ! run `ansible-playbook playbooks/inventory-to-hostfile.yml -K and provide localhost sudo password` once, to get vagrant host in local /etc/hosts 
 
