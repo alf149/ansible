@@ -4,7 +4,7 @@
 ## Ansible master
 > Could be you own laptop, with some amount of ram. 
 
-### 1 - Install dependencies (VirtualBox, Vagrant, Ansible)
+## 1 - Install dependencies (VirtualBox, Vagrant, Ansible)
 > Only testet on Linux
 1. Download and install [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
 2. Download and install [vagrant](https://www.vagrantup.com/downloads).
@@ -13,7 +13,7 @@
    - `sudo pip3 install ansible` install globally, read more on [docs.ansible.com](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html).
 
 
-#### Vagrant host in this lab.
+### Vagrant host in this lab.
 ##### Home test setup 
 * docker01 (ubuntu 20.04 server, with docker and some containers)
 * srv01 (ubuntu 20.04 server)
@@ -26,7 +26,7 @@
 * deb10
 * ubt2110 (ubuntu 21.10 server)
 
-### 2 - Build the Virtual Machine
+## 2 - Build the Virtual Machine
 * Download this project and put it wherever you want.
 * Open Terminal, cd to this directory.
 * ! Run `ansible-playbook playbooks/create-lab-ssh-key.yml` once, to create the local ssh keys used for this lab(labadmin, deploy, pi). 
@@ -46,7 +46,7 @@
     * `vagrant destroy HOSTNAME1 HOSTNAME2 -f` to remove multiple host
     * `vagrant destroy -f` to remove all hosts
 
-### 3 - My basic ansible setup 
+## 3 - My basic ansible setup 
 * Create 'labadmin'/'deploy'/'pi' ssh keys on ansible master in ~/.ssh/labadmin (Only use this in lab)
 * Update os cache
 * Cerate 'Lab Admin'/'deploy'/'pi' users and 'Wheel' group
@@ -70,7 +70,7 @@
   - python3
   - python3-pip
 
-### 4 - Ansible inventory and Adhoc commands.
+## 4 - Ansible inventory and Adhoc commands.
 > Vagrant name eg. pi01 ansible host is pi01.test (with domain)
 * read more about adhoc at [docs.ansible.com](https://docs.ansible.com/ansible/latest/user_guide/intro_adhoc.html)
 * ping single host `ansible pi01.test -m ping`
