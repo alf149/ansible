@@ -13,8 +13,8 @@
    - `sudo pip3 install ansible` install globally, read more on [docs.ansible.com](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html).
 
 
-## Vagrant host in this lab.**
-*** Home test setup
+## Vagrant host in this lab.
+*** Home test setup ***
 * docker01 (ubuntu 20.04 server, with docker and some containers)
 * srv01 (ubuntu 20.04 server)
 * srv02 (ubuntu 20.04 server)
