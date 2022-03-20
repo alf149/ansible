@@ -27,6 +27,9 @@
 * deb10 (Debian 10)
 * ubt2110 (ubuntu 21.10 server)
 * win2019 (Windows server 2019/2022)
+> Test security
+* Kali
+
 
 ## 2 - Build the Virtual Machine
 * Download this project and put it wherever you want.
@@ -65,7 +68,14 @@
 * get host uptime `ansible srv01.test -m shell -a 'uptime'`
 
 ## 5 - Ansible cmdb and Adhoc commands.
+* Read more at [ansible-cmdb.readthedocs.io](https://ansible-cmdb.readthedocs.io/en/latest/installation/)
+* To install `sudo pip install ansible-cmdb`
+* mkdir /out
+* ansible -m setup --tree out/ all
+* ansible-cmdb out/ > overview.html
 
+## 6 - Ansible windows host
+> Using winrm as conection insted of ssh 
 
 
 

@@ -249,11 +249,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     win2019.vm.hostname = "win2019"
     win2019.vm.network :private_network, ip: "192.168.56.60", hostname: true
     win2019.vm.provision "shell", path: "files/windows/setup_winrm.ps1"
-    # win2019.vm.provision "ansible" do |ansible|
-    #   ansible.compatibility_mode = "2.0"
-    #   ansible.config_file = "ansible.cfg"
-    #   ansible.playbook = "provision_win.yml"
-    # end
+  end
+
+  #kali
+  config.vm.define "kali", autostart: false do |kali|
+    kali.vm.provider "virtualbox" do |v|
+      v.gui = false
+      v.memory = 2048
+      v.cpus = 2
+    end
+    kali.vm.box = "kalilinux/rolling"
+    config.vm.box_version = "2022.1.0"
+    kali.vm.box_check_update = true
   end
 
 end

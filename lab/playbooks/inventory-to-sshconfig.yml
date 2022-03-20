@@ -36,3 +36,12 @@
             UserKnownHostsFile /dev/null
         
         {% endfor %}
+        {% for host in groups['kali'] %}
+        host kali
+            HostName 127.0.0.1 
+            User vagrant
+            Port 2208
+            StrictHostKeyChecking no
+            UserKnownHostsFile /dev/null
+        
+        {% endfor %}
