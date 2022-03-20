@@ -85,6 +85,26 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       ansible.playbook = "provision.yml"
     end
   end
+  
+  # srv03
+  config.vm.define "srv03.test", autostart: false do |srv03|
+    srv03.vm.provider "virtualbox" do |v|
+      v.memory = 1024
+      v.cpus = 1
+      v.linked_clone = true
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+    end
+    srv03.vm.box = "generic/ubuntu2004"
+    srv03.vm.box_check_update = true
+    srv03.vm.hostname = "srv03.test"
+    srv03.vm.network :private_network, ip: "192.168.56.12", hostname: true
+    srv03.vm.provision "ansible" do |ansible|
+      ansible.compatibility_mode = "2.0"
+      ansible.config_file = "ansible.cfg"
+      ansible.playbook = "provision.yml"
+    end
+  end
 
   #### Testing distroes
   #
