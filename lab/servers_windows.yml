@@ -2,5 +2,25 @@
   gather_facts: yes
   become: yes
 
-    
+  tasks:
+    - name: Download Crowdsec Installer
+      ansible.windows.win_get_url:
+        url: https://s3.eu-west-1.amazonaws.com/crowdsec-windows-alpha/windows/crowdsec_1.3.0-1.msi
+        dest: C:\Users\vagrant\crowdsec.msi
+  
+    - name: Download Crowdsec Installer firewall bouncer for windows
+      ansible.windows.win_get_url:
+        url: https://s3.eu-west-1.amazonaws.com/crowdsec-windows-alpha/windows/cs_windows_firewall_bouncer_setup-1.msi
+        dest: C:\Users\vagrant\cs_windows_firewall_bouncer_setup-1.msi
+    - name: install Dot net 6.X
+    - Name: restart server after DotNet 6.X install
+    - name: Install Crowdsec
+    - Name: Download or reconfigure Crowdsec conf files. 
+    - Name: restart Crowdsec
+    - Name: Install Crowdsec Bouncer 
+    - Name: Add Brouncer to Crowsec LAPI
+  
+
+
+  
 
