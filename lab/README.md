@@ -1,5 +1,6 @@
 # My ansible Lab setup automated
 >using vagrant, vitualbox and ansible
+Just a playground for me, but is public. 
 
 ## Ansible master
 > Could be you own laptop, with some amount of ram. 
