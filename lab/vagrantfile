@@ -44,7 +44,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       ansible.playbook = "provision.yml"
     end
   end
-  # ubt2004
+
   # srv01
   config.vm.define "srv01.test", autostart: false do |srv01|
     srv01.vm.provider "virtualbox" do |v|
@@ -98,7 +98,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     srv03.vm.box = "generic/ubuntu2004"
     srv03.vm.box_check_update = true
     srv03.vm.hostname = "srv03.test"
-    srv03.vm.network :private_network, ip: "192.168.56.12", hostname: true
+    srv03.vm.network :private_network, ip: "192.168.56.13", hostname: true
     srv03.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.config_file = "ansible.cfg"
@@ -279,7 +279,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.cpus = 2
     end
     kali.vm.box = "kalilinux/rolling"
-    config.vm.box_version = "2022.1.0"
     kali.vm.box_check_update = true
   end
 
