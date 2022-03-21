@@ -17,7 +17,7 @@ Tested on:
       
       - name: EL
         versions:
-          - '8'   #Rocky & alma Linux og Oracle Linux
+          - '8'   #Rocky & alma Linux and Oracle Linux
           - '7'   #Oracle Linux
 ```
 
@@ -47,27 +47,19 @@ variables can be host specific in group_vars/host.yml
     - alf149.crowdsec 
 ```
 
+## Manual tasks could be handy
+ansible HOST -m shell -a "sudo cscli parsers install crowdsecurity/whitelists --force"
+ansible 'group' -m shell -a "sudo cscli parsers remove crowdsecurity/whitelists --force"
+ansible 'group' -m shell -a "sudo systemctl reload crowdsec"
+
 ## TODO
-- Test on Windows server when crowdsec makes a signed version. 
+- Test on Windows server  
 - Maby autodetect nftables/iptables and load the correct bouncer. 
 
-## License
-MiT
-
 ## Error reporting. 
-Use github issues or make at PR. 
+Use github issues or make a PR. 
 
 ## Author Information
 ------------------
 
 [Alf149](https://github.com/alf149) 
-
-
-
-Manual tasks.. 
-
-ansible deb10.test -m shell -a "sudo cscli parsers install crowdsecurity/whitelists --force"
-ansible 'test' -m shell -a "sudo systemctl reload crowdsec"
-ansible 'test' -m shell -a "sudo cscli parsers remove crowdsecurity/whitelists --force"
-
-Work on mywhitelist.... Fails on test
