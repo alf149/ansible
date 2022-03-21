@@ -1,5 +1,5 @@
 # Crowdsec
-This Ansibel roles installs Crowdsec incl. hub, collections, scenarios, postoverflows, parsers, bouncers and prometheus endpoint.
+This ansible roles installs Crowdsec incl. hub, collections, scenarios, postoverflows, parsers, bouncers and prometheus endpoint.
 
 ## Requirements
 Tested on:
@@ -21,11 +21,20 @@ Tested on:
           - '7'   #Oracle Linux
 ```
 
-## Role Variables
-Available variables with default values (see `defaults/main.yml`):
+## how to install.
+I use ansible-galaxy do make a requirements.yml
+```yaml
+roles:
+  - geerlingguy.security
+  - alf149.crowdsec
+```
+And run 
+`ansible-galaxy install -r requirements.yml` This wil import this role to your ansible projekt. 
 
-## Dependencies
-None
+
+## Role Variables
+Available variables with default values (see `defaults/main.yml`)
+variables can be host specific in group_vars/host.yml
 
 ## Example Playbook
 ```yaml
@@ -52,3 +61,13 @@ Use github issues or make at PR.
 ------------------
 
 [Alf149](https://github.com/alf149) 
+
+
+
+Manual tasks.. 
+
+ansible deb10.test -m shell -a "sudo cscli parsers install crowdsecurity/whitelists --force"
+ansible 'test' -m shell -a "sudo systemctl reload crowdsec"
+ansible 'test' -m shell -a "sudo cscli parsers remove crowdsecurity/whitelists --force"
+
+Work on mywhitelist.... Fails on test
