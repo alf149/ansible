@@ -1,7 +1,7 @@
 ---
 default_os_firewall: "nftables"
 
-install_crowdsec_firewall_bouncer_nftables: true
+install_crowdsec_firewall_bouncer: true 
 
 crowdsec_services_start:
   - crowdsec                     # IDS
@@ -32,12 +32,12 @@ scenarios_remove_list: []
 parsers_list:
   - crowdsecurity/docker-logs
   - crowdsecurity/apache2-logs
-  - crowdsecurity/whitelists
+  #- crowdsecurity/whitelists
 
-parsers_remove_list: []
+parsers_remove_list: 
 # eg. 
 # parsers_remove_list: 
-#   - crowdsecurity/whitelists
+  - crowdsecurity/whitelists
 
 postoverflows_list:
   - crowdsecurity/cdn-whitelist
@@ -61,4 +61,10 @@ acquis_addon: |
         type: journald"
       ---
 
+parsers_mywhitelists_ip: |
+  - "142.250.74.142" # Google IPV4 as a test
+  - "2a00:1450:400f:800::200e" Google IPV6 as a test
 
+parsers_mywhitelists_cidr: |
+  - "192.168.0.0/16"
+  - "10.0.0.0/8"

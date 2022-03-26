@@ -15,6 +15,29 @@
     - ansible_os_family | lower == "redhat"
     - ansible_distribution_major_version == '7'
 
+- name: Crowdsec Apt update and install Crowdsec 
+  package: 
+    update_cache: yes 
+    name: crowdsec
+    state: present
+
+- name: Crowdsec-firewall-bouncer-nftables
+  package: 
+    update_cache: yes
+    name: crowdsec-firewall-bouncer-nftables
+    state: present
+  when: install_crowdsec_firewall_bouncer == true 
+
+- name: Crowdsec-firewall-bouncer-iptables
+  package: 
+    update_cache: yes
+    name: crowdsec-firewall-bouncer-iptables 
+    state: present
+  when: 
+    - ansible_os_family | lower == "redhat"
+    - ansible_distribution_major_version == '7'
+    - install_crowdsec_firewall_bouncer == true
+
 # Update / upgrade
 - name: Crowdsec cscli hub update
   command:
@@ -75,7 +98,7 @@
 # parsers
 - name: Crowdsec install parsers
   command:
-    cmd: "sudo cscli parsers install {{ item }}"
+    cmd: "sudo cscli parsers install {{ item }}" 
   with_items: "{{ parsers_list }}"
   register: parsers_install_result
   changed_when: "'overwrite' not in parsers_install_result.stderr"
@@ -135,6 +158,15 @@
     insertafter: EOF
     block: "{{ acquis_addon }}"
     backup: yes
+  notify: Restart crowdsec
+
+- name: Copy my whitelist 
+  template:
+    src: templates/whitelists.j2
+    dest:  /etc/crowdsec/parsers/s02-enrich/mywhitelists.yaml
+    owner: root
+    group: root
+    mode: 0644
   notify: Restart crowdsec
 
 - name: Crowdsec cscli bash completion
