@@ -17,7 +17,7 @@
       tags:
         - ntp  
     
-    - role: crowdsec_dev
+    - role: crowdsec
       tags:
         - crowdsec
     
