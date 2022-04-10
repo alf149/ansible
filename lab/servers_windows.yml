@@ -1,25 +1,98 @@
 - hosts: all
   gather_facts: yes
-  become: yes
+  #become: yes
 
   tasks:
-    - name: Download Crowdsec Installer
-      ansible.windows.win_get_url:
+    # - name: Download Crowdsec Installer
+    #   ansible.windows.win_get_url:
+    #     url: https://s3.eu-west-1.amazonaws.com/crowdsec-windows-alpha/windows/crowdsec_1.3.0-1.msi
+    #     dest: C:\Users\vagrant\crowdsec.msi
+  
+    # - name: Download Crowdsec Installer firewall bouncer for windows
+    #   ansible.windows.win_get_url:
+    #     url: https://s3.eu-west-1.amazonaws.com/crowdsec-windows-alpha/windows/cs_windows_firewall_bouncer_setup-1.msi
+    #     dest: C:\Users\vagrant\cs_windows_firewall_bouncer_setup-1.msi
+    # - name: install Dot net 6.X https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-aspnetcore-6.0.3-windows-hosting-bundle-installer
+    # - Name: restart server after DotNet 6.X install
+    # - name: Install Crowdsec
+    # - Name: Download or reconfigure Crowdsec conf files. 
+    # - Name: restart Crowdsec
+    # - Name: Install Crowdsec Bouncer 
+    # - Name: Add Brouncer to Crowsec LAPI
+
+    - name: Create user Deploy
+      ansible.windows.win_user:
+        name: Deploy
+        password: "Changeme2022!"
+        state: present
+        groups:
+          - Users
+    
+    - name: Add Deploy user to Administrator group
+      win_group_membership:
+        name: Administrators
+        members:
+          - Deploy
+        state: present
+
+    - name: Set multiple lookup addresses on all visible adapters (usually physical adapters that are in the Up state), with debug logging to a file
+      ansible.windows.win_dns_client:
+        adapter_names: '*'
+        dns_servers:
+        - 1.1.1.3
+        - 1.0.0.3
+        log_path: C:\dns_log.txt
+
+    - name: Install IIS (Web-Server and Web-Common-Http)
+      ansible.windows.win_feature:
+        name:
+        - Web-Server
+        - Web-Common-Http
+        state: present
+
+    - name: Create Install directory
+      ansible.windows.win_file:
+        path: C:\Install
+        state: directory
+
+    - name: Download dotnet-hosting-6.0.3
+      win_get_url:
+        url: https://download.visualstudio.microsoft.com/download/pr/41d7c644-140a-40b5-9eb7-071544b79c65/885b7fa698a2d1d3a79ad363613f8ff2/dotnet-hosting-6.0.3-win.exe
+        dest: C:\Install\dotnet-hosting-6.0.3-win.exe
+    
+    - name: Install dotnet-hosting-6.0.3
+      win_package: 
+        path: C:\Install\dotnet-hosting-6.0.3-win.exe
+        arguments:
+          - /install
+          - /quiet 
+          - /norestart
+
+    - name: Download Crowdsec
+      win_get_url:
         url: https://s3.eu-west-1.amazonaws.com/crowdsec-windows-alpha/windows/crowdsec_1.3.0-1.msi
-        dest: C:\Users\vagrant\crowdsec.msi
-  
-    - name: Download Crowdsec Installer firewall bouncer for windows
-      ansible.windows.win_get_url:
+        dest: C:\Install\crowdsec_1.3.0-1.msi
+    
+    - name: Install Crodsec
+      win_package: 
+        path: C:\Install\crowdsec_1.3.0-1.msi
+        arguments:
+          - /quiet 
+          - /norestart
+          - /passive
+
+    - name: Download Crowdsec firewall bouncer Windows
+      win_get_url:
         url: https://s3.eu-west-1.amazonaws.com/crowdsec-windows-alpha/windows/cs_windows_firewall_bouncer_setup-1.msi
-        dest: C:\Users\vagrant\cs_windows_firewall_bouncer_setup-1.msi
-    - name: install Dot net 6.X
-    - Name: restart server after DotNet 6.X install
-    - name: Install Crowdsec
-    - Name: Download or reconfigure Crowdsec conf files. 
-    - Name: restart Crowdsec
-    - Name: Install Crowdsec Bouncer 
-    - Name: Add Brouncer to Crowsec LAPI
-  
+        dest: C:\Install\cs_windows_firewall_bouncer_setup-1.msi
+    
+    - name: Install Crodsec firewall bouncer Windows
+      win_package: 
+        path: C:\Install\cs_windows_firewall_bouncer_setup-1.msi
+        arguments:
+          - /quiet 
+          - /norestart
+          - /passive
 
 
   
