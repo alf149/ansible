@@ -2,6 +2,7 @@
   gather_facts: yes
   #become: yes
 
+
   tasks:
     # - name: Download Crowdsec Installer
     #   ansible.windows.win_get_url:
