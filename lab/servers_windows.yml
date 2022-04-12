@@ -50,7 +50,7 @@
         - Web-Common-Http
         state: present
 
-    - name: Create Install directory
+    - name: Create c:\Install directory
       ansible.windows.win_file:
         path: C:\Install
         state: directory

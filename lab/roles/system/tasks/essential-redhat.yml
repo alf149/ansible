@@ -4,7 +4,69 @@
   dnf:
     name: epel-release
     state: present
-  when: ansible_distribution_major_version == '8'
+  when: 
+    - ansible_distribution_major_version == '8'
+    - ansible_distribution == "OracleLinux"
+  
+- name: Install extra packages ora8
+  dnf:
+    name: "{{ extra_packages }}"
+    state: present
+    update_cache: yes
+  when: 
+    - ansible_distribution_major_version == '8'
+    - ansible_distribution == "OracleLinux"
+
+- name: Install oracle-instantclient-release-el8 packages ora8
+  dnf:
+    name: oracle-instantclient-release-el8
+    state: present
+    update_cache: yes
+  when: 
+    - ansible_distribution_major_version == '8'
+    - ansible_distribution == "OracleLinux"
+
+- name: Install oracle-instantclient-basic packages ora8
+  dnf:
+    name: oracle-instantclient-basic
+    state: present
+    update_cache: yes
+  when: 
+    - ansible_distribution_major_version == '8'
+    - ansible_distribution == "OracleLinux"
+
+- name: Install oracle-instantclient-sqlplus packages ora8
+  dnf:
+    name: oracle-instantclient-sqlplus
+    state: present
+    update_cache: yes
+  when: 
+    - ansible_distribution_major_version == '8'
+    - ansible_distribution == "OracleLinux"
+
+- name: export PATH oracle
+  shell: "echo export PATH=/usr/lib/oracle/21/client64/bin:$PATH"
+  when: 
+    - ansible_distribution_major_version == '8'
+    - ansible_distribution == "OracleLinux"
+
+- name: copy sqlnet.ora 
+  copy:
+    src: files/ora/sqlnet.ora 
+    dest: /usr/lib/oracle/21/client64/lib/network/admin/sqlnet.ora
+  tags: users
+  when: 
+    - ansible_distribution_major_version == '8'
+    - ansible_distribution == "OracleLinux"
+
+- name: copy tnsnames.ora 
+  copy:
+    src: files/ora/tnsnames.ora 
+    dest: /usr/lib/oracle/21/client64/lib/network/admin/tnsnames.ora
+  tags: users
+  when: 
+    - ansible_distribution_major_version == '8'
+    - ansible_distribution == "OracleLinux"
 
 - name: Install epel-release oracle
   yum:
@@ -13,16 +75,12 @@
   when: 
     - ansible_distribution_major_version == '7'
     - ansible_distribution == "OracleLinux"
-  
-# extra packages
-- name: Install extra packages 8
-  dnf:
-    name: "{{ extra_packages }}"
-    state: present
-  when: ansible_distribution_major_version == '8'
 
 - name: Install extra packages 7
   yum:
     name: "{{ extra_packages }}"
     state: present
-  when: ansible_distribution_major_version == '7'
+  when: 
+    - ansible_distribution_major_version == '7'
+    - ansible_distribution == "OracleLinux"
+
