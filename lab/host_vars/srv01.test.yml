@@ -1,6 +1,7 @@
 ---
 enable_crowdsec: true
-
+install_crowdsec_firewall_bouncer: true
+crowdsec_lapi_ip: 192.168.56.11
 # Packages
 extra_packages: 
   - curl
