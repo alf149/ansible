@@ -32,12 +32,12 @@ scenarios_remove_list: []
 parsers_list:
   - crowdsecurity/docker-logs
   - crowdsecurity/apache2-logs
-  #- crowdsecurity/whitelists
+  - crowdsecurity/whitelists
 
-parsers_remove_list: 
+parsers_remove_list: []
 # eg. 
 # parsers_remove_list: 
-  - crowdsecurity/whitelists
+#  - crowdsecurity/whitelists
 
 postoverflows_list:
   - crowdsecurity/cdn-whitelist
@@ -68,3 +68,7 @@ parsers_mywhitelists_ip: |
 parsers_mywhitelists_cidr: |
   - "192.168.0.0/16"
   - "10.0.0.0/8"
+
+# LAPI server 
+# crowdsec_lapi_ip: 192.168.56.11
+

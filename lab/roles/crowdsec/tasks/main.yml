@@ -160,14 +160,14 @@
     backup: yes
   notify: Restart crowdsec
 
-- name: Copy my whitelist 
-  template:
-    src: templates/whitelists.j2
-    dest:  /etc/crowdsec/parsers/s02-enrich/mywhitelists.yaml
-    owner: root
-    group: root
-    mode: 0644
-  notify: Restart crowdsec
+# - name: Copy my whitelist 
+#   template:
+#     src: templates/whitelists.j2
+#     dest:  /etc/crowdsec/parsers/s02-enrich/mywhitelists.yaml
+#     owner: root
+#     group: root
+#     mode: 0644
+#   notify: Restart crowdsec
 
 - name: Crowdsec cscli bash completion
   ansible.builtin.shell: "cscli completion bash | sudo tee /etc/bash_completion.d/cscli"
@@ -177,9 +177,20 @@
   
 - name: Crowdsec start and enable Crowdsec services
   service:
-    name: "{{ item }}"
+    name: crowdsec
     state: started
     enabled: true
-  with_items: "{{ crowdsec_services_start }}"
+  when: 
+    - enable_crowdsec == true
+
+- name: crowdsec-firewall-bouncer start and enable crowdsec-firewall-bouncer services
+  service:
+    name: crowdsec-firewall-bouncer
+    state: started
+    enabled: true
+  when: 
+    - install_crowdsec_firewall_bouncer == true 
+
+
 
   
