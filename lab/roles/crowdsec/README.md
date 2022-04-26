@@ -43,7 +43,7 @@ variables can be host specific in group_vars/host.yml
 - hosts: all
 
   vars:
-    ban_duration: "duration: 4h" # PROD eg. 10m for testing
+    cs_ban_duration: "duration: 4h" # PROD eg. 10m for testing
 
   roles:
     - alf149.crowdsec 

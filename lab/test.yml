@@ -1,0 +1,40 @@
+- hosts: servers
+  gather_facts: yes
+  become: yes
+
+  tasks:
+  - name: Get services facts
+    service_facts:
+
+  # - debug: var=inventory_hostname
+  # - debug: var=ansible_hostname
+  - debug: var=ansible_facts.services['crowdsec.service'] 
+
+
+  - name: Echo TEST
+    command: 
+      cmd: "echo TEST TEST"
+    when: ansible_facts.services['crowdsec.service'].state == started
+
+# - hosts: srv01.test
+#   gather_facts: yes
+#   become: yes
+
+#   vars:
+#     cs_pwd_alias: "{{ lookup('community.general.random_string', special=false, length=35) }}"
+
+
+#   tasks:
+
+#     # - name: check if file exists
+#     #   stat: 
+#     #     path: ~/{{ item }}_local_api_credentials.yaml
+#     #   register: check_file_name
+#     #   loop: "{{ crowdsec_agent_hosts }}"  
+
+#     - name: Crowdsec cscli lapi register host force
+#       command:
+#         cmd: "sudo cscli machines add {{ item }} -p {{ crowdsec_agent_hosts_password }} -u http://{{ crowdsec_lapi_ip }}:8080 -f ~/{{ item}}_local_api_credentials.yaml --force"
+#       loop: "{{ crowdsec_agent_hosts  }}"
+
+  

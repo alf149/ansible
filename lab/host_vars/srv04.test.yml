@@ -1,6 +1,9 @@
 ---
 enable_crowdsec: true
-install_crowdsec_firewall_bouncer: true
+crowdsec_install_firewall_bouncer: true
+crowdsec_lapi_agent: true
+crowdsec_lapi_ip: 192.168.56.11
+crowdsec_agent_hosts_password: 'Changeme2022!'
 
 # Packages
 extra_packages: 

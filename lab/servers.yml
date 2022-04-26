@@ -16,7 +16,7 @@
     - role: geerlingguy.ntp
       tags:
         - ntp  
-    
+        
     - role: crowdsec
       tags:
         - crowdsec

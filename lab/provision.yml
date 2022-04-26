@@ -6,4 +6,13 @@
 
     - role: system
       tags:
+        - system
         - user
+    
+    - role: geerlingguy.security
+      tags:
+        - security
+    
+    - role: geerlingguy.ntp
+      tags:
+        - ntp 
