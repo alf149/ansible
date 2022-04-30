@@ -129,7 +129,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #
 
   #ubt2110 192.168.56.50 generic/ubuntu2110
-  config.vm.define "ubt2110.test", autostart: true do |ubt2110|
+  config.vm.define "ubt2110.test", autostart: false do |ubt2110|
     ubt2110.vm.provider "virtualbox" do |v|
       v.memory = 1024
       v.cpus = 1
@@ -151,7 +151,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   #roc8 192.168.56.51 generic/rocky8
-  config.vm.define "roc8.test", autostart: true do |roc8|
+  config.vm.define "roc8.test", autostart: false do |roc8|
     roc8.vm.provider "virtualbox" do |v|
       v.memory = 1024
       v.cpus = 1
@@ -173,7 +173,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   #deb11 192.168.56.52 generic/debian11
-  config.vm.define "deb11.test", autostart: true do |deb11|
+  config.vm.define "deb11.test", autostart: false do |deb11|
     deb11.vm.provider "virtualbox" do |v|
       v.memory = 1024
       v.cpus = 1
@@ -195,7 +195,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   #deb10 192.168.56.53 generic/debian10
-  config.vm.define "deb10.test", autostart: true do |deb10|
+  config.vm.define "deb10.test", autostart: false do |deb10|
     deb10.vm.provider "virtualbox" do |v|
       v.memory = 1024
       v.cpus = 1
@@ -217,7 +217,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   #alma8 192.168.56.54 generic/alma8
-  config.vm.define "alma8.test", autostart: true do |alma8|
+  config.vm.define "alma8.test", autostart: false do |alma8|
     alma8.vm.provider "virtualbox" do |v|
       v.memory = 1024
       v.cpus = 1
@@ -239,7 +239,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   # ora8 192.168.56.55 generic/oracle8
-  config.vm.define "ora8.test", autostart: true do |ora8|
+  config.vm.define "ora8.test", autostart: false do |ora8|
     ora8.vm.provider "virtualbox" do |v|
       v.memory = 1024
       v.cpus = 1
@@ -261,7 +261,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   #ora7  192.168.56.56
-  config.vm.define "ora7.test", autostart: true do |ora7|
+  config.vm.define "ora7.test", autostart: false do |ora7|
     ora7.vm.provider "virtualbox" do |v|
       v.memory = 1024
       v.cpus = 1
