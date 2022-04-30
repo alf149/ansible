@@ -49,140 +49,106 @@
     cmd: cscli hub upgrade 
   register: hub_upgrade_result
   changed_when: false
-  # Todo make better check
-  # changed_when: 
-  #   - "'All collections are already up-to-date' not in hub_upgrade_result.stderr_lines|join('\n')" 
-  #   - "'All parsers are already up-to-date' not in hub_upgrade_result.stderr_lines|join('\n')" 
-  #   - "'All scenarios are already up-to-date' not in hub_upgrade_result.stderr_lines|join('\n')" 
-  #   - "'All postoverflows are already up-to-date' not in hub_upgrade_result.stderr_lines|join('\n')" 
-  # notify: Restart crowdsec
     
 # collections
-- name: install collections
+- name: crowdsec - install collections
   command:
     cmd: "sudo cscli collections install {{ item }}"
   with_items: "{{ cs_collections_list }}"
   register: collections_install_result
   changed_when: "'overwrite' not in collections_install_result.stderr"
   when: cs_collections_list  | length > 0
-  notify: Restart crowdsec
 
-- name: remove collections
+- name: crowdsec - remove collections
   command:
     cmd: "sudo cscli collections remove {{ item }}"
   with_items: "{{ cs_collections_remove_list }}"
   register: collections_remove_result
   changed_when: "'sudo systemctl reload crowdsec' in collections_remove_result.stderr"
   when: cs_collections_remove_list  | length > 0
-  notify: Restart crowdsec
 
 # scenarios
-- name: install scenarios
+- name: crowdsec - install scenarios
   command:
     cmd: "sudo cscli scenarios install {{ item }}"
   with_items: "{{ cs_scenarios_list }}"
   register: scenarios_install_result
   changed_when: "'overwrite' not in scenarios_install_result.stderr"
   when: cs_scenarios_list  | length > 0
-  notify: Restart crowdsec
 
-- name: remove scenarios
+- name: crowdsec - remove scenarios
   command:
     cmd: "sudo cscli scenarios remove {{ item }}"
   with_items: "{{ cs_scenarios_remove_list }}"
   register: scenarios_remove_result
   changed_when: "'sudo systemctl reload crowdsec' in scenarios_remove_result.stderr"
   when: cs_scenarios_remove_list  | length > 0
-  notify: Restart crowdsec
 
 # parsers
-- name: install parsers
+- name: crowdsec - install parsers
   command:
     cmd: "sudo cscli parsers install {{ item }}" 
   with_items: "{{ cs_parsers_list }}"
   register: parsers_install_result
   changed_when: "'overwrite' not in parsers_install_result.stderr"
   when: cs_parsers_list  | length > 0
-  notify: Restart crowdsec
 
-- name: remove parsers
+- name: crowdsec - remove parsers
   command:
     cmd: "sudo cscli parsers remove {{ item }}"
-  with_items: "{{ parsers_remove_list }}"
+  with_items: "{{ cs_parsers_remove_list }}"
   register: parsers_remove_result
   changed_when: "'sudo systemctl reload crowdsec' in parsers_remove_result.stderr"
-  when: parsers_remove_list  | length > 0
-  notify: Restart crowdsec
+  when: cs_parsers_remove_list  | length > 0
 
 # postoverflows
-- name: install postoverflows
+- name: crowdsec - install postoverflows
   command:
     cmd: "sudo cscli postoverflows install {{ item }}"
   with_items: "{{ cs_postoverflows_list }}"
   register: postoverflows_install_result
   changed_when: "'overwrite' not in postoverflows_install_result.stderr"
   when: cs_postoverflows_list  | length > 0
-  notify: Restart crowdsec
 
-- name: remove postoverflows
+- name: crowdsec - remove postoverflows
   command:
     cmd: "sudo cscli postoverflows remove {{ item }}"
   with_items: "{{ cs_postoverflows_remove_list }}"
   register: postoverflows_remove_result
   changed_when: "'sudo systemctl reload crowdsec' in postoverflows_remove_result.stderr"
   when: cs_postoverflows_remove_list  | length > 0
-  notify: Restart crowdsec
 
 ### Config files
-- name: enable/disable the Prometheus endpoint
+- name: crowdsec - enable/disable the Prometheus endpoint
   replace:
     path: "/etc/crowdsec/config.yaml"
     after: "prometheus:"
     regexp: 'enabled:.*$'
     replace: "{{ cs_prometheus_endpoint }}"
     backup: yes
-  notify: Restart crowdsec
 
-- name: ajust ban time
+- name: crowdsec - ajust ban time
   replace:
     path: "/etc/crowdsec/profiles.yaml"
     after: "- type: ban"
     regexp: 'duration: [0-9].*$'
     replace: "{{ cs_ban_duration }}"
     backup: yes
-  notify: Restart crowdsec
 
-- name: add jounalctl ssh to acquis.yaml
+- name: crowdsec - add jounalctl ssh to acquis.yaml
   blockinfile:
     path: /etc/crowdsec/acquis.yaml
     insertafter: EOF
     block: "{{ cs_acquis_addon }}"
     backup: yes
-  notify: Restart crowdsec
 
-# - name: Copy my whitelist 
-#   template:
-#     src: templates/whitelists.j2
-#     dest:  /etc/crowdsec/parsers/s02-enrich/mywhitelists.yaml
-#     owner: root
-#     group: root
-#     mode: 0644
-#   notify: Restart crowdsec
-
-- name: cscli bash completion
+- name: crowdsec - cscli bash completion
   ansible.builtin.shell: "cscli completion bash | sudo tee /etc/bash_completion.d/cscli"
   register: bash_completion_result
   changed_when: "'# bash completion for' not in bash_completion_result.stdout"
   failed_when: "'Error' in bash_completion_result.stderr"
 
-# - name: Crowdsec start and enable Crowdsec services
-#   service:
-#     name: crowdsec
-#     state: stopped
-#   when: 
-#     - enable_crowdsec == true
-
-- name: start and enable Crowdsec services
+- name: Crowdsec enable  and  start services
   service:
     name: crowdsec
     state: started
@@ -190,7 +156,7 @@
   when: 
     - enable_crowdsec == true
 
-- name: crowdsec-firewall-bouncer start and enable crowdsec-firewall-bouncer services
+- name: crowdsec-firewall-bouncer enable  and  start services
   service:
     name: crowdsec-firewall-bouncer
     state: started

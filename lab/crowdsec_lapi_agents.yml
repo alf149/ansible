@@ -3,10 +3,10 @@
   gather_facts: yes
   become: yes
 
-  # roles:
-  #   - role: crowdsec
-  #     tags:
-  #       - crowdsec
+  roles:
+    - role: crowdsec
+      tags:
+        - crowdsec
   
   tasks:
     
@@ -23,10 +23,57 @@
   
   tasks: 
 
+  - name: Crowdsec - apt update and install postgresql 
+    package: 
+      update_cache: yes 
+      name: 
+        - postgresql
+        - python3-psycopg2
+      state: present
+  
+  - name: Crowdsec - postgresql enable  and  start services
+    service:
+      name: postgresql
+      state: started
+      enabled: true
+
+  - name: Crowdsec - create crowdsec database
+    postgresql_db:
+      state: present
+      name: "{{ crowdsec_psql_db_name }}"
+    become: yes
+    become_user: postgres
+
+  - name: Crowdsec - create crowdsec db userc
+    postgresql_user:
+      state: present
+      name: "{{ crowdsec_psql_db_user }}"
+      password: "{{ crowdsec_psql_db_password }}"
+    become: yes
+    become_user: postgres
+
+  - name: Crowdsec - grant db user access to app db
+    postgresql_privs:
+      type: database
+      database: "{{ crowdsec_psql_db_name }}"
+      roles: "{{ crowdsec_psql_db_user }}"
+      grant_option: no
+      privs: all
+    become: yes
+    become_user: postgres
+
+  - name: Crowdsec - /etc/crowdsec/config.yaml template for lapi server
+    template:
+      src: templates/cs_config.j2
+      dest:  /etc/crowdsec/config.yaml
+      owner: root
+      group: root
+      mode: 0644
+  
   - name: Crowdsec - cscli machines add cs_agents on server
     command:
       cmd: "sudo cscli machines add {{ inventory_hostname }} -p {{ crowdsec_agent_hosts_password }} -u http://{{ crowdsec_lapi_ip }}:8080 --force"
-
+  
   - name: Crowdsec - cscli machines add cs_agents
     command:
       cmd: "sudo cscli machines add {{ item }} -p {{ crowdsec_agent_hosts_password }} -u http://{{ crowdsec_lapi_ip }}:8080 -f ~/{{ item}}_local_api_credentials.yaml --force"
@@ -52,7 +99,7 @@
     
   - name: Crowdsec - local_api_credentials.yaml template for lapi server
     template:
-      src: templates/local_api_credentials.j2
+      src: templates/cs_local_api_credentials.j2
       dest:  /etc/crowdsec/local_api_credentials.yaml
       owner: root
       group: root

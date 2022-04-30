@@ -65,15 +65,13 @@ cs_parsers_mywhitelists_cidr: |
   - "10.0.0.0/8"
 
 # LAPI server 
+# enable_crowdsec: true
+# crowdsec_install_firewall_bouncer: true
 # crowdsec_lapi_agent: true
 # crowdsec_lapi_ip: 192.168.56.11
 # crowdsec_agent_hosts: 
 #   - srv02.test
 #   - srv03.test
 #   - srv04.test
-
-# agents 
-# crowdsec_lapi_agent: true
-# crowdsec_lapi_ip: 192.168.56.11
 # crowdsec_agent_hosts_password: 'Changeme2022!'
 

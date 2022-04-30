@@ -8,6 +8,9 @@ crowdsec_agent_hosts:
   - srv03.test
   - srv04.test
 crowdsec_agent_hosts_password: 'Changeme2022!'
+crowdsec_psql_db_user: crowdsec
+crowdsec_psql_db_password: 'Changeme2022!'
+crowdsec_psql_db_name: crowdsec
 
 # Packages
 extra_packages: 
