@@ -15,7 +15,6 @@
     name: nftables
     state: started
     enabled: yes
-  when: default_os_firewall == 'nftables'
 
 - name: Crowdsec Add GPG apt Key
   apt_key:

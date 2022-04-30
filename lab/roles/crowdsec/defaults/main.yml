@@ -1,5 +1,4 @@
 ---
-default_os_firewall: "nftables"
 crowdsec_install_firewall_bouncer: true 
 
 cs_collections_list:
