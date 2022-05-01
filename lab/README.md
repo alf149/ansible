@@ -20,6 +20,8 @@ Just a playground for me, but is public.
 * docker01 (ubuntu 20.04 server, with docker and some containers)
 * srv01 (ubuntu 20.04 server)
 * srv02 (ubuntu 20.04 server)
+* srv03 (ubuntu 20.04 server)
+* srv04 (ubuntu 20.04 server)
 >test server to test ansible roles
 * roc8 (Rocky linux)
 * alma8 (Alma Linux)
