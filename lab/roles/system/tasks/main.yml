@@ -5,8 +5,9 @@
 - include_tasks: essential-debian.yml
   when: ansible_os_family | lower == 'debian'
 
-#- include_tasks: essential.yml
 - include_tasks: yeet_snaps.yml
   when: ansible_os_family | lower == 'debian'
 
 - include_tasks: user.yml
+
+- include_tasks: disable_ipv6.yml

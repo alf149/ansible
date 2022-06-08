@@ -6,22 +6,6 @@ VAGRANTFILE_API_VERSION = "2"
 ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-
-  # # Default Virtualbox settings
-  # config.vm.box_check_update = true
-  # config.ssh.insert_key = true
-  # config.vm.synced_folder ".", "/vagrant", disabled: true
-
-  # Defaults RAM and CPU for all
-  
-  # config.vm.provider "libvirt" do |v|
-  #   #v.gui = false
-  #   v.memory = 2048
-  #   v.cpus = 2
-  #   #v.linked_clone = true
-  #   #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-  #   #v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-  # end
   
   #### Home lab
   # docker01
@@ -33,7 +17,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
-    docker01.vm.box = "generic/ubuntu2004"
+    docker01.vm.box = "generic/ubuntu2204"
     docker01.vm.box_check_update = true
     docker01.vm.hostname = "docker01.test"
     docker01.vm.network :private_network, ip: "192.168.56.10", hostname: true
