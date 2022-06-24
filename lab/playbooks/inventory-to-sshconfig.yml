@@ -38,3 +38,15 @@
         
         {% endfor %}
 
+        {% for host in groups['docker'] %}
+        host {{ hostvars[host].inventory_hostname_short }} {{ host }} 
+            HostName {{ hostvars[host].ansible_host }} 
+            User deploy
+            Port 22
+            IdentityFile ~/.ssh/deploy
+            StrictHostKeyChecking no
+            UserKnownHostsFile /dev/null
+        
+        {% endfor %}
+
+

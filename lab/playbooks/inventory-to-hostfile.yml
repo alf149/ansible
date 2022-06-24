@@ -15,3 +15,7 @@
         {% for host in groups['windows'] %}
         {{ hostvars[host].ansible_host }}   {{ host }}    {{ hostvars[host].inventory_hostname_short }}
         {% endfor %}
+        {% for host in groups['docker'] %}
+        {{ hostvars[host].ansible_host }}   {{ host }}    {{ hostvars[host].inventory_hostname_short }}
+        {% endfor %}
+        
