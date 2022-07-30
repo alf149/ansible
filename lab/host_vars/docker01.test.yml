@@ -1,5 +1,8 @@
 ---
 enable_crowdsec: true
+crowdsec_install_firewall_bouncer: true
+crowdsec_lapi_server: true
+crowdsec_lapi_agent: true
 
 # Packages
 extra_packages: 

@@ -1,0 +1,48 @@
+- hosts: all
+  gather_facts: yes
+  become: yes
+ 
+  roles:
+
+    - role: system
+      tags:
+        - system
+        - user
+    
+    - role: geerlingguy.security
+      tags:
+        - security
+    
+    - role: geerlingguy.ntp
+      tags:
+        - ntp 
+
+    - role: alf149.crowdsec
+      tags:
+        - crowdsec
+
+    - role: geerlingguy.pip
+      tags:
+        - containers
+        - pip
+      
+    - role: geerlingguy.docker
+      tags:
+        - containers
+        - docker
+        - portainer
+        - watchtower
+             
+    - role: ufw
+      tags:
+        - ufw
+
+    - role: containers/portainer
+      tags:
+        - portainer
+        - containers
+
+    - role: containers/watchtower
+      tags:
+        - watchtower
+        - containers

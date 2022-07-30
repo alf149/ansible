@@ -7,7 +7,7 @@
   include_tasks: redhat.yml
   when: 
     - ansible_os_family | lower == "redhat"
-    - ansible_distribution_major_version == '8'
+    - ansible_distribution_major_version  | int in [8]
 
 - name: redhat7
   include_tasks: redhat7.yml
@@ -15,7 +15,7 @@
     - ansible_os_family | lower == "redhat"
     - ansible_distribution_major_version == '7'
 
-- name: Apt update and install Crowdsec 
+- name: Update repo cache and install Crowdsec 
   package: 
     update_cache: yes 
     name: crowdsec
