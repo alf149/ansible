@@ -17,4 +17,7 @@
       tags:
         - ntp 
 
+    - role: alf149.crowdsec
+      tags:
+        - crowdsec
 

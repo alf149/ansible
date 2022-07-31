@@ -1,8 +1,6 @@
 ---
 enable_crowdsec: true
 crowdsec_install_firewall_bouncer: true
-crowdsec_lapi_server: true
-crowdsec_lapi_agent: true
 
 # Packages
 extra_packages: 
@@ -12,6 +10,7 @@ extra_packages:
 local_lan_ufw:
   - 192.168.0.0/16 
   - fd00::/8
+
 
 enable_ufw: true
 resetufw: false
