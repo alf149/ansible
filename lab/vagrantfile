@@ -120,8 +120,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.linked_clone = true
       v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-      v.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
-      v.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
     end
     ubt2110.vm.box = "generic/ubuntu2110"
     ubt2110.vm.box_check_update = false
@@ -142,8 +140,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.linked_clone = true
       v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-      v.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
-      v.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
     end
     deb10.vm.box = "generic/debian10"
     deb10.vm.box_check_update = false
@@ -164,8 +160,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.linked_clone = true
       v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-      v.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
-      v.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
     end
     deb11.vm.box = "generic/debian11"
     deb11.vm.box_check_update = false
