@@ -1,0 +1,44 @@
+- hosts: all
+  gather_facts: yes
+  #become: yes
+
+
+  tasks:
+
+    - name: Create user Deploy
+      ansible.windows.win_user:
+        name: Deploy
+        password: "Changeme2022!"
+        state: present
+        groups:
+          - Users
+    
+    - name: Add Deploy user to Administrator group
+      win_group_membership:
+        name: Administrators
+        members:
+          - Deploy
+        state: present
+
+    - name: Create c:\Install directory
+      ansible.windows.win_file:
+        path: C:\Install
+        state: directory
+
+    - name: Download dotnet-hosting-6.0.3
+      win_get_url:
+        url: https://download.visualstudio.microsoft.com/download/pr/41d7c644-140a-40b5-9eb7-071544b79c65/885b7fa698a2d1d3a79ad363613f8ff2/dotnet-hosting-6.0.3-win.exe
+        dest: C:\Install\dotnet-hosting-6.0.3-win.exe
+    
+    - name: Install dotnet-hosting-6.0.3
+      win_package: 
+        path: C:\Install\dotnet-hosting-6.0.3-win.exe
+        arguments:
+          - /install
+          - /quiet 
+          - /norestart
+
+  
+
+  
+

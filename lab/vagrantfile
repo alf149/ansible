@@ -3,20 +3,19 @@
 
 VAGRANTFILE_API_VERSION = "2"
 #ENV['VAGRANT_DEFAULT_PROVIDER'] = 'libvirt'
-#ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   
   #### Home lab
   # docker01
   config.vm.define "docker01.test", autostart: false do |docker01|
-    docker01.vm.provider "libvirt" do |v|
-      v.driver = "kvm"
+    docker01.vm.provider "virtualbox" do |v|
       v.memory = 1024
       v.cpus = 1
-      # v.linked_clone = true
-      # v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      # v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+      v.linked_clone = true
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
     docker01.vm.box = "generic/ubuntu2204"
     docker01.vm.box_check_update = false
@@ -32,12 +31,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # srv01
   config.vm.define "srv01.test", autostart: false do |srv01|
-    srv01.vm.provider "libvirt" do |v|
+    srv01.vm.provider "virtualbox" do |v|
       v.memory = 1024
       v.cpus = 1
-      #v.linked_clone = true
-      #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      #v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+      v.linked_clone = true
+      # v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      # v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
     srv01.vm.box = "generic/ubuntu2204"
     srv01.vm.box_check_update = false
@@ -113,25 +112,25 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #### Testing distroes
   #
 
-  #ubt2110  generic/ubuntu2110
-  config.vm.define "ubt2110.test", autostart: false do |ubt2110|
-    ubt2110.vm.provider "virtualbox" do |v|
-      v.memory = 1024
-      v.cpus = 1
-      v.linked_clone = true
-      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-    end
-    ubt2110.vm.box = "generic/ubuntu2110"
-    ubt2110.vm.box_check_update = false
-    ubt2110.vm.hostname = "ubt2110.test"
-    ubt2110.vm.network :private_network, ip: "192.168.56.30", hostname: true
-    ubt2110.vm.provision "ansible" do |ansible|
-      ansible.compatibility_mode = "2.0"
-      ansible.config_file = "ansible.cfg"
-      ansible.playbook = "provision.yml"
-    end
-  end
+  # #ubt2110  generic/ubuntu2110
+  # config.vm.define "ubt2110.test", autostart: false do |ubt2110|
+  #   ubt2110.vm.provider "virtualbox" do |v|
+  #     v.memory = 1024
+  #     v.cpus = 1
+  #     v.linked_clone = true
+  #     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  #     v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+  #   end
+  #   ubt2110.vm.box = "generic/ubuntu2110"
+  #   ubt2110.vm.box_check_update = false
+  #   ubt2110.vm.hostname = "ubt2110.test"
+  #   ubt2110.vm.network :private_network, ip: "192.168.56.30", hostname: true
+  #   ubt2110.vm.provision "ansible" do |ansible|
+  #     ansible.compatibility_mode = "2.0"
+  #     ansible.config_file = "ansible.cfg"
+  #     ansible.playbook = "provision.yml"
+  #   end
+  # end
 
   # #deb10 generic/debian10
   # config.vm.define "deb10.test", autostart: false do |deb10|
@@ -291,7 +290,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
-    win2019.vm.box = "peru/windows-server-2019-standard-x64-eval"
+    win2019.vm.box = "gusztavvargadr/windows-server"
     win2019.vm.box_check_update = false
     win2019.vm.hostname = "win2019"
     win2019.vm.network :private_network, ip: "192.168.56.80", hostname: true
