@@ -3,19 +3,20 @@
 
 VAGRANTFILE_API_VERSION = "2"
 #ENV['VAGRANT_DEFAULT_PROVIDER'] = 'libvirt'
-ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
+#ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   
   #### Home lab
   # docker01
   config.vm.define "docker01.test", autostart: false do |docker01|
-    docker01.vm.provider "virtualbox" do |v|
+    docker01.vm.provider "libvirt" do |v|
+      v.driver = "kvm"
       v.memory = 1024
       v.cpus = 1
-      v.linked_clone = true
-      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+      # v.linked_clone = true
+      # v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      # v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
     docker01.vm.box = "generic/ubuntu2204"
     docker01.vm.box_check_update = false
@@ -31,12 +32,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # srv01
   config.vm.define "srv01.test", autostart: false do |srv01|
-    srv01.vm.provider "virtualbox" do |v|
+    srv01.vm.provider "libvirt" do |v|
       v.memory = 1024
       v.cpus = 1
-      v.linked_clone = true
-      # v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      # v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+      #v.linked_clone = true
+      #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      #v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
     srv01.vm.box = "generic/ubuntu2204"
     srv01.vm.box_check_update = false
@@ -132,111 +133,111 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
-  #deb10 generic/debian10
-  config.vm.define "deb10.test", autostart: false do |deb10|
-    deb10.vm.provider "virtualbox" do |v|
-      v.memory = 1024
-      v.cpus = 1
-      v.linked_clone = true
-      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-    end
-    deb10.vm.box = "generic/debian10"
-    deb10.vm.box_check_update = false
-    deb10.vm.hostname = "deb10.test"
-    deb10.vm.network :private_network, ip: "192.168.56.40", hostname: true
-    deb10.vm.provision "ansible" do |ansible|
-      ansible.compatibility_mode = "2.0"
-      ansible.config_file = "ansible.cfg"
-      ansible.playbook = "provision.yml"
-    end
-  end
+  # #deb10 generic/debian10
+  # config.vm.define "deb10.test", autostart: false do |deb10|
+  #   deb10.vm.provider "virtualbox" do |v|
+  #     v.memory = 1024
+  #     v.cpus = 1
+  #     v.linked_clone = true
+  #     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  #     v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+  #   end
+  #   deb10.vm.box = "generic/debian10"
+  #   deb10.vm.box_check_update = false
+  #   deb10.vm.hostname = "deb10.test"
+  #   deb10.vm.network :private_network, ip: "192.168.56.40", hostname: true
+  #   deb10.vm.provision "ansible" do |ansible|
+  #     ansible.compatibility_mode = "2.0"
+  #     ansible.config_file = "ansible.cfg"
+  #     ansible.playbook = "provision.yml"
+  #   end
+  # end
 
-  #deb11 generic/debian11
-  config.vm.define "deb11.test", autostart: false do |deb11|
-    deb11.vm.provider "virtualbox" do |v|
-      v.memory = 1024
-      v.cpus = 1
-      v.linked_clone = true
-      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-    end
-    deb11.vm.box = "generic/debian11"
-    deb11.vm.box_check_update = false
-    deb11.vm.hostname = "deb11.test"
-    deb11.vm.network :private_network, ip: "192.168.56.41", hostname: true
-    deb11.vm.provision "ansible" do |ansible|
-      ansible.compatibility_mode = "2.0"
-      ansible.config_file = "ansible.cfg"
-      ansible.playbook = "provision.yml"
-    end
-  end
+  # #deb11 generic/debian11
+  # config.vm.define "deb11.test", autostart: false do |deb11|
+  #   deb11.vm.provider "virtualbox" do |v|
+  #     v.memory = 1024
+  #     v.cpus = 1
+  #     v.linked_clone = true
+  #     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  #     v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+  #   end
+  #   deb11.vm.box = "generic/debian11"
+  #   deb11.vm.box_check_update = false
+  #   deb11.vm.hostname = "deb11.test"
+  #   deb11.vm.network :private_network, ip: "192.168.56.41", hostname: true
+  #   deb11.vm.provision "ansible" do |ansible|
+  #     ansible.compatibility_mode = "2.0"
+  #     ansible.config_file = "ansible.cfg"
+  #     ansible.playbook = "provision.yml"
+  #   end
+  # end
 
-  #roc8 generic/rocky8
-  config.vm.define "roc8.test", autostart: false do |roc8|
-    roc8.vm.provider "virtualbox" do |v|
-      v.memory = 1024
-      v.cpus = 1
-      v.linked_clone = true
-      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-      v.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
-      v.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
-    end
-    roc8.vm.box = "generic/rocky8"
-    roc8.vm.box_check_update = false
-    roc8.vm.hostname = "roc8.test"
-    roc8.vm.network :private_network, ip: "192.168.56.50", hostname: true
-    roc8.vm.provision "ansible" do |ansible|
-      ansible.compatibility_mode = "2.0"
-      ansible.config_file = "ansible.cfg"
-      ansible.playbook = "provision.yml"
-    end
-  end
+  # #roc8 generic/rocky8
+  # config.vm.define "roc8.test", autostart: false do |roc8|
+  #   roc8.vm.provider "virtualbox" do |v|
+  #     v.memory = 1024
+  #     v.cpus = 1
+  #     v.linked_clone = true
+  #     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  #     v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+  #     v.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
+  #     v.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
+  #   end
+  #   roc8.vm.box = "generic/rocky8"
+  #   roc8.vm.box_check_update = false
+  #   roc8.vm.hostname = "roc8.test"
+  #   roc8.vm.network :private_network, ip: "192.168.56.50", hostname: true
+  #   roc8.vm.provision "ansible" do |ansible|
+  #     ansible.compatibility_mode = "2.0"
+  #     ansible.config_file = "ansible.cfg"
+  #     ansible.playbook = "provision.yml"
+  #   end
+  # end
 
-  #alma8 generic/alma8
-  config.vm.define "alma8.test", autostart: false do |alma8|
-    alma8.vm.provider "virtualbox" do |v|
-      v.memory = 1024
-      v.cpus = 1
-      v.linked_clone = true
-      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-      v.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
-      v.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
-    end
-    alma8.vm.box = "generic/alma8"
-    alma8.vm.box_check_update = false
-    alma8.vm.hostname = "alma8.test"
-    alma8.vm.network :private_network, ip: "192.168.56.60", hostname: true
-    alma8.vm.provision "ansible" do |ansible|
-      ansible.compatibility_mode = "2.0"
-      ansible.config_file = "ansible.cfg"
-      ansible.playbook = "provision.yml"
-    end
-  end
+  # #alma8 generic/alma8
+  # config.vm.define "alma8.test", autostart: false do |alma8|
+  #   alma8.vm.provider "virtualbox" do |v|
+  #     v.memory = 1024
+  #     v.cpus = 1
+  #     v.linked_clone = true
+  #     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  #     v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+  #     v.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
+  #     v.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
+  #   end
+  #   alma8.vm.box = "generic/alma8"
+  #   alma8.vm.box_check_update = false
+  #   alma8.vm.hostname = "alma8.test"
+  #   alma8.vm.network :private_network, ip: "192.168.56.60", hostname: true
+  #   alma8.vm.provision "ansible" do |ansible|
+  #     ansible.compatibility_mode = "2.0"
+  #     ansible.config_file = "ansible.cfg"
+  #     ansible.playbook = "provision.yml"
+  #   end
+  # end
 
-  #ora7
-  config.vm.define "ora7.test", autostart: false do |ora7|
-    ora7.vm.provider "virtualbox" do |v|
-      v.memory = 1024
-      v.cpus = 1
-      v.linked_clone = true
-      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-      v.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
-      v.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
-    end
-    ora7.vm.box = "generic/oracle7"
-    ora7.vm.box_check_update = false
-    ora7.vm.hostname = "ora7.test"
-    ora7.vm.network :private_network, ip: "192.168.56.70", hostname: true
-    ora7.vm.provision "ansible" do |ansible|
-      ansible.compatibility_mode = "2.0"
-      ansible.config_file = "ansible.cfg"
-      ansible.playbook = "provision.yml"
-    end
-  end
+  # #ora7
+  # config.vm.define "ora7.test", autostart: false do |ora7|
+  #   ora7.vm.provider "virtualbox" do |v|
+  #     v.memory = 1024
+  #     v.cpus = 1
+  #     v.linked_clone = true
+  #     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  #     v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+  #     v.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
+  #     v.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
+  #   end
+  #   ora7.vm.box = "generic/oracle7"
+  #   ora7.vm.box_check_update = false
+  #   ora7.vm.hostname = "ora7.test"
+  #   ora7.vm.network :private_network, ip: "192.168.56.70", hostname: true
+  #   ora7.vm.provision "ansible" do |ansible|
+  #     ansible.compatibility_mode = "2.0"
+  #     ansible.config_file = "ansible.cfg"
+  #     ansible.playbook = "provision.yml"
+  #   end
+  # end
 
   # ora8 generic/oracle8
   config.vm.define "ora8.test", autostart: false do |ora8|
@@ -259,25 +260,25 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
-  # ora9 generic/oracle9
-  config.vm.define "ora9.test", autostart: false do |ora9|
-    ora9.vm.provider "virtualbox" do |v|
-      v.memory = 1024
-      v.cpus = 1
-      v.linked_clone = true
-      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-    end
-    ora9.vm.box = "generic/oracle9"
-    ora9.vm.box_check_update = false
-    ora9.vm.hostname = "ora9.test"
-    ora9.vm.network :private_network, ip: "192.168.56.72", hostname: true
-    ora9.vm.provision "ansible" do |ansible|
-      ansible.compatibility_mode = "2.0"
-      ansible.config_file = "ansible.cfg"
-      ansible.playbook = "provision_ora9.yml"
-    end
-  end
+  # # ora9 generic/oracle9
+  # config.vm.define "ora9.test", autostart: false do |ora9|
+  #   ora9.vm.provider "virtualbox" do |v|
+  #     v.memory = 1024
+  #     v.cpus = 1
+  #     v.linked_clone = true
+  #     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  #     v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+  #   end
+  #   ora9.vm.box = "generic/oracle9"
+  #   ora9.vm.box_check_update = false
+  #   ora9.vm.hostname = "ora9.test"
+  #   ora9.vm.network :private_network, ip: "192.168.56.72", hostname: true
+  #   ora9.vm.provision "ansible" do |ansible|
+  #     ansible.compatibility_mode = "2.0"
+  #     ansible.config_file = "ansible.cfg"
+  #     ansible.playbook = "provision_ora9.yml"
+  #   end
+  # end
 
   #Windows-server 2019/2022
   #win2019
@@ -290,7 +291,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
-    win2019.vm.box = "gusztavvargadr/windows-server"
+    win2019.vm.box = "peru/windows-server-2019-standard-x64-eval"
     win2019.vm.box_check_update = false
     win2019.vm.hostname = "win2019"
     win2019.vm.network :private_network, ip: "192.168.56.80", hostname: true

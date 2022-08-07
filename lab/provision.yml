@@ -1,6 +1,15 @@
 - hosts: all
   gather_facts: yes
   become: yes
+
+  pre_tasks: 
+    - name: copy '/etc/resolv.conf' file to solve dns issues
+      copy:
+        src: files/resolv.conf
+        dest: /etc/resolv.conf
+        owner: root
+        mode: 0644
+      tags: users
  
   roles:
 
@@ -17,7 +26,7 @@
       tags:
         - ntp 
 
-    - role: alf149.crowdsec
-      tags:
-        - crowdsec
+    # - role: alf149.crowdsec
+    #   tags:
+    #     - crowdsec
 
