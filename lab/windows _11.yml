@@ -1,0 +1,27 @@
+- hosts: all
+  gather_facts: yes
+  #become: yes
+
+
+  tasks:
+
+    - name: Create user Deploy
+      ansible.windows.win_user:
+        name: Deploy
+        password: "Changeme2022!"
+        state: present
+        groups:
+          - Users
+    
+    - name: Add Deploy user to Administrator group
+      win_group_membership:
+        name: Administrators
+        members:
+          - Deploy
+        state: present
+
+    
+  
+
+  
+

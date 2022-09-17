@@ -294,10 +294,40 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     win2019.vm.box_check_update = false
     win2019.vm.hostname = "win2019"
     win2019.vm.network :private_network, ip: "192.168.56.80", hostname: true
-    win2019.vm.network :forwarded_port, guest: 3389, host: 63389, auto_correct: true
+    win2019.vm.network :forwarded_port, guest: 3389, host: 53389, auto_correct: true
     win2019.vm.network :forwarded_port, guest: 80, host: 680, auto_correct: true
-    win2019.vm.network :forwarded_port, guest: 80, host: 6443, auto_correct: true
+    win2019.vm.network :forwarded_port, guest: 443, host: 6443, auto_correct: true
+    win2019.vm.boot_timeout = 300
+    win2019.winrm.execution_time_limit = "PT2H"
+    #win2019.winrm.transport = :ssl
+    win2019.winrm.ssl_peer_verification = false
+    win2019.winrm.max_tries = 50
+    win2019.winrm.retry_delay = 10
     win2019.vm.provision "shell", path: "files/windows/setup_winrm.ps1"
   end
 
+  #Windows-11
+  #w
+  config.vm.define "win11.test", autostart: false do |win11|
+    win11.vm.provider "virtualbox" do |v|
+      v.gui = false
+      v.memory = 4096
+      v.cpus = 2
+      v.linked_clone = true
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+    end
+    win11.vm.box = "gusztavvargadr/windows-11-21h2-enterprise"
+    win11.vm.box_check_update = false
+    win11.vm.hostname = "win11"
+    win11.vm.network :private_network, ip: "192.168.56.85", hostname: true
+    win11.vm.network :forwarded_port, guest: 80, host: 680, auto_correct: true
+    win11.vm.network :forwarded_port, guest: 443, host: 6443, auto_correct: true
+    win11.vm.boot_timeout = 300
+    win11.winrm.execution_time_limit = "PT2H"
+    win11.winrm.ssl_peer_verification = false
+    win11.winrm.max_tries = 50
+    win11.winrm.retry_delay = 10
+    #win11.vm.provision "shell", path: "files/windows/setup_winrm.ps1"
+  end
 end
