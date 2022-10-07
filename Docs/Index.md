@@ -11,10 +11,10 @@ graph TB
  router---|1Gb|acwifi1[<center>Router-Wifi</center>]
 
  subgraph wifi1
- acwifi1---|Chromecast-rum0(<br>DHCP)
- acwifi1---|Chromecast-rum1
- acwifi1---|ra-work(<center>RA: Work-Laptop<br>DHCP</center>)
- acwifi1---|ra-work-lab(<center>RA: Work-Laptop2<br>DHCP</center>)
+ acwifi1---Chromecast_rum0(<br>DHCP)
+ acwifi1---Chromecast-rum1
+ acwifi1---ra-work(<center>RA: Work-Laptop<br>DHCP</center>)
+ acwifi1---ra-work-lab(<center>RA: Work-Laptop2<br>DHCP</center>)
  end
 
 
@@ -30,15 +30,15 @@ graph TB
  end
 
  subgraph pi1
- pi---|docker(<center>Chromecast - Martin<br>DHCP</center>)
- pi---|crowdsec(<center>Martin -Game PC</center>)
+ pi---docker(<center>Chromecast - Martin<br>DHCP</center>)
+ pi---crowdsec(<center>Martin -Game PC</center>)
  end
 
 subgraph docker1
- docker-.-|smokeping(<center>SmokePing<br><br>10.20.30.151</center>)
- docker-.-|uptimeKuma(<center>UptimeKuma<br><br>10.20.30.151</center>)
- docker-.-|pihole(<center>PI-hole<br><br>10.20.30.151</center>)
- docker-.-|wireguardvpn(<center>Wireguard-vpn<br><br>10.20.30.151</center>)
+ docker-.-smokeping(<center>SmokePing<br><br>10.20.30.151</center>)
+ docker-.-uptimeKuma(<center>UptimeKuma<br><br>10.20.30.151</center>)
+ docker-.-pihole(<center>PI-hole<br><br>10.20.30.151</center>)
+ docker-.-wireguardvpn(<center>Wireguard-vpn<br><br>10.20.30.151</center>)
  
  end
  ```
