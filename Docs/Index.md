@@ -11,7 +11,7 @@ graph TB
  router---|1Gb|acwifi1[<center>Router-Wifi</center>]
 
  subgraph wifi1
- acwifi1---|-|Chromecast-rum0
+ acwifi1---|-|Chromecast-rum0<br>DHCP
  acwifi1---|-|Chromecast-rum1
  acwifi1---|-|ra-work(<center>RA: Work-Laptop<br>DHCP</center>)
  acwifi1---|-|ra-work-lab(<center>RA: Work-Laptop2<br>DHCP</center>)
