@@ -30,7 +30,7 @@ graph TB
  end
 
  subgraph pi1
- pi---docker(<center>Chromecast - Martin<br>DHCP</center>)
+ pi---docker(<center>Docker<br>DHCP</center>)
  pi---crowdsec(<center>CrowdSec</center>)
  end
 
