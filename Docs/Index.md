@@ -20,20 +20,17 @@ graph TD
  ip((<center><br>IP<br><br></center>))-.-router
  dns((<center><br>DNS<br><br></center>))-.-router
  router---|1Gb|switch1[<center>TL-SG105E<br><br>10.20.30.2</center>]
- router---|1Gb|switch2[<center>TL-SG105E<br><br>10.20.30.2</center>]
+ router---|1Gb|ac[<center>Asus-Martin<br><br>10.20.30.2</center>]
  
  subgraph red2
- switch1---|100Mb|pi1(<center>RPi 3B<br><br>10.20.30.150</center>)
- switch1---|1Gb|pi2(<center>RPi 3B+<br><br>10.20.30.151</center>)
- switch1---|100Mb|nvr(<center>NVR<br><br>10.20.30.170</center>)
- switch1---|1Gb|laptop(<center>Laptop<br><br>10.20.30.192</center>)
+ switch1---|1Gb|pi(<center>RPi 3B<br><br>10.20.30.150</center>)
+ switch1---|1Gb|work(<center>RA: Work-Laptop<br><br>10.20.30.151</center>)
+ switch1---|1Gb|work-lab(<center>RA: Work-Laptop2<br><br>10.20.30.170</center>)
  end
  
 
  subgraph red2
- switch2---|100Mb|pi1(<center>RPi 3B<br><br>10.20.30.150</center>)
- switch2---|1Gb|pi2(<center>RPi 3B+<br><br>10.20.30.151</center>)
- switch2---|100Mb|nvr(<center>NVR<br><br>10.20.30.170</center>)
- switch2---|1Gb|laptop(<center>Laptop<br><br>10.20.30.192</center>)
+ ac---|1Gb|chromecast(<center>Chromecast - Martin<br><br>10.20.30.150</center>)
+ ac---|1Gb|game-pc(<center>Martin -Game PC<br><br>10.20.30.151</center>)
  end
  ```
