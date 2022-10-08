@@ -17,6 +17,7 @@ The External IP has a web proxy though cloudflare.
 Some sites also has cloudflare logon. 
 
 
+## See at grafical presentation of the NetWork
 ```mermaid
 graph TB
  linkStyle default interpolate basis
