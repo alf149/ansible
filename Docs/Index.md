@@ -10,15 +10,13 @@ graph TB
  router---|wifi|ac_wifi(<center>Router-Wifi</center>)
 
 subgraph Wifi
-ac_wifi---ALL
-ac_wifi---chromecast-rum1
-ac_wifi---ra-work
-ac_wifi---ra-work-lab
+ac_wifi-.-Multiple[<center>Multiple Wifi Clients</center>]
+ac_wifi---chromecast-rum-1
 end
 
 subgraph Rum 3
-rum_3---|1Gb|chromecast-rum3(<center>Chromecast - Martin<br>DHCP/center>)
-rum_3---|1Gb|gamer-pc(<center>Martin -Game PC<br>DHCP</center>)
+rum_3-.-|1Gb|chromecast-rum3
+rum_3---|1Gb|gamer-pc
 end
 
 subgraph Rum 2
