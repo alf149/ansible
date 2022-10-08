@@ -30,13 +30,13 @@ rum_2---|1Gb|free_1(<center>Free port</center>)
 end
 
 subgraph Rum 1
-rum_1---|1Gb|pi(<center>RPi 4<br><br>192.168.0.126</center>)
-rum_1---|1Gb|work(<center>RA: Work-Laptop<br>DHCP</center>)
-rum_1---|1Gb|work-lab(<center>RA: Work-Laptop2<br>DHCP</center>)
+rum_1---|1Gb|pi(<center>RPi 4<br>192.168.0.126</center>)
+rum_1---|1Gb|work(<center>RA: Work-Laptop</center>)
+rum_1---|1Gb|work-lab(<center>RA: Work-Laptop2</center>)
 end
 
     subgraph pi 1
-    pi---docker(<center>Docker<br>DHCP</center>)
+    pi---docker(<center>Docker</center>)
     pi---crowdsec(<center>CrowdSec</center>)
     end
 
