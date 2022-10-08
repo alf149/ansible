@@ -4,7 +4,7 @@
 graph TB
  linkStyle default interpolate basis
  wan1[<center>DSL 1000/300 Mb<br><br>HOME IP</center>]---router{<center>YouSee Router<br>192.168.0.1</center>}
- router---|1Gb|rum_1[<center>Rum 1 switch</center>]
+ router---|1Gb|rum1[<center>Rum 1 switch</center>]
  router---|1Gb|rum_2[<center>Rum 2 switch</center>]
  router---|1Gb|rum_3[<center>Rum 3<br><br>192.168.0.173</center>]
  router---|wifi|ac_wifi(<center>Router-Wifi</center>)
@@ -26,9 +26,9 @@ rum_2---|1Gb|free(<center>Free port</center>)
 end
 
 subgraph Rum1 1
-rum_1---|1Gb|pi(<center>RPi 4<br><br>192.168.0.126</center>)
-rum_1---|1Gb|work(<center>RA: Work-Laptop<br>DHCP</center>)
-rum_1---|1Gb|work-lab(<center>RA: Work-Laptop2<br>DHCP</center>)
+rum1---|1Gb|pi(<center>RPi 4<br><br>192.168.0.126</center>)
+rum1---|1Gb|work(<center>RA: Work-Laptop<br>DHCP</center>)
+rum1---|1Gb|work-lab(<center>RA: Work-Laptop2<br>DHCP</center>)
 end
 
     subgraph pi 1
