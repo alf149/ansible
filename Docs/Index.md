@@ -41,10 +41,10 @@ end
     end
 
     subgraph docker1
-    docker-.-smokeping(<center>SmokePing<br><br>10.20.30.151</center>)
-    docker-.-uptimeKuma(<center>UptimeKuma<br><br>10.20.30.151</center>)
-    docker-.-pihole(<center>PI-hole<br><br>10.20.30.151</center>)
-    docker-.-wireguardvpn(<center>Wireguard-vpn<br><br>10.20.30.151</center>)
+    docker-.-smokeping(<center>SmokePing<br>10.20.30.151</center>)
+    docker-.-uptimeKuma(<center>UptimeKuma<br>10.20.30.151</center>)
+    docker-.-pihole(<center>PI-hole<br>10.20.30.151</center>)
+    docker-.-wireguardvpn(<center>Wireguard-vpn<br>10.20.30.151</center>)
     end
 
 
