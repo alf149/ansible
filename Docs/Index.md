@@ -58,7 +58,7 @@ end
     pi---crowdsec(<center>CrowdSec</center>)
     end
 
-    subgraph docker1
+    subgraph pi_docker
     docker-.-smokeping(<center>SmokePing<br>10.20.30.151</center>)
     docker-.-uptimeKuma(<center>UptimeKuma<br>10.20.30.151</center>)
     docker-.-pihole(<center>PI-hole<br>10.20.30.151</center>)
