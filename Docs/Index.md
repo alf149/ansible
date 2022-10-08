@@ -39,8 +39,8 @@ end
 subgraph Wifi
 ac_wifi---ALL
 ac_wifi---chromecast-rum1
-ac_wif1---ra-work
-ac_wif1---ra-work-lab
+ac_wifi---ra-work
+ac_wifi---ra-work-lab
 end
 
 ```
