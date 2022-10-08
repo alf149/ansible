@@ -3,7 +3,7 @@
 ```mermaid
 graph TB
  linkStyle default interpolate basis
- wan1[<center>DSL 1000/300 Mb<br><br>80.167.181.49</center>]---router{<center>YouSee Router<br>192.168.0.1</center>}
+ wan1[<center>DSL 1000/300 Mb<br><br>HOME IP</center>]---router{<center>YouSee Router<br>192.168.0.1</center>}
  router---|1Gb|switch1[<center>Kontor1 switch</center>]
  router---|1Gb|switch2[<center>Asus-Martin<br><br>192.168.0.173</center>]
  router---|1Gb|acwifi1[<center>Router-Wifi</center>]
