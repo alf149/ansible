@@ -9,6 +9,22 @@ graph TB
  router---|1Gb|rum_3[<center>Rum 3<br><br>192.168.0.173</center>]
  router---|wifi|ac_wifi(<center>Router-Wifi</center>)
 
+subgraph Wifi
+ac_wifi---ALL
+ac_wifi---chromecast-rum1
+ac_wifi---ra-work
+ac_wifi---ra-work-lab
+end
+
+subgraph Rum 3
+rum_3---|1Gb|chromecast-rum3(<center>Chromecast - Martin<br>DHCP/center>)
+rum_3---|1Gb|gamer-pc(<center>Martin -Game PC<br>DHCP</center>)
+end
+
+subgraph Rum1 2
+rum_2---|1Gb|free(<center>Free port</center>)
+end
+
 subgraph Rum1 1
 rum_1---|1Gb|pi(<center>RPi 4<br><br>192.168.0.126</center>)
 rum_1---|1Gb|work(<center>RA: Work-Laptop<br>DHCP</center>)
@@ -27,20 +43,5 @@ end
     docker-.-wireguardvpn(<center>Wireguard-vpn<br><br>10.20.30.151</center>)
     end
 
-subgraph Rum1 2
-rum_2---|1Gb|free(<center>Free port</center>)
-end
-
-subgraph Rum 3
-rum_3---|1Gb|chromecast-rum3(<center>Chromecast - Martin<br>DHCP/center>)
-rum_3---|1Gb|gamer-pc(<center>Martin -Game PC<br>DHCP</center>)
-end
-
-subgraph Wifi
-ac_wifi---ALL
-ac_wifi---chromecast-rum1
-ac_wifi---ra-work
-ac_wifi---ra-work-lab
-end
 
 ```
