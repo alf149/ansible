@@ -6,13 +6,19 @@ graph TB
  wan1[<center>DSL 1000/300 Mb<br><br>HOME IP</center>]---router{<center>YouSee Router<br>192.168.0.1</center>}
  router---|1Gb|rum_1[<center>Rum 1 switch</center>]
  router---|1Gb|rum_2[<center>Rum 2 switch</center>]
- router---|1Gb|rum_3[<center>Rum 3<br><br>192.168.0.173</center>]
+ router---|1Gb|rum_3[<center>Rum 3 switch<br>192.168.0.173</center>]
+ router---|1Gb|rum_4[<center>Rum 4 switch</center>]
  router---|wifi|ac_wifi(<center>Router-Wifi</center>)
 
 subgraph Wifi
 ac_wifi-.-Multiple[<center>Multiple Wifi Clients</center>]
-ac_wifi---chromecast-rum-1
+ac_wifi-.-chromecast-rum-1
 end
+
+subgraph Rum 4
+rum_4---|1Gb|free_2(<center>Free port</center>)
+end
+
 
 subgraph Rum 3
 rum_3-.-|1Gb|chromecast-rum3
@@ -20,7 +26,7 @@ rum_3---|1Gb|gamer-pc
 end
 
 subgraph Rum 2
-rum_2---|1Gb|free(<center>Free port</center>)
+rum_2---|1Gb|free_1(<center>Free port</center>)
 end
 
 subgraph Rum 1
