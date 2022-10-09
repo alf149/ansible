@@ -19,7 +19,7 @@ Some sites also has cloudflare logon.
 
 ## See at grafical presentation of the NetWork
 ```mermaid
-graph TB
+graph TD
  linkStyle default interpolate basis
  wan1[<center>DSL 1000/300 Mb<br><br>HOME IP</center>]---router{<center>YouSee Router<br>192.168.0.1</center>}
  router---|1Gb|rum_1[<center>Rum 1 switch</center>]
