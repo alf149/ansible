@@ -1,9 +1,9 @@
-# Home Lab - Docomentation. 
+# Home Lab - Documentation. 
 
 Mostly a home network, but the Rasberry pi does make i out for my home lab. 
-Besides that My "lab exists on my Labtop ad a virtual lab. 
+Besides that "My lab" exists on my Labtop ad a virtual lab. 
 
-The Raspberry på runs this services:
+The Raspberry pi runs this services:
 * Docker on the host
   * portainer, Docker admin.
   * pi-hole, DNS service and DNS filter
@@ -55,9 +55,6 @@ graph TD
         docker-.-wg-easy(<center>wg-easy        <br>172.20.0.2     <br>Ports:<br>51820:51820<br>51821:51821</center>)
         docker-.-watchtower(<center>watchtower  <br>Offline</center>)
         end
- router-.-swag(<center>Web</center>)
- router-.-wg-easy(<center>VPN</center>)
-
 ```
 
 
