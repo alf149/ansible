@@ -22,7 +22,7 @@ Some sites also has cloudflare logon.
 graph TD
  linkStyle default interpolate basis
  cloudflare[<center>CloudFlare</center>]---wan
- wan[<center>DSL 1000/300 Mb<br>HOME IP<br>Only port 443 and VPN are open</center>]---router{<center>YouSee Router<br>192.168.0.1</center>}
+ wan[<center>DSL 1000/300 Mb<br>HOME IP<br>Ports: 443<br>VPN ports</center>]---router{<center>YouSee Router<br>192.168.0.1</center>}
  router---|1Gb|rum_1[<center>Rum 1 switch</center>]
  router---|1Gb|rum_2[<center>Rum 2 switch</center>]
  router---|1Gb|rum_3[<center>Rum 3 switch<br>192.168.0.173</center>]
