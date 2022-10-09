@@ -25,7 +25,7 @@ graph TD
  wan[<center>DSL 1000/300 Mb<br>HOME IP<br>Ports: 443<br>VPN ports</center>]---router{<center>YouSee Router<br>192.168.0.1</center>}
  router---|1Gb|rum_1[<center>Port 1</center>]
  router---|1Gb|rum_2[<center>Port 2 - Free port</center>]
- router---|1Gb|rum_3[<center>Port 3</center>]
+ router---|1Gb|rum_3[<center>Port 3<br>Switch/AC<br>192.168.0.173</center>]
  router---|1Gb|rum_4[<center>port 4 - Free port</center>]
  router---|wifi|ac_wifi(<center>Router-Wifi<br>Multiple Wifi Clients</center>)
 
