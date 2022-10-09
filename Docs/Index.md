@@ -46,7 +46,7 @@ graph TD
         end
 
         subgraph pi_docker
-        docker-.-portainer(<center>SmokePing    <br>172.18.0.2<br>ports:<br>9000:9000</center>)
+        docker-.-portainer(<center>portainer    <br>172.18.0.2<br>ports:<br>9000:9000</center>)
         docker-.-smokeping(<center>SmokePing    <br>172.18.0.3<br>Ports:<br>8081:80</center>)
         docker-.-uptimeKuma(<center>UptimeKuma  <br>172.18.0.4<br>Ports:<br>3001:3001</center>)
         docker-.-swag(<center>Swag              <br>172.17.0.2<br>Ports:<br>443:443</center>)
@@ -54,6 +54,8 @@ graph TD
         docker-.-wg-easy(<center>wg-easy        <br>172.20.0.2     <br>Ports:<br>51820:51820<br>51821:51821</center>)
         docker-.-watchtower(<center>watchtower  <br>Offline</center>)
         end
+ router-.-swag(<center>Web</center>)
+ router-.-wg-easy(<center>VPN</center>)
 
 ```
 
