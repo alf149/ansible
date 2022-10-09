@@ -23,27 +23,19 @@ graph TD
  linkStyle default interpolate basis
  cloudflare[<center>CloudFlare</center>]---wan
  wan[<center>DSL 1000/300 Mb<br>HOME IP<br>Ports: 443<br>VPN ports</center>]---router{<center>YouSee Router<br>192.168.0.1</center>}
- router---|1Gb|rum_1[<center>Rum 1 switch</center>]
- router---|1Gb|rum_2[<center>Rum 2 switch</center>]
- router---|1Gb|rum_3[<center>Rum 3 switch<br>192.168.0.173</center>]
- router---|1Gb|rum_4[<center>Rum 4 switch</center>]
+ router---|1Gb|rum_1[<center>Port 1</center>]
+ router---|1Gb|rum_2[<center>Port 2 - Free port</center>]
+ router---|1Gb|rum_3[<center>Port 3</center>]
+ router---|1Gb|rum_4[<center>port 4 - Free port</center>]
  router---|wifi|ac_wifi(<center>Router-Wifi</center>)
 
     subgraph Wifi
     ac_wifi-.-Multiple[<center>Multiple Wifi Clients</center>]
     end
 
-    subgraph Rum 4
-    rum_4---|1Gb|free_2(<center>Free port</center>)
-    end
-
     subgraph Rum 3
     rum_3-.-|1Gb|chromecast-rum3
     rum_3---|1Gb|gamer-pc
-    end
-
-    subgraph Rum 2
-    rum_2---|1Gb|free_1(<center>Free port</center>)
     end
 
     subgraph Rum 1
