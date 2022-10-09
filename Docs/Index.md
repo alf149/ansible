@@ -27,11 +27,7 @@ graph TD
  router---|1Gb|rum_2[<center>Port 2 - Free port</center>]
  router---|1Gb|rum_3[<center>Port 3</center>]
  router---|1Gb|rum_4[<center>port 4 - Free port</center>]
- router---|wifi|ac_wifi(<center>Router-Wifi</center>)
-
-    subgraph Wifi
-    ac_wifi-.-Multiple[<center>Multiple Wifi Clients</center>]
-    end
+ router---|wifi|ac_wifi(<center>Router-Wifi<br>Multiple Wifi Clients</center>)
 
     subgraph Rum 3
     rum_3-.-|1Gb|chromecast-rum3
