@@ -42,7 +42,7 @@ graph TD
 
         subgraph pi 1
         pi---docker(<center>Docker</center>)
-        pi---crowdsec(<center>CrowdSec</center>)
+        pi---crowdsec(<center>CrowdSec<br>Ports:<br>8080<br>6060</center>)
         end
 
         subgraph pi_docker
