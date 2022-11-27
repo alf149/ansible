@@ -8,7 +8,7 @@ extra_packages:
   - nano
 
 local_lan_ufw:
-  - 192.168.0.0/16 
+  - 192.168.0.0/16
   - fd00::/8
 
 

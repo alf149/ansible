@@ -47,9 +47,9 @@
       tags:
         - ufw
 
-    - role: alf149.crowdsec
-      tags:
-        - crowdsec
+    # - role: alf149.crowdsec
+    #   tags:
+    #     - crowdsec
 
     - role: containers/portainer
       tags:
