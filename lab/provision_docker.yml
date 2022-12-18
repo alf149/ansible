@@ -54,32 +54,32 @@
         - portainer
         - containers
 
-    - role: containers/watchtower
-      tags:
-        - watchtower
-        - containers
+    # - role: containers/watchtower
+    #  tags:
+    #    - watchtower
+    #    - containers
           
-  tasks:
+  #tasks:
     
     # Cockpit
-    - name: Install Cockpit
-      package:
-        name: cockpit
-        state: present
-      when: 
-        - enable_cockpit is defined
-        - enable_cockpit == true
+    # - name: Install Cockpit
+    #   package:
+    #     name: cockpit
+    #     state: present
+    #   when: 
+    #     - enable_cockpit is defined
+    #     - enable_cockpit == true
 
-    - name: Upgrade apt packages (Debian and Ubuntu)
-      apt:
-        upgrade: yes
-        autoremove: yes
-        update_cache: yes
-        cache_valid_time: 3600
-      tags:
-        - system
-        - security
-        - enable_osupgrade
-      when: ansible_os_family | lower == "debian" 
+    # - name: Upgrade apt packages (Debian and Ubuntu)
+    #   apt:
+    #     upgrade: yes
+    #     autoremove: yes
+    #     update_cache: yes
+    #     cache_valid_time: 3600
+    #   tags:
+    #     - system
+    #     - security
+    #     - enable_osupgrade
+    #   when: ansible_os_family | lower == "debian" 
 
 
