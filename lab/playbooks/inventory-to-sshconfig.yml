@@ -8,7 +8,7 @@
       path: /home/rolf/.ssh/config
       block: |
         {% for host in groups['servers'] %}
-        host {{ hostvars[host].inventory_hostname_short }} {{ host }} 
+        host {{ host }} 
             HostName {{ hostvars[host].ansible_host }} 
             User deploy
             Port 22
@@ -18,7 +18,7 @@
         
         {% endfor %}
         {% for host in groups['test'] %}
-        host {{ hostvars[host].inventory_hostname_short }} {{ host }} 
+        host {{ host }} 
             HostName {{ hostvars[host].ansible_host }} 
             User deploy
             Port 22
@@ -28,7 +28,7 @@
         
         {% endfor %}
         {% for host in groups['windows'] %}
-        host {{ hostvars[host].inventory_hostname_short }} {{ host }} 
+        host {{ host }} 
             HostName {{ hostvars[host].ansible_host }} 
             User deploy
             Port 22
@@ -39,7 +39,7 @@
         {% endfor %}
 
         {% for host in groups['docker'] %}
-        host {{ hostvars[host].inventory_hostname_short }} {{ host }} 
+        host {{ host }} 
             HostName {{ hostvars[host].ansible_host }} 
             User deploy
             Port 22
@@ -48,5 +48,3 @@
             UserKnownHostsFile /dev/null
         
         {% endfor %}
-
-
