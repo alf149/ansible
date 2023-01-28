@@ -22,3 +22,9 @@ qm template 777
 
 # Now we can create new VMs by cloning this template or reference it with Terraform Proxmox etc.
 # Login with SSH only possible with user "ubuntu" and SSH keys specified in cloudinit image.
+
+### Local ssh config 
+host pve
+    Hostname 192.168.0.100
+    User root
+    IdentityFile ~/.ssh/key
