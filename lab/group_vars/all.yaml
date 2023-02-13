@@ -1,6 +1,5 @@
 ---
-# Used in pihole
-pihole_password: 'Changeme2022!'
+username: deploy
 
 # Used in Geerlingguy.ntp
 ntp_servers:
@@ -18,7 +17,6 @@ ntp_timezone: "{{ timezone }}"
 security_sudoers_passwordless: [ "{{ username }}" ]
 security_fail2ban_enabled: false
 
-
 # Used in geerlingguy.pip
 pip_package: python3-pip
 pip_executable: "{{ 'pip3' if pip_package.startswith('python3') else 'pip' }}"
@@ -29,10 +27,9 @@ pip_install_packages:
 # Used in geerlingguy.docker
 docker_daemon_options: {"iptables": false}
 docker_users:
-  - deploy
+  - "{{ username }}"
 
 docker_dir: /opt/docker/data
 
 extra_packages: []
-
 extra_packages_nettools: []

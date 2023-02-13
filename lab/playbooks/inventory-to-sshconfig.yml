@@ -48,3 +48,14 @@
             UserKnownHostsFile /dev/null
         
         {% endfor %}
+
+        {% for host in groups['proxmox'] %}
+        host {{ host }} 
+            HostName {{ hostvars[host].ansible_host }} 
+            User deploy
+            Port 22
+            IdentityFile ~/.ssh/deploy
+            StrictHostKeyChecking no
+            UserKnownHostsFile /dev/null
+        
+        {% endfor %}

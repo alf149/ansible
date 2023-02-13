@@ -1,0 +1,49 @@
+---
+#
+# Tasks and roles for all hosts
+#
+- hosts: all
+  gather_facts: yes
+  become: yes
+
+  pre_tasks:
+    - name: update ubuntu/debian chache.
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+      when: ansible_os_family | lower == "debian"
+  
+  roles:
+
+    - role: system
+      vars:
+        username: deploy
+        userpassword: "Changeme2022!" # Only for testing
+        sudo_group: sudo
+        ssh_public_key: "{{ lookup('file', '~/.ssh/deploy.pub') }}"
+        shell: /bin/bash
+        dns_nameservers: ["1.1.1.3", "1.0.0.3"]
+        keyboard_layout: dk
+        guid: "1000"
+    - role: geerlingguy.security
+    - role: geerlingguy.ntp
+    - role: geerlingguy.pip
+    - role: geerlingguy.docker
+    - role: containers/portainer
+    - role: containers/watchtower
+    - role: containers/uptime-kuma
+          
+  tasks:
+    
+    - name: Upgrade apt packages (Debian and Ubuntu)
+      apt:
+        upgrade: yes
+        autoremove: yes
+        update_cache: yes
+        cache_valid_time: 3600
+
+      when: ansible_os_family | lower == "debian" 
+
+
+    
+
