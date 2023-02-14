@@ -61,7 +61,7 @@
   copy:
     src: files/dot_files/.bash_aliases
     dest: /home/{{ username_sec }}/.bash_aliases
-    owner: {{ username_sec }}
+    owner: "{{ username_sec }}"
     mode: 0644
   tags: users
 
