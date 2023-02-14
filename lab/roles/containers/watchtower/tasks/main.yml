@@ -8,6 +8,6 @@
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     env:
-        TZ: "{{ timezone }}"
-        WATCHTOWER_SCHEDULE: "15 3 * * 7"
+      TZ: "{{ timezone }}"
+      WATCHTOWER_SCHEDULE: "15 3 * * 7"
     restart_policy: unless-stopped
