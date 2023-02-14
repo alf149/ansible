@@ -5,5 +5,4 @@ userpassword: "{{ userpassword_sec }}" # stored in secrets.yml with vault
 sudo_group: sudo
 ssh_public_key: "{{ ssh_public_key_sec }}"
 shell: /bin/bash
-keyboard_layout: dk
 guid: "1000"

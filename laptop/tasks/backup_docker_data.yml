@@ -3,10 +3,10 @@
   - name: Folder | Create | Backup
     tags: folder_create_backup
     file:
-      path: /home/deploy/{{ item.dir }}
+      path: /home/{{ username_sec }}/{{ item.dir }}
       state: directory
-      owner: deploy
-      group: deploy
+      owner: {{ username_sec }}
+      group: {{ username_sec }}
       mode: 0755
     with_items:
       - { dir: 'backup' } 
@@ -15,4 +15,4 @@
     tags: docker_archive_data
     community.general.archive:
       path: /portainer
-      dest: /home/deploy/backup/{{ ansible_date_time.date }}_docker_data.tar.gz
+      dest: /home/{{ username_sec }}/backup/{{ ansible_date_time.date }}_docker_data.tar.gz

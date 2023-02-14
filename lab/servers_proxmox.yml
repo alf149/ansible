@@ -21,10 +21,10 @@
 
     - role: system
       vars:
-        username: deploy
-        userpassword: "Changeme2022!" # Only for testing
+        username: "{{ username_sec }}"
+        userpassword: "{{ userpassword_sec }}" 
         sudo_group: sudo
-        ssh_public_key: "{{ lookup('file', '~/.ssh/deploy.pub') }}"
+        ssh_public_key: "{{ ssh_public_key_sec }}"
         shell: /bin/bash
         guid: "1000"
     - role: geerlingguy.security

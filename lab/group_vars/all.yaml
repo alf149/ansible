@@ -1,5 +1,5 @@
 ---
-username: deploy
+username: "{{ username_sec }}"
 
 # Used in Geerlingguy.ntp
 ntp_servers:
@@ -14,7 +14,7 @@ ntp_manage_config: true
 ntp_timezone: "{{ timezone }}"
 
 # Used in geerlingguy.security
-security_sudoers_passwordless: [ "{{ username }}" ]
+security_sudoers_passwordless: [ "{{ username_sec }}" ]
 security_fail2ban_enabled: false
 
 # Used in geerlingguy.pip
@@ -27,9 +27,13 @@ pip_install_packages:
 # Used in geerlingguy.docker
 docker_daemon_options: {"iptables": false}
 docker_users:
-  - "{{ username }}"
+  - "{{ username_sec }}"
 
 docker_dir: /opt/docker/data
 
-extra_packages: []
+extra_packages: 
+  - curl
+  - nano
+  - python3
+
 extra_packages_nettools: []

@@ -2,18 +2,18 @@
   - name: Create a login user
     become: yes
     user:
-      name: "{{ username }}"
-      password: "{{ userpassword | password_hash('sha512') }}"
+      name: "{{ username_sec }}"
+      password: "{{ userpassword_sec }}"
       groups: 
         - "{{ sudo_group }}"
         - users
       state: present
       append: true
   
-  - name: Ensure group "{{ username }}" exists
+  - name: Ensure group "{{ username_sec }}" exists
     become: yes
     group:
-      name: "{{ username }}"
+      name: "{{ username_sec }}"
       state: present
   
   - name: Allow 'sudo' group to have passwordless sudo
@@ -28,18 +28,18 @@
   - name: Copy the public SSH key 
     become: yes
     authorized_key:
-      user: "{{ username }}"
+      user: "{{ username_sec}}"
       state: present
       key: "{{ ssh_public_key }}"
 
   - name: Set the default shell
     user: 
-      name: "{{ username }}"
+      name: "{{ username_sec }}"
       shell: "{{ shell }}"
 
   - name: Suppress login messages
     file:
-      name: /home/{{ username }}/.hushlogin
+      name: /home/{{ username_sec }}/.hushlogin
       mode: 0644
       state: touch
       modification_time: preserve
@@ -48,8 +48,8 @@
   - name: copy '.bash_aliases' file.
     copy:
       src: files/dot_files/.bash_aliases
-      dest: /home/{{ username }}/.bash_aliases
-      owner: deploy
+      dest: /home/{{ username_sec }}/.bash_aliases
+      owner: {{ username_sec }}
       mode: 0644
   
   - name: copy '.bash_aliases' file to root user.
