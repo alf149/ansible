@@ -2,9 +2,10 @@
 - name: Create a login user
   become: true
   user:
-    name: "{{ username }}"
+    name: "{{ username_sec }}"
     create_home: yes
-    password: "{{ userpassword | password_hash('sha512') }}"
+    password: "{{ userpassword_sec }}"
+    update_password: on_create
     groups: 
       - "{{ sudo_group }}"
       - users
@@ -12,24 +13,24 @@
     append: true
   tags: users
 
-- name: Ensure group "{{ username }}" exists
+- name: Ensure group "{{ username_sec }}" exists
   become: true
   group:
-    name: "{{ username }}"
+    name: "{{ username_sec }}"
     state: present
   tags: users
   
 - name: Copy the public SSH key 
   become: true
   authorized_key:
-    user: "{{ username }}"
+    user: "{{ username_sec }}"
     state: present
-    key: "{{ ssh_public_key }}"
+    key: "{{ ssh_public_key_sec }}"
   tags: users
   
 - name: Set the default shell
   user: 
-    name: "{{ username }}"
+    name: "{{ username_sec }}"
     shell: "{{ shell }}"
   tags: users
 
@@ -43,11 +44,13 @@
     mode: 0644
   with_items: "{{ security_sudoers_passwordless }}"
   when: security_sudoers_passwordless | length > 0
+  changed_when: False
+
   tags: users
   
 - name: Suppress login messages
   file:
-    name: /home/{{ username }}/.hushlogin
+    name: /home/{{ username_sec }}/.hushlogin
     mode: 0644
     state: touch
     modification_time: preserve
@@ -57,7 +60,7 @@
 - name: copy '.bash_aliases' file. to user
   copy:
     src: files/dot_files/.bash_aliases
-    dest: /home/{{ username }}/.bash_aliases
+    dest: /home/{{ username_sec }}/.bash_aliases
     owner: deploy
     mode: 0644
   tags: users
