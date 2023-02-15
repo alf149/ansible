@@ -1,7 +1,0 @@
-enable_crowdsec: true
-
-# Packages
-extra_packages: 
-  - curl
-  - nano
-  

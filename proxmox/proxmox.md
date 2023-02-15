@@ -70,12 +70,25 @@ qm set $virtualMachineId --searchdomain lan
 ```
 
 # Clone VM template
-qm clone 9000 201 --name srv201 --full
-qm set 201 --ipconfig0 "ip=192.168.30.201/24,gw=192.168.30.1"
-qm set 201 --memory 4096
-qm set 201 --cores 1
-qm resize 201 scsi0  +8G
 
-qm clone 9000 202 --name srv202 --full
-qm set 202 --ipconfig0 "ip=192.168.30.201/24,gw=192.168.30.1"
-qm resize 201 scsi0  +8G
+```bash
+#!/bin/bash
+
+echo Type new serverId
+read virtualMachineId
+
+filename="$virtualMachineId".txt
+if [ ! -f $filename ]
+then
+    qm clone 9000 $virtualMachineId --name srv$virtualMachineId --full && \
+    qm set $virtualMachineId --ipconfig0 "ip=192.168.30."$virtualMachineId"/24,gw=192.168.30.1" && \
+    qm set $virtualMachineId --memory 1024 && \
+    qm set $virtualMachineId --cores 1 && \
+    qm resize $virtualMachineId scsi0  +8G    
+    echo Mashine $virtualMachineId is cloned
+    touch $filename
+else
+    echo Mashine $virtualMachineId _NOT_ cloned ID alrady in use
+fi
+
+```

@@ -1,9 +1,0 @@
-sudo_group: wheel
-enable_crowdsec: true
-
-# Packages
-extra_packages: 
-  - curl
-  - nano
-  
-

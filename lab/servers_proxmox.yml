@@ -8,33 +8,51 @@
 
   vars_files:
     - group_vars/secrets.yml
-
-  pre_tasks:
-    - name: update ubuntu/debian chache.
-      apt:
-        update_cache: true
-        cache_valid_time: 3600
-      when: ansible_os_family | lower == "debian"
-      changed_when: False
   
   roles:
 
     - role: system
-      vars:
-        username: "{{ username_sec }}"
-        userpassword: "{{ userpassword_sec }}" 
-        sudo_group: sudo
-        ssh_public_key: "{{ ssh_public_key_sec }}"
-        shell: /bin/bash
-        guid: "1000"
+      tags:
+        - user
+        - defaults
+
     - role: geerlingguy.security
+      tags:
+        - security
+        - defaults
+
     - role: geerlingguy.ntp
+      tags:
+          - ntp
+          - defaults
+
     - role: geerlingguy.pip
+      tags:
+        - containers
+
     - role: geerlingguy.docker
+      tags:
+        - containers
+
     - role: containers/portainer
+      tags:
+        - containers
+        - portainer
+
     - role: containers/watchtower
+      tags:
+        - containers
+        - watchtower
+
     - role: containers/uptime-kuma
+      tags:
+        - containers
+        - uptime-kuma
+
     - role: containers/littlelink
+      tags:
+        - containers
+        - littlelink
           
   tasks:
     
