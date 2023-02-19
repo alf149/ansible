@@ -11,3 +11,5 @@
 - include_tasks: user.yml
 
 - include_tasks: disable_ipv6.yml
+
+- include_tasks: other.yml

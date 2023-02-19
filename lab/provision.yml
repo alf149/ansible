@@ -1,19 +1,11 @@
-- hosts: all
-  gather_facts: yes
-  become: yes
+- name: Provision a new server on test og lab
+  hosts: all
+  gather_facts: true
+  become: true
 
   vars_files:
-  - group_vars/secrets.yml
+    - group_vars/secrets.yml
 
-  pre_tasks: 
-    - name: copy '/etc/resolv.conf' file to solve dns issues
-      copy:
-        src: files/resolv.conf
-        dest: /etc/resolv.conf
-        owner: root
-        mode: 0644
-      tags: users
- 
   roles:
 
     - role: system
@@ -21,14 +13,4 @@
         - system
         - user
         - defaults
-    
-    - role: geerlingguy.security
-      tags:
-        - security
-        - defaults
-    
-    - role: geerlingguy.ntp
-      tags:
-        - ntp 
-        - defaults
-  
+

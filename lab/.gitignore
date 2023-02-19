@@ -8,4 +8,5 @@ backup/
 out/
 facts/
 ansible.log
+.ansible-lint
 

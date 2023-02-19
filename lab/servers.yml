@@ -1,0 +1,91 @@
+---
+#
+# Tasks and roles for all hosts
+#
+- name: Default Server Playbook
+  hosts: all
+  gather_facts: true
+  become: true
+
+  vars_files:
+    - group_vars/secrets.yml
+
+  roles:
+
+    - role: system
+      tags:
+        - user
+        - defaults
+
+    - role: geerlingguy.security
+      tags:
+        - security
+        - defaults
+
+    - role: geerlingguy.ntp
+      tags:
+        - ntp
+        - defaults
+
+    - role: geerlingguy.pip
+      tags:
+        - containers
+      when:
+        - enable_containers is defined
+        - enable_containers == true
+
+    - role: geerlingguy.docker
+      tags:
+        - containers
+      when:
+        - enable_containers is defined
+        - enable_containers == true
+
+    - role: portainer
+      tags:
+        - containers
+        - portainer
+      when:
+        - enable_containers is defined
+        - enable_containers == true
+
+    - role: watchtower
+      tags:
+        - containers
+        - watchtower
+      when:
+        - enable_containers is defined
+        - enable_containers == true AND enable_watchtower == true
+
+    - role: uptime-kuma
+      tags:
+        - containers
+        - uptime-kuma
+      when:
+        - enable_containers is defined
+        - enable_containers == true AND enable_uptime-kuma == true
+
+    - role: littlelink
+      tags:
+        - containers
+        - littlelink
+      when:
+        - enable_containers is defined
+        - enable_containers == true AND enable_littlelink == true
+
+    - role: crowdsec
+      tags:
+        - crowdsec
+      when:
+        - enable_crowdsec is defined
+        - enable_crowdsec == true
+
+  tasks:
+    - name: Upgrade apt packages (Debian and Ubuntu)
+      ansible.builtin.apt:
+        upgrade: true
+        autoremove: true
+        update_cache: true
+        cache_valid_time: 3600
+      when: ansible_os_family | lower == "debian"
+      changed_when: false

@@ -1,104 +1,104 @@
 ---
 - name: Update apt packages (Debian and Ubuntu)
   when: ansible_os_family | lower == "debian"
-  apt:
-    upgrade: no
-    autoremove: no
-    update_cache: yes
+  ansible.builtin.apt:
+    upgrade: false
+    autoremove: false
+    update_cache: true
     cache_valid_time: 3600
 
 # extra packages
 - name: Install extra packages
-  package:
+  ansible.builtin.package:
     name: "{{ extra_packages }}"
     state: present
-  when: 
+  when:
     - enable_extra_packages is defined
     - enable_extra_packages == true
 
 # packages net-tools
 - name: Install extra packages net-tools
-  package:
+  ansible.builtin.package:
     name: "{{ extra_packages_nettools }}"
     state: present
-  when: 
+  when:
     - enable_extra_packages_nettools is defined
     - enable_extra_packages_nettools == true
 
 # Cockpit
 - name: Install Cockpit
-  package:
+  ansible.builtin.package:
     name: cockpit
     state: present
-  when: 
+  when:
     - enable_cockpit is defined
     - enable_cockpit == true
 
 - name: Remove Cockpit
-  package:
+  ansible.builtin.package:
     name: cockpit
-  when: 
+  when:
     - diable_cockpit is defined
     - diable_cockpit == true
 
 # auditd
 - name: Install auditd
-  package:
-    name: 
+  ansible.builtin.package:
+    name:
       - auditd
       - libauparse0
       - audispd-plugins
     state: present
-  when: 
+  when:
     - enable_auditd is defined
     - enable_auditd == true
 
 - name: Remove auditd
-  package:
-    name: 
+  ansible.builtin.package:
+    name:
       - auditd
       - libauparse0
       - audispd-plugins
     state: absent
-  when: 
+  when:
     - diable_auditd is defined
     - diable_auditd == true
 
 # rkhunter
 - name: Install rkhunter
-  package:
-    name: 
+  ansible.builtin.package:
+    name:
       - rkhunter
     state: present
-  when: 
+  when:
     - enable_rkhunter is defined
     - enable_rkhunter == true
     
 - name: Remove rkhunter
-  package:
-    name: 
+  ansible.builtin.package:
+    name:
       - rkhunter
     state: absent
-  when: 
+  when:
     - diable_rkhunter is defined
     - diable_rkhunter == true
 
 # aide
 - name: Install aide
-  package:
-    name: 
+  ansible.builtin.package:
+    name:
       - aide
     state: present
-  when: 
+  when:
     - enable_aide is defined
     - enable_auditd == true
 
 - name: Remove aide
-  package:
-    name: 
+  ansible.builtin.package:
+    name:
       - aide
     state: absent
-  when: 
+  when:
     - diable_aide is defined
     - diable_auditd == true
 
@@ -107,8 +107,8 @@
   ansible.builtin.git:
     repo: 'https://github.com/CISOfy/lynis.git'
     dest: /opt/lynis
-    update: yes
-  when: 
+    update: true
+  when:
     - enable_lynis is defined
     - enable_lynis == true
 
@@ -116,7 +116,6 @@
   ansible.builtin.file:
     path: /opt/lynis
     state: absent
-  when: 
+  when:
     - diable_lynis is defined
     - diable_lynis == true
-

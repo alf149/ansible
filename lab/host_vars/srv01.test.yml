@@ -1,0 +1,6 @@
+enable_auditd: true 
+enable_rkhunter: true 
+enable_crowdsec: true 
+crowdsec_install_firewall_bouncer: true 
+enable_extra_packages: true 
+enable_extra_packages_nettools: true
