@@ -1,5 +1,5 @@
 ---
-- name: Update apt packages cache (Debian and Ubuntu)
+- name: essential-debian | Update apt packages cache (Debian and Ubuntu)
   ansible.builtin.apt:
     upgrade: false
     autoremove: false
@@ -10,15 +10,15 @@
     - update_cache
 
 # extra packages
-- name: Install extra packages
+- name: essential-debian | Install extra packages
   ansible.builtin.package:
     name: "{{ extra_packages }}"
     state: present
   tags:
     - extra_packages
-    
+
 # packages net-tools
-- name: Install extra packages net-tools
+- name: essential-debian | Install extra packages net-tools
   ansible.builtin.package:
     name: "{{ extra_packages_nettools }}"
     state: present

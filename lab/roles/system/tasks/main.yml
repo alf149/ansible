@@ -1,15 +1,21 @@
 ---
-- include_tasks: essential-redhat.yml
+- name: Essential-redhat
+  ansible.builtin.include_tasks: essential-redhat.yml
   when: ansible_os_family | lower == 'redhat'
 
-- include_tasks: essential-debian.yml
+- name: Essential-debian
+  ansible.builtin.include_tasks: essential-debian.yml
   when: ansible_os_family | lower == 'debian'
 
-- include_tasks: yeet_snaps.yml
+- name: Del snap
+  ansible.builtin.include_tasks: del_snap.yml
   when: ansible_os_family | lower == 'debian'
 
-- include_tasks: user.yml
+- name: User
+  ansible.builtin.include_tasks: user.yml
 
-- include_tasks: disable_ipv6.yml
+- name: Disable_ipv6
+  ansible.builtin.include_tasks: disable_ipv6.yml
 
-- include_tasks: other.yml
+- name: Other
+  ansible.builtin.include_tasks: other.yml

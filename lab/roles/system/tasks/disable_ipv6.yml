@@ -1,5 +1,5 @@
 ---
-- name: Disable_ipv6 with sysctl
+- name: Disable_ipv6 | disable_ipv6 with sysctl
   ansible.posix.sysctl:
     name: "{{ item }}"
     value: "1"

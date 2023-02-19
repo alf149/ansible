@@ -1,74 +1,74 @@
----    
-- name: Create a login user
+---
+- name: User | Create a login user
   become: true
-  user:
+  ansible.builtin.user:
     name: "{{ username_sec }}"
-    create_home: yes
+    create_home: true
     password: "{{ userpassword_sec }}"
     update_password: on_create
-    groups: 
+    groups:
       - "{{ sudo_group }}"
       - users
     state: present
     append: true
   tags: users
 
-- name: Ensure group "{{ username_sec }}" exists
+- name: User | Ensure group "{{ username_sec }}" exists
   become: true
-  group:
+  ansible.builtin.group:
     name: "{{ username_sec }}"
     state: present
   tags: users
-  
-- name: Copy the public SSH key 
+
+- name: User | Copy the public SSH key
   become: true
-  authorized_key:
+  ansible.builtin.authorized_key:
     user: "{{ username_sec }}"
     state: present
     key: "{{ ssh_public_key_sec }}"
   tags: users
-  
-- name: Set the default shell
-  user: 
+
+- name: User | Set the default shell
+  ansible.builtin.user:
     name: "{{ username_sec }}"
     shell: "{{ shell }}"
   tags: users
 
-- name: Add configured user accounts to passwordless sudoers.
+- name: User | Add configured user accounts to passwordless sudoers.
   lineinfile:
     dest: /etc/sudoers
     regexp: '^{{ item }}'
     line: '{{ item }} ALL=(ALL) NOPASSWD: ALL'
     state: present
     validate: 'visudo -cf %s'
-    mode: 0644
+    mode: '644'
   with_items: "{{ security_sudoers_passwordless }}"
   when: security_sudoers_passwordless | length > 0
-  changed_when: False
-
+  changed_when: false
   tags: users
-  
-- name: Suppress login messages
-  file:
+
+- name: User | Suppress login messages
+  ansible.builtin.file:
     name: /home/{{ username_sec }}/.hushlogin
-    mode: 0644
+    mode: '644'
     state: touch
     modification_time: preserve
     access_time: preserve
   tags: users
-  
-- name: copy '.bash_aliases' file. to user
-  copy:
+
+- name: User | copy '.bash_aliases' file. to user
+  ansible.builtin.copy:
     src: files/dot_files/.bash_aliases
     dest: /home/{{ username_sec }}/.bash_aliases
     owner: "{{ username_sec }}"
-    mode: 0644
+    mode: '644'
   tags: users
 
-- name: copy '.bash_aliases' file to root user.
-  copy:
+- name: User | copy '.bash_aliases' file to root user.
+  ansible.builtin.copy:
     src: files/dot_files/.bash_aliases
     dest: /root/.bash_aliases
     owner: root
-    mode: 0644
+    mode: '644'
   tags: users
+  
