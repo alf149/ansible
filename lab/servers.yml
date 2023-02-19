@@ -2,7 +2,7 @@
 #
 # Tasks and roles for all hosts
 #
-- name: Default Server Playbook
+- name: Run on all hosts
   hosts: all
   gather_facts: true
   become: true
@@ -10,11 +10,22 @@
   vars_files:
     - group_vars/secrets.yml
 
+  pre_tasks:
+
+    - name: Upgrade apt packages (Debian and Ubuntu)
+      ansible.builtin.apt:
+        upgrade: true
+        autoremove: true
+        update_cache: true
+        cache_valid_time: 3600
+      when: ansible_os_family | lower == "debian"
+      changed_when: false
+
   roles:
 
     - role: system
       tags:
-        - user
+        - users
         - defaults
 
     - role: geerlingguy.security
@@ -27,65 +38,65 @@
         - ntp
         - defaults
 
+- name: Run on "srv01.test"
+  hosts: srv01.test
+  gather_facts: true
+  become: true
+
+  vars_files:
+    - group_vars/secrets.yml
+
+  roles:
     - role: geerlingguy.pip
       tags:
         - containers
-      when:
-        - enable_containers is defined
-        - enable_containers == true
 
     - role: geerlingguy.docker
       tags:
         - containers
-      when:
-        - enable_containers is defined
-        - enable_containers == true
 
     - role: portainer
       tags:
         - containers
         - portainer
-      when:
-        - enable_containers is defined
-        - enable_containers == true
+
+    - role: crowdsec
+      tags:
+        - crowdsec
+
+- name: Run on "srv02.test"
+  hosts: srv02.test
+  gather_facts: true
+  become: true
+
+  vars_files:
+    - group_vars/secrets.yml
+
+  roles:
+    - role: geerlingguy.pip
+      tags:
+        - containers
+
+    - role: geerlingguy.docker
+      tags:
+        - containers
+
+    - role: portainer
+      tags:
+        - containers
+        - portainer
 
     - role: watchtower
       tags:
         - containers
         - watchtower
-      when:
-        - enable_containers is defined
-        - enable_containers == true AND enable_watchtower == true
 
     - role: uptime-kuma
       tags:
         - containers
         - uptime-kuma
-      when:
-        - enable_containers is defined
-        - enable_containers == true AND enable_uptime-kuma == true
 
     - role: littlelink
       tags:
         - containers
         - littlelink
-      when:
-        - enable_containers is defined
-        - enable_containers == true AND enable_littlelink == true
-
-    - role: crowdsec
-      tags:
-        - crowdsec
-      when:
-        - enable_crowdsec is defined
-        - enable_crowdsec == true
-
-  tasks:
-    - name: Upgrade apt packages (Debian and Ubuntu)
-      ansible.builtin.apt:
-        upgrade: true
-        autoremove: true
-        update_cache: true
-        cache_valid_time: 3600
-      when: ansible_os_family | lower == "debian"
-      changed_when: false

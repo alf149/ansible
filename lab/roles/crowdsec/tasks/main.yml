@@ -1,29 +1,29 @@
 ---
-- name: debian
+- name: Crowdsec Debian
   include_tasks: debian.yml
   when: ansible_os_family | lower == "debian"
 
-- name: redhat8
+- name: Crowdsec redhat8
   include_tasks: redhat.yml
-  when: 
+  when:
     - ansible_os_family | lower == "redhat"
     - ansible_distribution_major_version  | int in [8]
 
-- name: redhat7
+- name: Crowdsec redhat7
   include_tasks: redhat7.yml
   when: 
     - ansible_os_family | lower == "redhat"
     - ansible_distribution_major_version == '7'
 
-- name: Update repo cache and install Crowdsec 
+- name: Crowdsec Update repo cache and install Crowdsec 
   package: 
-    update_cache: yes 
+    update_cache: true
     name: crowdsec
     state: present
 
 - name: Crowdsec-firewall-bouncer-nftables
   package: 
-    update_cache: yes
+    update_cache: true
     name: crowdsec-firewall-bouncer-nftables
     state: present
   when: 
@@ -31,27 +31,27 @@
     - ansible_os_family | lower == "debian"
 
 - name: Crowdsec-firewall-bouncer-iptables
-  package: 
-    update_cache: yes
+  package:
+    update_cache: true
     name: crowdsec-firewall-bouncer-iptables 
     state: present
-  when: 
+  when:
     - ansible_os_family | lower == "redhat"
     - ansible_distribution_major_version == '7'
     - crowdsec_install_firewall_bouncer == true
 
 # Update / upgrade
-- name: cscli hub update
+- name: Crowdsec cscli hub update
   command:
     cmd: cscli hub update
   changed_when: false
 
-- name: cscli hub upgrade
+- name: Crowdsec cscli hub upgrade
   command:
     cmd: cscli hub upgrade 
   register: hub_upgrade_result
   changed_when: false
-    
+
 # collections
 - name: crowdsec - install collections
   command:
@@ -61,7 +61,7 @@
   changed_when: "'overwrite' not in collections_install_result.stderr"
   when: cs_collections_list | length > 0
 
-- name: crowdsec - remove collections
+- name: Crowdsec - remove collections
   command:
     cmd: "sudo cscli collections remove {{ item }}"
   with_items: "{{ cs_collections_remove_list }}"
@@ -70,7 +70,7 @@
   when: cs_collections_remove_list | length > 0
 
 # scenarios
-- name: crowdsec - install scenarios
+- name: Crowdsec - install scenarios
   command:
     cmd: "sudo cscli scenarios install {{ item }}"
   with_items: "{{ cs_scenarios_list }}"
@@ -78,7 +78,7 @@
   changed_when: "'overwrite' not in scenarios_install_result.stderr"
   when: cs_scenarios_list | length > 0
 
-- name: crowdsec - remove scenarios
+- name: Crowdsec - remove scenarios
   command:
     cmd: "sudo cscli scenarios remove {{ item }}"
   with_items: "{{ cs_scenarios_remove_list }}"
@@ -87,15 +87,15 @@
   when: cs_scenarios_remove_list | length > 0
 
 # parsers
-- name: crowdsec - install parsers
+- name: Crowdsec - install parsers
   command:
-    cmd: "sudo cscli parsers install {{ item }}" 
+    cmd: "sudo cscli parsers install {{ item }}"
   with_items: "{{ cs_parsers_list }}"
   register: parsers_install_result
   changed_when: "'overwrite' not in parsers_install_result.stderr"
   when: cs_parsers_list | length > 0
 
-- name: crowdsec - remove parsers
+- name: Crowdsec - remove parsers
   command:
     cmd: "sudo cscli parsers remove {{ item }}"
   with_items: "{{ cs_parsers_remove_list }}"
@@ -104,7 +104,7 @@
   when: cs_parsers_remove_list | length > 0
 
 # postoverflows
-- name: crowdsec - install postoverflows
+- name: Crowdsec - install postoverflows
   command:
     cmd: "sudo cscli postoverflows install {{ item }}"
   with_items: "{{ cs_postoverflows_list }}"
@@ -112,7 +112,7 @@
   changed_when: "'overwrite' not in postoverflows_install_result.stderr"
   when: cs_postoverflows_list | length > 0
 
-- name: crowdsec - remove postoverflows
+- name: Crowdsec - remove postoverflows
   command:
     cmd: "sudo cscli postoverflows remove {{ item }}"
   with_items: "{{ cs_postoverflows_remove_list }}"
@@ -121,30 +121,30 @@
   when: cs_postoverflows_remove_list | length > 0
 
 ### Config files
-- name: crowdsec - enable/disable the Prometheus endpoint
+- name: Crowdsec - enable/disable the Prometheus endpoint
   replace:
     path: "/etc/crowdsec/config.yaml"
     after: "prometheus:"
     regexp: 'enabled:.*$'
     replace: "{{ cs_prometheus_endpoint }}"
-    backup: yes
+    backup: true
 
-- name: crowdsec - ajust ban time
+- name: Crowdsec - ajust ban time
   replace:
     path: "/etc/crowdsec/profiles.yaml"
     after: "- type: ban"
     regexp: 'duration: [0-9].*$'
     replace: "{{ cs_ban_duration }}"
-    backup: yes
+    backup: true
 
-- name: crowdsec - add jounalctl ssh to acquis.yaml
+- name: Crowdsec - add jounalctl ssh to acquis.yaml
   blockinfile:
     path: /etc/crowdsec/acquis.yaml
     insertafter: EOF
     block: "{{ cs_acquis_addon }}"
-    backup: yes
+    backup: true
 
-- name: crowdsec - cscli bash completion
+- name: Crowdsec - cscli bash completion
   ansible.builtin.shell: "cscli completion bash | sudo tee /etc/bash_completion.d/cscli"
   register: bash_completion_result
   changed_when: "'# bash completion for' not in bash_completion_result.stdout"
@@ -155,15 +155,15 @@
     name: crowdsec
     state: started
     enabled: true
-  when: 
+  when:
     - enable_crowdsec == true
 
-- name: crowdsec-firewall-bouncer enable  and  start services
+- name: Crowdsec-firewall-bouncer enable  and  start services
   service:
     name: crowdsec-firewall-bouncer
     state: started
     enabled: true
-  when: 
+  when:
     - crowdsec_install_firewall_bouncer == true 
 
 ### ------------ ####
@@ -171,12 +171,10 @@
 
 - name: Crowdsec - LAPI server setup 
   include_tasks: lapi_server.yml
-  when: 
+  when:
     - inventory_hostname in groups["cs_lapi_server"]
 
 - name: Crowdsec - LAPI agent setup 
   include_tasks: lapi_agent.yml
-  when: 
+  when:
     - inventory_hostname in groups["cs_agents"]
-
-  
