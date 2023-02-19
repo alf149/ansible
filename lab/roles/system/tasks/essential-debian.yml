@@ -1,9 +1,9 @@
 ---
 - name: Update apt packages cache (Debian and Ubuntu)
-  apt:
-    upgrade: no
-    autoremove: no
-    update_cache: yes
+  ansible.builtin.apt:
+    upgrade: false
+    autoremove: false
+    update_cache: true
     cache_valid_time: 3600
   when: ansible_os_family == 'Debian'
   tags:
@@ -11,7 +11,7 @@
 
 # extra packages
 - name: Install extra packages
-  package:
+  ansible.builtin.package:
     name: "{{ extra_packages }}"
     state: present
   tags:
@@ -19,7 +19,7 @@
     
 # packages net-tools
 - name: Install extra packages net-tools
-  package:
+  ansible.builtin.package:
     name: "{{ extra_packages_nettools }}"
     state: present
   tags:
