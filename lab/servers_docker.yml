@@ -6,6 +6,9 @@
   gather_facts: yes
   become: yes
 
+  vars_files:
+    - group_vars/secrets.yml
+
   pre_tasks:
     - name: update debian chache.
       apt:

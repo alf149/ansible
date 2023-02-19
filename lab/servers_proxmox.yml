@@ -26,33 +26,40 @@
           - ntp
           - defaults
 
-    - role: geerlingguy.pip
-      tags:
-        - containers
+    # - role: geerlingguy.pip
+    #   tags:
+    #     - containers
 
-    - role: geerlingguy.docker
-      tags:
-        - containers
+    # - role: geerlingguy.docker
+    #   tags:
+    #     - containers
 
-    - role: containers/portainer
-      tags:
-        - containers
-        - portainer
+    # - role: containers/portainer
+    #   tags:
+    #     - containers
+    #     - portainer
 
-    - role: containers/watchtower
-      tags:
-        - containers
-        - watchtower
+    # - role: containers/watchtower
+    #   tags:
+    #     - containers
+    #     - watchtower
 
-    - role: containers/uptime-kuma
-      tags:
-        - containers
-        - uptime-kuma
+    # - role: containers/uptime-kuma
+    #   tags:
+    #     - containers
+    #     - uptime-kuma
 
-    - role: containers/littlelink
+    # - role: containers/littlelink
+    #   tags:
+    #     - containers
+    #     - littlelink
+
+    - role: crowdsec
+      vars:
+        enable_crowdsec: true
+        crowdsec_install_firewall_bouncer: true
       tags:
-        - containers
-        - littlelink
+        - crowdsec
           
   tasks:
     

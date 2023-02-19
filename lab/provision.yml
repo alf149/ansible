@@ -2,6 +2,9 @@
   gather_facts: yes
   become: yes
 
+  vars_files:
+  - group_vars/secrets.yml
+
   pre_tasks: 
     - name: copy '/etc/resolv.conf' file to solve dns issues
       copy:
@@ -17,13 +20,15 @@
       tags:
         - system
         - user
+        - defaults
     
     - role: geerlingguy.security
       tags:
         - security
+        - defaults
     
     - role: geerlingguy.ntp
       tags:
         - ntp 
-
-
+        - defaults
+  
