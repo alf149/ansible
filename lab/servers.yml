@@ -46,24 +46,6 @@
   vars_files:
     - group_vars/secrets.yml
 
-  roles:
-    - role: geerlingguy.pip
-      tags:
-        - containers
-
-    - role: geerlingguy.docker
-      tags:
-        - containers
-
-    - role: portainer
-      tags:
-        - containers
-        - portainer
-
-    - role: crowdsec
-      tags:
-        - crowdsec
-
 - name: Run on "srv02.test"
   hosts: srv02.test
   gather_facts: true
