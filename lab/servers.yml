@@ -32,12 +32,15 @@
       tags:
         - security
         - defaults
+        - geerlingguy
 
     - role: geerlingguy.ntp
       tags:
         - ntp
         - defaults
+        - geerlingguy
 
+#### SRV01.test ####
 - name: Run on "srv01.test"
   hosts: srv01.test
   gather_facts: true
@@ -46,6 +49,7 @@
   vars_files:
     - group_vars/secrets.yml
 
+#### SRV02.test ####
 - name: Run on "srv02.test"
   hosts: srv02.test
   gather_facts: true

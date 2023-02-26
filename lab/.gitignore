@@ -1,6 +1,7 @@
 ### Vagrant ###
 .vagrant/
 .cache/
+.config/
 roles/alf149.**
 roles/geerlingguy.**
 collections/
