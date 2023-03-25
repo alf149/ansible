@@ -2,12 +2,13 @@
 .vagrant/
 .cache/
 .config/
-roles/alf149.**
-roles/geerlingguy.**
-collections/
+.ansible-lint
+ansible.log
 backup/
 out/
 facts/
-ansible.log
-.ansible-lint
+collections/
+roles/alf149.**
+roles/geerlingguy.**
+
 
