@@ -2,8 +2,8 @@
   dnf:
     name: oracle-instantclient-release-el8
     state: present
-    update_cache: yes
-  when: 
+    update_cache: true
+  when:
     - ansible_distribution_major_version | int in [8]
     - ansible_distribution == "OracleLinux"
 
@@ -11,8 +11,8 @@
   dnf:
     name: oracle-instantclient-basic
     state: present
-    update_cache: yes
-  when: 
+    update_cache: true
+  when:
     - ansible_distribution_major_version | int in [8]
     - ansible_distribution == "OracleLinux"
 
@@ -20,31 +20,31 @@
   dnf:
     name: oracle-instantclient-sqlplus
     state: present
-    update_cache: yes
-  when: 
+    update_cache: true
+  when:
     - ansible_distribution_major_version | int in [8]
     - ansible_distribution == "OracleLinux"
 
 - name: export PATH oracle
   shell: "echo export PATH=/usr/lib/oracle/21/client64/bin:$PATH"
-  when: 
+  when:
     - ansible_distribution_major_version | int in [8]
     - ansible_distribution == "OracleLinux"
 
-- name: copy sqlnet.ora 
+- name: copy sqlnet.ora
   copy:
-    src: files/ora/sqlnet.ora 
+    src: files/ora/sqlnet.ora
     dest: /usr/lib/oracle/21/client64/lib/network/admin/sqlnet.ora
   tags: users
-  when: 
+  when:
     - ansible_distribution_major_version | int in [8]
     - ansible_distribution == "OracleLinux"
 
-- name: copy tnsnames.ora 
+- name: copy tnsnames.ora
   copy:
-    src: files/ora/tnsnames.ora 
+    src: files/ora/tnsnames.ora
     dest: /usr/lib/oracle/21/client64/lib/network/admin/tnsnames.ora
   tags: users
-  when: 
+  when:
     - ansible_distribution_major_version | int in [8]
     - ansible_distribution == "OracleLinux"

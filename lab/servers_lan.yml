@@ -1,0 +1,51 @@
+---
+#
+# Tasks and roles for all hosts
+#
+- name: Run on all hosts
+  hosts: all
+  gather_facts: true
+  become: true
+
+  vars_files:
+    - group_vars/secrets.yml
+
+  pre_tasks:
+
+    - name: Upgrade apt packages (Debian and Ubuntu)
+      ansible.builtin.apt:
+        upgrade: true
+        autoremove: true
+        update_cache: true
+        cache_valid_time: 3600
+      when: ansible_os_family | lower == "debian"
+      changed_when: false
+
+  roles:
+
+    - role: system
+      tags:
+        - users
+        - defaults
+
+    - role: geerlingguy.security
+      tags:
+        - security
+        - defaults
+        - geerlingguy
+
+    - role: geerlingguy.ntp
+      tags:
+        - ntp
+        - defaults
+        - geerlingguy
+
+#### SRV201.LAN ####
+- name: Run on "srv201.lan"
+  hosts: srv01.test
+  gather_facts: true
+  become: true
+
+  vars_files:
+    - group_vars/secrets.yml
+

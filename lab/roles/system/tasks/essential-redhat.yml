@@ -4,16 +4,16 @@
   dnf:
     name: epel-release
     state: present
-  when: 
+  when:
     - ansible_distribution_major_version | int in [8]
     - ansible_distribution == "OracleLinux"
-  
+
 - name: Install extra packages ora8
   dnf:
     name: "{{ extra_packages }}"
     state: present
-    update_cache: yes
-  when: 
+    update_cache: true
+  when:
     - ansible_distribution_major_version | int in [8]
     - ansible_distribution == "OracleLinux"
 
@@ -22,11 +22,11 @@
     path: "/etc/yum.repos.d/oracle-epel-ol9.repo"
     search_string: '#baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL9/developer/EPEL/$basearch/'
     line: "baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL9/developer/EPEL/$basearch/"
-    backup: no
+    backup: false
     owner: root
     group: root
-    mode: 0644
-  when: 
+    mode: '644'
+  when:
     - ansible_distribution_major_version | int in [9]
     - ansible_distribution == "OracleLinux"
 
@@ -35,16 +35,16 @@
     path: "/etc/yum.repos.d/oracle-linux-ol9.repo"
     search_string: "{{ item.search_string }}"
     line: "{{ item.line }}"
-    backup: no
+    backup: false
     owner: root
     group: root
-    mode: 0644
+    mode: '644'
   with_items:
-  - search_string: "#baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL9/baseos/latest/$basearch/"
-    line: "baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL9/baseos/latest/$basearch/"
-  - search_string: "#baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL9/appstream/$basearch/"
-    line: "baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL9/appstream/$basearch/"
-  when: 
+    - search_string: "#baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL9/baseos/latest/$basearch/"
+      line: "baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL9/baseos/latest/$basearch/"
+    - search_string: "#baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL9/appstream/$basearch/"
+      line: "baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL9/appstream/$basearch/"
+  when:
     - ansible_distribution_major_version | int in [9]
     - ansible_distribution == "OracleLinux"
 
@@ -53,25 +53,25 @@
     path: "/etc/yum.repos.d/uek-ol9.repo"
     search_string: "{{ item.search_string }}"
     line: "{{ item.line }}"
-    backup: no
+    backup: false
     owner: root
     group: root
-    mode: 0644
+    mode: '644'
   with_items:
-  - search_string: "#baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL9/UEKR7/$basearch/"
-    line: "baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL9/UEKR7/$basearch/"
-  - search_string: "#baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL9/RDMA/$basearch/"
-    line: "baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL9/RDMA/$basearch/"
-  when: 
+    - search_string: "#baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL9/UEKR7/$basearch/"
+      line: "baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL9/UEKR7/$basearch/"
+    - search_string: "#baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL9/RDMA/$basearch/"
+      line: "baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL9/RDMA/$basearch/"
+  when:
     - ansible_distribution_major_version | int in [9]
     - ansible_distribution == "OracleLinux"
-    
+
 - name: Install extra packages ora9
   dnf:
     name: "{{ extra_packages }}"
     state: present
-    update_cache: yes
-  when: 
+    update_cache: true
+  when:
     - ansible_distribution_major_version | int in [9]
     - ansible_distribution == "OracleLinux"
 
@@ -80,7 +80,7 @@
   yum:
     name: oracle-epel-release-el7
     state: present
-  when: 
+  when:
     - ansible_distribution_major_version | int in [7]
     - ansible_distribution == "OracleLinux"
 
@@ -88,7 +88,8 @@
   yum:
     name: "{{ extra_packages }}"
     state: present
-  when: 
+  when:
     - ansible_distribution_major_version | int in [7]
     - ansible_distribution == "OracleLinux"
 
+  

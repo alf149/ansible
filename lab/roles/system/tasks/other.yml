@@ -73,7 +73,7 @@
   when:
     - enable_rkhunter is defined
     - enable_rkhunter == true
-    
+
 - name: Remove rkhunter
   ansible.builtin.package:
     name:
