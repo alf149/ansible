@@ -3,7 +3,7 @@
 # Tasks and roles for all hosts
 #
 - name: Run on all hosts
-  hosts: all
+  hosts: windows
   gather_facts: true
   #become: True
 
