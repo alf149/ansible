@@ -1,5 +1,5 @@
 - name: Install oracle-instantclient-release-el8 packages ora8
-  dnf:
+  ansible.builtin.dnf:
     name: oracle-instantclient-release-el8
     state: present
     update_cache: true
@@ -8,7 +8,7 @@
     - ansible_distribution == "OracleLinux"
 
 - name: Install oracle-instantclient-basic packages ora8
-  dnf:
+  ansible.builtin.dnf:
     name: oracle-instantclient-basic
     state: present
     update_cache: true
@@ -17,7 +17,7 @@
     - ansible_distribution == "OracleLinux"
 
 - name: Install oracle-instantclient-sqlplus packages ora8
-  dnf:
+  ansible.builtin.dnf:
     name: oracle-instantclient-sqlplus
     state: present
     update_cache: true
@@ -25,26 +25,32 @@
     - ansible_distribution_major_version | int in [8]
     - ansible_distribution == "OracleLinux"
 
-- name: export PATH oracle
-  shell: "echo export PATH=/usr/lib/oracle/21/client64/bin:$PATH"
+- name: Export PATH oracle
+  ansible.builtin.shell: "echo export PATH=/usr/lib/oracle/21/client64/bin:$PATH"
+  register: my_output # <- Registers the command output.
+  changed_when: my_output.rc != 0
   when:
     - ansible_distribution_major_version | int in [8]
     - ansible_distribution == "OracleLinux"
 
-- name: copy sqlnet.ora
-  copy:
+- name: Copy sqlnet.ora
+  ansible.builtin.copy:
     src: files/ora/sqlnet.ora
     dest: /usr/lib/oracle/21/client64/lib/network/admin/sqlnet.ora
-  tags: users
+    owner: root
+    group: root
+    mode: '0644'
   when:
     - ansible_distribution_major_version | int in [8]
     - ansible_distribution == "OracleLinux"
 
-- name: copy tnsnames.ora
-  copy:
+- name: Copy tnsnames.ora
+  ansible.builtin.copy:
     src: files/ora/tnsnames.ora
     dest: /usr/lib/oracle/21/client64/lib/network/admin/tnsnames.ora
-  tags: users
+    owner: root
+    group: root
+    mode: '0644'
   when:
     - ansible_distribution_major_version | int in [8]
     - ansible_distribution == "OracleLinux"

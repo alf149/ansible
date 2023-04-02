@@ -1,7 +1,7 @@
 ---
 # extra packages
 - name: Install epel-release
-  dnf:
+  ansible.builtin.dnf:
     name: epel-release
     state: present
   when:
@@ -9,7 +9,7 @@
     - ansible_distribution == "OracleLinux"
 
 - name: Install extra packages ora8
-  dnf:
+  ansible.builtin.dnf:
     name: "{{ extra_packages }}"
     state: present
     update_cache: true
@@ -17,8 +17,8 @@
     - ansible_distribution_major_version | int in [8]
     - ansible_distribution == "OracleLinux"
 
-- name: uncomment base URL line in repo file oracle-epel-ol9.repo
-  lineinfile:
+- name: Uncomment base URL line in repo file oracle-epel-ol9.repo
+  ansible.builtin.lineinfile:
     path: "/etc/yum.repos.d/oracle-epel-ol9.repo"
     search_string: '#baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL9/developer/EPEL/$basearch/'
     line: "baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL9/developer/EPEL/$basearch/"
@@ -30,8 +30,8 @@
     - ansible_distribution_major_version | int in [9]
     - ansible_distribution == "OracleLinux"
 
-- name: uncomment base URL line in repo file oracle-linux-ol9.repo
-  lineinfile:
+- name: Uncomment base URL line in repo file oracle-linux-ol9.repo
+  ansible.builtin.lineinfile:
     path: "/etc/yum.repos.d/oracle-linux-ol9.repo"
     search_string: "{{ item.search_string }}"
     line: "{{ item.line }}"
@@ -48,8 +48,8 @@
     - ansible_distribution_major_version | int in [9]
     - ansible_distribution == "OracleLinux"
 
-- name: uncomment base URL line in repo file uek-ol9.repo
-  lineinfile:
+- name: Uncomment base URL line in repo file uek-ol9.repo
+  ansible.builtin.lineinfile:
     path: "/etc/yum.repos.d/uek-ol9.repo"
     search_string: "{{ item.search_string }}"
     line: "{{ item.line }}"
@@ -67,7 +67,7 @@
     - ansible_distribution == "OracleLinux"
 
 - name: Install extra packages ora9
-  dnf:
+  ansible.builtin.dnf:
     name: "{{ extra_packages }}"
     state: present
     update_cache: true
@@ -77,7 +77,7 @@
 
 
 - name: Install epel-release oracle
-  yum:
+  ansible.builtin.yum:
     name: oracle-epel-release-el7
     state: present
   when:
@@ -85,11 +85,9 @@
     - ansible_distribution == "OracleLinux"
 
 - name: Install extra packages 7
-  yum:
+  ansible.builtin.yum:
     name: "{{ extra_packages }}"
     state: present
   when:
     - ansible_distribution_major_version | int in [7]
     - ansible_distribution == "OracleLinux"
-
-  

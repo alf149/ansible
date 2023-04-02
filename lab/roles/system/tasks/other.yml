@@ -14,7 +14,7 @@
     state: present
   when:
     - enable_extra_packages is defined
-    - enable_extra_packages == true
+    - enable_extra_packages
 
 # packages net-tools
 - name: Install extra packages net-tools
@@ -23,7 +23,7 @@
     state: present
   when:
     - enable_extra_packages_nettools is defined
-    - enable_extra_packages_nettools == true
+    - enable_extra_packages_nettools
 
 # Cockpit
 - name: Install Cockpit
@@ -32,14 +32,14 @@
     state: present
   when:
     - enable_cockpit is defined
-    - enable_cockpit == true
+    - enable_cockpit
 
 - name: Remove Cockpit
   ansible.builtin.package:
     name: cockpit
   when:
-    - diable_cockpit is defined
-    - diable_cockpit == true
+    - enable_cockpit is defined
+    - Not enable_cockpit
 
 # auditd
 - name: Install auditd
@@ -51,7 +51,7 @@
     state: present
   when:
     - enable_auditd is defined
-    - enable_auditd == true
+    - enable_auditd
 
 - name: Remove auditd
   ansible.builtin.package:
@@ -61,8 +61,8 @@
       - audispd-plugins
     state: absent
   when:
-    - diable_auditd is defined
-    - diable_auditd == true
+    - enable_auditd is defined
+    - not enable_auditd
 
 # rkhunter
 - name: Install rkhunter
@@ -72,7 +72,7 @@
     state: present
   when:
     - enable_rkhunter is defined
-    - enable_rkhunter == true
+    - enable_rkhunter
 
 - name: Remove rkhunter
   ansible.builtin.package:
@@ -80,8 +80,8 @@
       - rkhunter
     state: absent
   when:
-    - diable_rkhunter is defined
-    - diable_rkhunter == true
+    - enable_rkhunter is defined
+    - not enable_rkhunter
 
 # aide
 - name: Install aide
@@ -91,7 +91,7 @@
     state: present
   when:
     - enable_aide is defined
-    - enable_auditd == true
+    - enable_aide
 
 - name: Remove aide
   ansible.builtin.package:
@@ -99,23 +99,24 @@
       - aide
     state: absent
   when:
-    - diable_aide is defined
-    - diable_auditd == true
+    - enable_aide is defined
+    - not enable_aide
 
 # Lynis
 - name: Git Clone Lynis
   ansible.builtin.git:
     repo: 'https://github.com/CISOfy/lynis.git'
+    version: ''
     dest: /opt/lynis
     update: true
   when:
     - enable_lynis is defined
-    - enable_lynis == true
+    - enable_lynis
 
 - name: Remove Lynis
   ansible.builtin.file:
     path: /opt/lynis
     state: absent
   when:
-    - diable_lynis is defined
-    - diable_lynis == true
+    - enable_lynis is defined
+    - not enable_lynis

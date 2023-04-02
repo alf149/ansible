@@ -13,7 +13,7 @@
     append: true
   tags: users
 
-- name: User | Ensure group exists "{{ username_sec }}" 
+- name: User | Ensure group exists "{{ username_sec }}"
   become: true
   ansible.builtin.group:
     name: "{{ username_sec }}"
@@ -35,7 +35,7 @@
   tags: users
 
 - name: User | Add configured user accounts to passwordless sudoers.
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/sudoers
     regexp: '^{{ item }}'
     line: '{{ item }} ALL=(ALL) NOPASSWD: ALL'
@@ -71,4 +71,3 @@
     owner: root
     mode: '644'
   tags: users
-
