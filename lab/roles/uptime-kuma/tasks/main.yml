@@ -2,7 +2,7 @@
 - name: Container is created and running {{ container_name }}
   community.docker.docker_container:
     name: "{{ container_name }}"
-    image: "louislam/uptime-kuma:1"
+    image: "louislam/uptime-kuma:alpine"
     pull: true
     state: 'started'
     ports:
@@ -11,3 +11,4 @@
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "{{ docker_dir }}/{{ container_name }}/data:/app/data"
     restart_policy: unless-stopped
+
