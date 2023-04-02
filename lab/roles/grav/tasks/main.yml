@@ -1,0 +1,17 @@
+---
+- name: Make sure the Grav container is created and running
+  community.docker.docker_container:
+    name: "{{ container_name }}"
+    image: "dsavell/grav:admin"
+    pull: true
+    state: 'started'
+    ports:
+      - "8081:80"
+    env:
+      DUID: "1000"
+      DGID: "1000"
+    volumes:
+      - "{{ docker_dir }}/{{ container_name }}/backup:/var/www/grav/backup"
+      - "{{ docker_dir }}/{{ container_name }}//logs:/var/www/grav/log"
+      - "{{ docker_dir }}/{{ container_name }}//user:/var/www/grav/user"
+    restart_policy: unless-stopped
