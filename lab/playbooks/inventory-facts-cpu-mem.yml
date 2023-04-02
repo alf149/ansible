@@ -1,12 +1,7 @@
 ---
 - name: Ansible Variable Example Playbook
   hosts: all
-  vars:
-    # Note1: this will be undefined until service facts are gathered
-    # Note2: this time this var will be a list of all dicts
-    # dropping the initial key wich is identical to `name`
-    running_services: "{{ ansible_facts.services | dict2items
-      | selectattr('value.state', '==', 'running') | map(attribute='value') }}"
+  gather_facts: true
 
   tasks:
 
@@ -27,11 +22,19 @@
           - " IPV4 IP adr.: {{ ansible_all_ipv4_addresses }} "
           - " IPV& IP adr.: {{ ansible_all_ipv6_addresses }} "
 
-    - name: Accessing the Second Element of the list
-      ansible.builtin.debug:
-        msg: "{{ ansible_all_ipv4_addresses[1] }}"
+    # - name: Testing when clause
+    #   ansible.builtin.debug:
+    #     msg:
+    #       - " TEST OK "
+    #   when:
+    #     - ansible_processor_vcpus >= 2
+    #     - ansible_memtotal_mb > 900
 
-    - name: Show running services
-      ansible.builtin.debug:
-        msg: "{{ ansible_facts.services | dict2items
-          | selectattr('value.state', '==', 'running') | map(attribute='key') }}"
+    # - name: Accessing the Second Element of the list
+    #   ansible.builtin.debug:
+    #     msg: "{{ ansible_all_ipv4_addresses[1] }}"
+
+    # - name: Show running services
+    #   ansible.builtin.debug:
+    #     msg: "{{ ansible_facts.services | dict2items
+    #       | selectattr('value.state', '==', 'running') | map(attribute='key') }}"

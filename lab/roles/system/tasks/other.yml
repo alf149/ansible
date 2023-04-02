@@ -39,7 +39,7 @@
     name: cockpit
   when:
     - enable_cockpit is defined
-    - Not enable_cockpit
+    - not enable_cockpit
 
 # auditd
 - name: Install auditd
@@ -106,7 +106,7 @@
 - name: Git Clone Lynis
   ansible.builtin.git:
     repo: 'https://github.com/CISOfy/lynis.git'
-    version: ''
+    version: 'HEAD'
     dest: /opt/lynis
     update: true
   when:

@@ -12,8 +12,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # srv01
   config.vm.define "srv01.test", autostart: false do |srv01|
     srv01.vm.provider "libvirt" do |v|
-      v.memory = 1024
-      v.cpus = 1
+      v.memory = 4096
+      v.cpus = 4
       # v.linked_clone = true
       # v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       # v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]

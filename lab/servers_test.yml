@@ -82,10 +82,10 @@
     #     - containers
     #     - uptime-kuma
 
-    - role: littlelink
-      tags:
-        - containers
-        - littlelink
+    # - role: littlelink
+    #   tags:
+    #     - containers
+    #     - littlelink
 
     # - role: grav
     #   tags:
@@ -97,3 +97,6 @@
     #   tags:
     #     - containers
     #     - gitlab
+    #   when:
+    #     - ansible_processor_vcpus > 4
+    #     - ansible_memtotal_mb > 3800
