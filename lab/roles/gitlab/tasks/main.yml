@@ -1,0 +1,20 @@
+---
+- name: Make sure the Grav container is created and running
+  community.docker.docker_container:
+    name: "{{ container_name }}"
+    image: "gitlab/gitlab-ce"
+    hostname: 'gitlab.intra.amfelt.dk'
+    pull: true
+    state: 'started'
+    ports:
+      - "680:80"
+      - "6443:443"
+      - "622:22"
+    env:
+      external_url: "https://gitlab.intra.amfelt.dk:6443"
+    shm_size: '256m'
+    volumes:
+       - "{{ docker_dir }}/{{ container_name }}/config:/etc/gitlab"
+       - "{{ docker_dir }}/{{ container_name }}/logs:/var/log/gitlab"
+       - "{{ docker_dir }}/{{ container_name }}/data:/var/opt/gitlab"
+    restart_policy: unless-stopped
