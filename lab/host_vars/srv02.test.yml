@@ -1,2 +1,7 @@
+enable_extra_packages: true
+enable_extra_packages_nettools: true
+enable_cockpit: true
 enable_auditd: true 
 enable_rkhunter: true 
+enable_lynis: true
+
