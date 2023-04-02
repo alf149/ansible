@@ -13,7 +13,7 @@
     append: true
   tags: users
 
-- name: User | Ensure group "{{ username_sec }}" exists
+- name: User | Ensure group exists "{{ username_sec }}" 
   become: true
   ansible.builtin.group:
     name: "{{ username_sec }}"
@@ -22,7 +22,7 @@
 
 - name: User | Copy the public SSH key
   become: true
-  ansible.builtin.authorized_key:
+  ansible.posix.authorized_key:
     user: "{{ username_sec }}"
     state: present
     key: "{{ ssh_public_key_sec }}"

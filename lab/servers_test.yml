@@ -77,17 +77,23 @@
         - containers
         - watchtower
 
-    - role: uptime-kuma
-      tags:
-        - containers
-        - uptime-kuma
+    # - role: uptime-kuma
+    #   tags:
+    #     - containers
+    #     - uptime-kuma
 
     - role: littlelink
       tags:
         - containers
         - littlelink
 
-    - role: grav
-      tags:
-        - containers
-        - grav
+    # - role: grav
+    #   tags:
+    #     - containers
+    #     - grav
+
+    # - role: gitlab
+    #   # Need 2 CPU's and 2Gb memory and that is only for test lab
+    #   tags:
+    #     - containers
+    #     - gitlab
