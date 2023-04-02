@@ -1,5 +1,5 @@
 - name: Provision a new server on test og lab
-  hosts: windows:proxmox:servers
+  hosts: all
   gather_facts: true
   become: true
 
