@@ -45,4 +45,6 @@
     # - debug: var=ansible_distribution_release
     # - debug: var=ansible_distribution_version
     # - debug: var=docker_container_info
+    # - debug: var=ansible_processor_cores
+
     # #- debug: var=hostvars

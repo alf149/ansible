@@ -1,0 +1,37 @@
+---
+- name: Ansible Variable Example Playbook
+  hosts: all
+  vars:
+    # Note1: this will be undefined until service facts are gathered
+    # Note2: this time this var will be a list of all dicts
+    # dropping the initial key wich is identical to `name`
+    running_services: "{{ ansible_facts.services | dict2items
+      | selectattr('value.state', '==', 'running') | map(attribute='value') }}"
+
+  tasks:
+
+    - name: Display the variable data type
+      ansible.builtin.debug:
+        msg:
+          - " ##################### CPU INFO on HOST ########################### "
+          - " CPU processor cores: {{ ansible_processor_cores }} "
+          - " CPU processor count: {{ ansible_processor_count }} "
+          - " CPU processor threads per core: {{ ansible_processor_threads_per_core }} "
+          - " CPU processor vcpus: {{ ansible_processor_vcpus }} "
+          - " "
+          - " ##################### MEMORY INFO on HOST ######################## "
+          - " Total memory: {{ ansible_memtotal_mb }} "
+          - " Total free memory: {{ ansible_memfree_mb }} "
+          - " "
+          - " ##################### IP INFO on HOST ######################## "
+          - " IPV4 IP adr.: {{ ansible_all_ipv4_addresses }} "
+          - " IPV& IP adr.: {{ ansible_all_ipv6_addresses }} "
+
+    - name: Accessing the Second Element of the list
+      ansible.builtin.debug:
+        msg: "{{ ansible_all_ipv4_addresses[1] }}"
+
+    - name: Show running services
+      ansible.builtin.debug:
+        msg: "{{ ansible_facts.services | dict2items
+          | selectattr('value.state', '==', 'running') | map(attribute='key') }}"
