@@ -1,20 +1,24 @@
 ---
-- hosts: localhost
-  tasks: 
-  - name: Add Ansible inventory mappings to /etc/hosts
-    become: true
-    blockinfile:
-      path: /etc/hosts
-      block: |
-        {% for host in groups['servers'] %}
-        {{ hostvars[host].ansible_host }}   {{ host }}
-        {% endfor %}
-        {% for host in groups['test'] %}
-        {{ hostvars[host].ansible_host }}   {{ host }}
-        {% endfor %}
-        {% for host in groups['windows'] %}
-        {{ hostvars[host].ansible_host }}   {{ host }}
-        {% endfor %}
-        {% for host in groups['docker'] %}
-        {{ hostvars[host].ansible_host }}   {{ host }}
-        {% endfor %}
+- name: Localhost playbooks inventory to hostfile
+  hosts: localhost
+  gather_facts: true
+  become: true
+
+  tasks:
+    - name: Add Ansible inventory mappings to /etc/hosts
+      become: true
+      ansible.builtin.blockinfile:
+        path: /etc/hosts
+        block: |
+          {% for host in groups['servers'] %}
+          {{ hostvars[host].ansible_host }}   {{ host }}
+          {% endfor %}
+          {% for host in groups['test'] %}
+          {{ hostvars[host].ansible_host }}   {{ host }}
+          {% endfor %}
+          {% for host in groups['windows'] %}
+          {{ hostvars[host].ansible_host }}   {{ host }}
+          {% endfor %}
+          {% for host in groups['docker'] %}
+          {{ hostvars[host].ansible_host }}   {{ host }}
+          {% endfor %}

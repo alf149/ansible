@@ -2,25 +2,27 @@
 
 - name: Network Getting Started First Playbook
   gather_facts: true
-  hosts: all  
+  hosts: all
 
   tasks:
     - name: Get services facts
-      service_facts:
+      ansible.builtin.service_facts:
 
-    - debug: var=ansible_facts.services['crowdsec.service'] 
+    - name: Get services facts of crowdsec.service
+      ansible.builtin.debug:
+        var: ansible_facts.services['crowdsec.service']
       when:
-        - ansible_facts.services['crowdsec.service']['status'] == 'enabled'
-        - ansible_facts.services['crowdsec.service']['state'] == 'running'
+        - ansible.builtin.ansible_facts.services['crowdsec.service']['status'] == 'enabled'
+        - ansible.builtin.ansible_facts.services['crowdsec.service']['state'] == 'running'
 
-    - debug: var=ansible_facts.services['crowdsec-firewall-bouncer.service'] 
+    - name: Get services facts of crowdsec-firewall-bouncer.service
+      ansible.builtin.debug:
+        var: ansible_facts.services['crowdsec-firewall-bouncer.service']
       when:
-        - ansible_facts.services['crowdsec-firewall-bouncer.service']['status'] == 'enabled'
-        - ansible_facts.services['crowdsec-firewall-bouncer.service']['state'] == 'running'
+        - ansible.builtin.ansible_facts.services['crowdsec-firewall-bouncer.service']['status'] == 'enabled'
+        - ansible.builtin.ansible_facts.services['crowdsec-firewall-bouncer.service']['state'] == 'running'
 
-  
-  #tasks:
-  
+# tasks:
     # - debug: var=inventory_hostname
     # - debug: var=ansible_hostname
     # - debug: var=ansible_distribution
@@ -44,4 +46,3 @@
     # - debug: var=ansible_distribution_version
     # - debug: var=docker_container_info
     # #- debug: var=hostvars
-  

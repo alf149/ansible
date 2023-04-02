@@ -1,26 +1,14 @@
----  
-  - name: generate 'deploy' SSH key.
-    hosts: localhost
-    connection: local
-    vars:
-      ssh_key_filename: deploy
-    tasks:
-      - name: generate SSH key "{{ ssh_key_filename }}"
-        openssh_keypair:
-          path: "~/.ssh/{{ ssh_key_filename }}"
-          type: ed25519
-          state: present
-          force: no
-  
-  # - name: generate 'pi' SSH key.
-  #   hosts: localhost
-  #   connection: local
-  #   vars:
-  #     ssh_key_filename: pi
-  #   tasks:
-  #     - name: generate SSH key "{{ ssh_key_filename }}"
-  #       openssh_keypair:
-  #         path: "~/.ssh/{{ ssh_key_filename }}"
-  #         type: ed25519
-  #         state: present
-  #         force: no
+---
+- name: Generate 'deploy' SSH key.
+  hosts: localhost
+  connection: local
+  vars:
+    ssh_key_filename: deploy
+
+  tasks:
+    - name: Generate SSH key "{{ ssh_key_filename }}"
+      community.crypto.openssh_keypair:
+        path: "~/.ssh/{{ ssh_key_filename }}"
+        type: ed25519
+        state: present
+        force: false
