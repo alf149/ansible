@@ -1,2 +1,2 @@
-enable_auditd: false 
-enable_rkhunter: false
+enable_auditd: true 
+enable_rkhunter: true
