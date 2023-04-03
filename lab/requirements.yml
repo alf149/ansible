@@ -5,3 +5,4 @@ roles:
   - geerlingguy.pip
   - geerlingguy.docker
   - alf149.crowdsec
+  - gantsign.minikube
