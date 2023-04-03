@@ -4,5 +4,6 @@ roles:
   - geerlingguy.ntp  
   - geerlingguy.pip
   - geerlingguy.docker
+  - geerlingguy.nfs
   - alf149.crowdsec
   - gantsign.minikube
