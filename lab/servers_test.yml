@@ -59,6 +59,11 @@
     - group_vars/secrets.yml
 
   roles:
+
+    - role: geerlingguy.nfs
+      tags:
+        - nfs
+
     - role: geerlingguy.pip
       tags:
         - containers
@@ -100,3 +105,9 @@
     #   when:
     #     - ansible_processor_vcpus > 4
     #     - ansible_memtotal_mb > 3800
+
+    # - role: gantsign.minikube
+    #   tags:
+    #     - containers
+    #     - kube
+    #     - minikube

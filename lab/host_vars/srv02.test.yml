@@ -5,3 +5,5 @@ enable_auditd: false
 enable_rkhunter: false
 enable_lynis: false
 
+nfs_exports: ["/opt    192.168.56.0/24(rw,sync,no_root_squash)"]
+
