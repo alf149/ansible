@@ -108,7 +108,6 @@
     repo: 'https://github.com/CISOfy/lynis.git'
     version: 'HEAD'
     dest: /opt/lynis
-    update: true
   when:
     - enable_lynis is defined
     - enable_lynis
