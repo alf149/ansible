@@ -1,0 +1,24 @@
+---
+- name: Create Gitea network
+  community.docker.docker_network:
+    name: "gitea"
+
+- name: Make sure the Gitea container is created and running
+  community.docker.docker_container:
+    name: "{{ container_name }}"
+    image: "gitea/gitea:1.19.0"
+    pull: true
+    state: "started"
+    networks:
+      - name: "gitea"
+    ports:
+      - "3080:3000"
+      - "2222:22"
+    env:
+      DUID: "1000"
+      DGID: "1000"
+    volumes:
+      - "{{ docker_dir }}/{{ container_name }}/gitea:/data"
+      - "{{ docker_dir }}/{{ container_name }}//etc/timezone:/etc/timezone:ro"
+      - "{{ docker_dir }}/{{ container_name }}//etc/localtime:/etc/localtime:ro"
+    restart_policy: unless-stopped
