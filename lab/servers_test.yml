@@ -82,6 +82,11 @@
         - containers
         - watchtower
 
+    - role: gitea
+      tags:
+        - containers
+        - gitea
+
     # - role: uptime-kuma
     #   tags:
     #     - containers
