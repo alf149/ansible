@@ -105,8 +105,8 @@
 # Lynis
 - name: Git Clone Lynis
   ansible.builtin.git:
-    repo: 'https://github.com/CISOfy/lynis.git'
-    version: 'HEAD'
+    repo: "https://github.com/CISOfy/lynis.git"
+    version: "HEAD"
     dest: /opt/lynis
   when:
     - enable_lynis is defined
