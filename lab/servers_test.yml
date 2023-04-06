@@ -97,22 +97,4 @@
     #     - containers
     #     - littlelink
 
-    # - role: grav
-    #   tags:
-    #     - containers
-    #     - grav
 
-    # - role: gitlab
-    #   # Need 2 CPU's and 2Gb memory and that is only for test lab
-    #   tags:
-    #     - containers
-    #     - gitlab
-    #   when:
-    #     - ansible_processor_vcpus > 4
-    #     - ansible_memtotal_mb > 3800
-
-    # - role: gantsign.minikube
-    #   tags:
-    #     - containers
-    #     - kube
-    #     - minikube
