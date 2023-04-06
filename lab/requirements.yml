@@ -7,4 +7,6 @@ roles:
   - geerlingguy.nfs
   - geerlingguy.clamav
   - alf149.crowdsec
-  - gantsign.minikube
+
+collections:
+  - devsec.hardening
