@@ -22,7 +22,8 @@
       changed_when: false
 
   collections:
-    - devsec.hardening
+
+    - collection: devsec.hardening
 
   roles:
 
