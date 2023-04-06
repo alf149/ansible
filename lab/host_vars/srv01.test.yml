@@ -1,5 +1,9 @@
-enable_auditd: false 
-enable_rkhunter: false
+enable_extra_packages: false
+enable_extra_packages_nettools: false
+enable_cockpit: false
+enable_auditd: true
+enable_rkhunter: true
+enable_lynis: true
 
 nfs_exports: ["/opt    192.168.56.0/24(rw,sync,no_root_squash)"]
 
