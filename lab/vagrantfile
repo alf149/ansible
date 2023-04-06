@@ -12,11 +12,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # srv01
   config.vm.define "srv01.test", autostart: false do |srv01|
     srv01.vm.provider "libvirt" do |v|
-      v.memory = 4096
-      v.cpus = 4
-      # v.linked_clone = true
-      # v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      # v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+      v.memory = 2048
+      v.cpus = 2
     end
     srv01.vm.box = "generic/ubuntu2204"
     srv01.vm.box_check_update = false
@@ -25,7 +22,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     srv01.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.config_file = "ansible.cfg"
-      #ansible.galaxy_role_file = "requirements.yml"
       ansible.playbook = "provision.yml"
     end
   end
@@ -33,11 +29,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # srv02
   config.vm.define "srv02.test", autostart: false do |srv02|
     srv02.vm.provider "libvirt" do |v|
-      v.memory = 4096
-      v.cpus = 4
-      # v.linked_clone = true
-      # v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      # v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+      v.memory = 2048
+      v.cpus = 2
     end
     srv02.vm.box = "generic/ubuntu2204"
     srv02.vm.box_check_update = false
@@ -55,9 +48,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     srv03.vm.provider "libvirt" do |v|
       v.memory = 1024
       v.cpus = 1
-      # v.linked_clone = true
-      # v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      # v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
     srv03.vm.box = "generic/ubuntu2204"
     srv03.vm.box_check_update = false
@@ -75,9 +65,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     srv04.vm.provider "libvirt" do |v|
       v.memory = 1024
       v.cpus = 1
-      # v.linked_clone = true
-      # v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      # v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
     srv04.vm.box = "generic/ubuntu2204"
     srv04.vm.box_check_update = false
@@ -89,68 +76,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       ansible.playbook = "provision.yml"
     end
   end
+  
   #### Testing distroes
   #
-
-  # #ubt2110  generic/ubuntu2110
-  # config.vm.define "ubt2110.test", autostart: false do |ubt2110|
-  #   ubt2110.vm.provider "virtualbox" do |v|
-  #     v.memory = 1024
-  #     v.cpus = 1
-  #     v.linked_clone = true
-  #     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-  #     v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-  #   end
-  #   ubt2110.vm.box = "generic/ubuntu2110"
-  #   ubt2110.vm.box_check_update = false
-  #   ubt2110.vm.hostname = "ubt2110.test"
-  #   ubt2110.vm.network :private_network, ip: "192.168.56.30", hostname: true
-  #   ubt2110.vm.provision "ansible" do |ansible|
-  #     ansible.compatibility_mode = "2.0"
-  #     ansible.config_file = "ansible.cfg"
-  #     ansible.playbook = "provision.yml"
-  #   end
-  # end
-
-  # #deb10 generic/debian10
-  # config.vm.define "deb10.test", autostart: false do |deb10|
-  #   deb10.vm.provider "virtualbox" do |v|
-  #     v.memory = 1024
-  #     v.cpus = 1
-  #     v.linked_clone = true
-  #     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-  #     v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-  #   end
-  #   deb10.vm.box = "generic/debian10"
-  #   deb10.vm.box_check_update = false
-  #   deb10.vm.hostname = "deb10.test"
-  #   deb10.vm.network :private_network, ip: "192.168.56.40", hostname: true
-  #   deb10.vm.provision "ansible" do |ansible|
-  #     ansible.compatibility_mode = "2.0"
-  #     ansible.config_file = "ansible.cfg"
-  #     ansible.playbook = "provision.yml"
-  #   end
-  # end
-
-  # #deb11 generic/debian11
-  # config.vm.define "deb11.test", autostart: false do |deb11|
-  #   deb11.vm.provider "virtualbox" do |v|
-  #     v.memory = 1024
-  #     v.cpus = 1
-  #     v.linked_clone = true
-  #     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-  #     v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-  #   end
-  #   deb11.vm.box = "generic/debian11"
-  #   deb11.vm.box_check_update = false
-  #   deb11.vm.hostname = "deb11.test"
-  #   deb11.vm.network :private_network, ip: "192.168.56.41", hostname: true
-  #   deb11.vm.provision "ansible" do |ansible|
-  #     ansible.compatibility_mode = "2.0"
-  #     ansible.config_file = "ansible.cfg"
-  #     ansible.playbook = "provision.yml"
-  #   end
-  # end
 
   # #roc8 generic/rocky8
   # config.vm.define "roc8.test", autostart: false do |roc8|
@@ -190,28 +118,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #   alma8.vm.hostname = "alma8.test"
   #   alma8.vm.network :private_network, ip: "192.168.56.60", hostname: true
   #   alma8.vm.provision "ansible" do |ansible|
-  #     ansible.compatibility_mode = "2.0"
-  #     ansible.config_file = "ansible.cfg"
-  #     ansible.playbook = "provision.yml"
-  #   end
-  # end
-
-  # #ora7
-  # config.vm.define "ora7.test", autostart: false do |ora7|
-  #   ora7.vm.provider "virtualbox" do |v|
-  #     v.memory = 1024
-  #     v.cpus = 1
-  #     v.linked_clone = true
-  #     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-  #     v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-  #     v.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
-  #     v.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
-  #   end
-  #   ora7.vm.box = "generic/oracle7"
-  #   ora7.vm.box_check_update = false
-  #   ora7.vm.hostname = "ora7.test"
-  #   ora7.vm.network :private_network, ip: "192.168.56.70", hostname: true
-  #   ora7.vm.provision "ansible" do |ansible|
   #     ansible.compatibility_mode = "2.0"
   #     ansible.config_file = "ansible.cfg"
   #     ansible.playbook = "provision.yml"
@@ -259,37 +165,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #   end
   # end
 
-  # #Windows-server 2019/2022
-  # #win2019
-  # config.vm.define "win2019.test", autostart: false do |win2019|
-  #   win2019.vm.provider "libvirt" do |v|
-  #     v.gui = false
-  #     v.memory = 4096
-  #     v.cpus = 2
-  #     v.linked_clone = true
-  #     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-  #     v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-  #   end
-  #   win2019.vm.box = "gusztavvargadr/windows-server"
-  #   win2019.vm.box_check_update = false
-  #   win2019.vm.hostname = "win2019"
-  #   win2019.vm.network :private_network, ip: "192.168.56.80", hostname: true
-  #   win2019.vm.network :forwarded_port, guest: 3389, host: 53389, auto_correct: true
-  #   win2019.vm.network :forwarded_port, guest: 80, host: 680, auto_correct: true
-  #   win2019.vm.network :forwarded_port, guest: 443, host: 6443, auto_correct: true
-  #   win2019.vm.boot_timeout = 300
-  #   win2019.winrm.execution_time_limit = "PT2H"
-  #   #win2019.winrm.transport = :ssl
-  #   win2019.winrm.ssl_peer_verification = false
-  #   win2019.winrm.max_tries = 50
-  #   win2019.winrm.retry_delay = 10
-  #   win2019.vm.provision "shell", path: "files/windows/setup_winrm.ps1"
-  # end
-
   #win2022
   config.vm.define "win2022.test", autostart: false do |win2022|
     win2022.vm.provider "libvirt" do |v|
-      #v.gui = false
       v.memory = 4096
       v.cpus = 2
     end
@@ -302,11 +180,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     win2022.vm.network :forwarded_port, guest: 443, host: 6443, auto_correct: true
     win2022.vm.boot_timeout = 300
     win2022.winrm.execution_time_limit = "PT2H"
-    #win2022.winrm.transport = :ssl
     win2022.winrm.ssl_peer_verification = false
     win2022.winrm.max_tries = 50
     win2022.winrm.retry_delay = 10
-    #win2022.vm.provision "shell", path: "server_windows.yml"
     win2022.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.config_file = "ansible.cfg"
@@ -314,29 +190,5 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
-  # #Windows-11
-  # #w
-  # config.vm.define "win11.test", autostart: false do |win11|
-  #   win11.vm.provider "libvirt" do |v|
-  #     v.gui = false
-  #     v.memory = 4096
-  #     v.cpus = 2
-  #     v.linked_clone = true
-  #     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-  #     v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-  #   end
-  #   win11.vm.box = "gusztavvargadr/windows-11-21h2-enterprise"
-  #   win11.vm.box_check_update = false
-  #   win11.vm.hostname = "win11"
-  #   win11.vm.network :private_network, ip: "192.168.56.85", hostname: true
-  #   win11.vm.network :forwarded_port, guest: 80, host: 680, auto_correct: true
-  #   win11.vm.network :forwarded_port, guest: 443, host: 6443, auto_correct: true
-  #   win11.vm.boot_timeout = 300
-  #   win11.winrm.execution_time_limit = "PT2H"
-  #   win11.winrm.ssl_peer_verification = false
-  #   win11.winrm.max_tries = 50
-  #   win11.winrm.retry_delay = 10
-  #   #win11.vm.provision "shell", path: "files/windows/setup_winrm.ps1"
-  # end
 end
 
