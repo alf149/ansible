@@ -10,18 +10,27 @@
   vars_files:
     - group_vars/secrets.yml
 
-  # pre_tasks:
+  pre_tasks:
 
-  #   - name: Upgrade apt packages (Debian and Ubuntu)
-  #     ansible.builtin.apt:
-  #       upgrade: true
-  #       autoremove: true
-  #       update_cache: true
-  #       cache_valid_time: 3600
-  #     when: ansible_os_family | lower == "debian"
-  #     changed_when: false
+    - name: Upgrade apt packages (Debian and Ubuntu)
+      ansible.builtin.apt:
+        upgrade: true
+        autoremove: true
+        update_cache: true
+        cache_valid_time: 3600
+      when: ansible_os_family | lower == "debian"
+      changed_when: false
+
+  collections:
+    - devsec.hardening
 
   roles:
+
+    - role: devsec.hardening.os_hardening
+      vars:
+      sysctl_overwrite:
+        # Enable IPv4 traffic forwarding.
+        net.ipv4.ip_forward: 1
 
     - role: system
       tags:
@@ -37,6 +46,12 @@
     - role: geerlingguy.ntp
       tags:
         - ntp
+        - defaults
+        - geerlingguy
+
+    - role: geerlingguy.clamav
+      tags:
+        - clamav
         - defaults
         - geerlingguy
 
