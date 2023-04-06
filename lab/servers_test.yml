@@ -21,17 +21,17 @@
       when: ansible_os_family | lower == "debian"
       changed_when: false
 
-  collections:
+  # collections:
 
-    - collection: devsec.hardening
+  #   - collection: devsec.hardening
 
   roles:
 
-    - role: devsec.hardening.os_hardening
-      vars:
-      sysctl_overwrite:
-        # Enable IPv4 traffic forwarding.
-        net.ipv4.ip_forward: 1
+    # - role: devsec.hardening.os_hardening
+    #   vars:
+    #   sysctl_overwrite:
+    #     # Enable IPv4 traffic forwarding.
+    #     net.ipv4.ip_forward: 1
 
     - role: system
       tags:
