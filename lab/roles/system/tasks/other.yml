@@ -37,6 +37,7 @@
 - name: Remove Cockpit
   ansible.builtin.package:
     name: cockpit
+    state: absent
   when:
     - enable_cockpit is defined
     - not enable_cockpit
