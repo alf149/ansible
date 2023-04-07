@@ -18,12 +18,10 @@
         autoremove: true
         update_cache: true
         cache_valid_time: 3600
-      when: ansible_os_family | lower == "debian"
+      when:
+        - ansible_os_family | lower == "debian"
+        - enable_os_update
       changed_when: false
-
-  # collections:
-
-  #   - collection: devsec.hardening
 
   roles:
 
@@ -32,21 +30,24 @@
     #   sysctl_overwrite:
     #     # Enable IPv4 traffic forwarding.
     #     net.ipv4.ip_forward: 1
+    #   when:
+    #     - enable_os_hardening is defined
+    #     - enable_os_hardening
 
     - role: system
       tags:
         - users
         - defaults
 
-    - role: geerlingguy.security
-      tags:
-        - security
-        - defaults
-        - geerlingguy
-
     - role: geerlingguy.ntp
       tags:
         - ntp
+        - defaults
+        - geerlingguy
+
+    - role: geerlingguy.security
+      tags:
+        - security
         - defaults
         - geerlingguy
 
@@ -103,14 +104,14 @@
         - containers
         - gitea
 
-    # - role: uptime-kuma
-    #   tags:
-    #     - containers
-    #     - uptime-kuma
+    - role: uptime-kuma
+      tags:
+        - containers
+        - uptime-kuma
 
-    # - role: littlelink
-    #   tags:
-    #     - containers
-    #     - littlelink
+    - role: littlelink
+      tags:
+        - containers
+        - littlelink
 
 
