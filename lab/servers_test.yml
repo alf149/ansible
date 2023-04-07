@@ -94,24 +94,24 @@
         - containers
         - portainer
 
-    - role: watchtower
-      tags:
-        - containers
-        - watchtower
+    # - role: watchtower
+    #   tags:
+    #     - containers
+    #     - watchtower
 
-    - role: gitea
-      tags:
-        - containers
-        - gitea
+    # - role: gitea
+    #   tags:
+    #     - containers
+    #     - gitea
 
-    - role: uptime-kuma
-      tags:
-        - containers
-        - uptime-kuma
+    # - role: uptime-kuma
+    #   tags:
+    #     - containers
+    #     - uptime-kuma
 
-    - role: littlelink
-      tags:
-        - containers
-        - littlelink
+    # - role: littlelink
+    #   tags:
+    #     - containers
+    #     - littlelink
 
 
