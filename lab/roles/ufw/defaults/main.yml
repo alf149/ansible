@@ -1,23 +1,21 @@
 ---
-enable_ufw: false
-resetufw: false
-enable_crowdsec: true
-enable_auditd: false
-enable_aide: false
-enable_lynis: false
-enable_rkhunter: false
-enable_web80: false
-enable_web443: false
-enable_extra_packages_nettools: false
-enable_portainer: false
-enable_watchtower: false
-enable_pihole: false
-enable_wireguard: false
-enable_cockpit: false
-enable_ufw_deny_out: false
 
-local_lan_ufw:
-  - 10.0.0.0/8 
-  - 172.16.0.0/12
-  - 192.168.0.0/16 
-  - fd00::/8
+# UFW install configuration
+ufw_packages:
+  - ufw
+
+# UFW basic configuration
+ufw_ipv6: "yes"
+ufw_default_input_policy: DROP
+ufw_default_output_policy: ACCEPT
+ufw_default_forward_policy: DROP
+ufw_default_application_policy: SKIP
+ufw_logging: "off"
+
+# UFW service configuration
+ufw_state: enabled
+ufw_reset: yes
+
+# UFW custom configuration
+ufw_rules: [{ port: 22, rule: allow }]
+ufw_applications: []
