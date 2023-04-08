@@ -1,0 +1,32 @@
+---
+enable_ufw: true
+resetufw: false
+
+# Outgoing
+enable_ufw_deny_out: false
+
+# Default ports Outgoing
+enable_out_ssh_22: true
+enable_out_dns_53: true
+enable_out_web_80: true
+enable_out_ntp_123: true
+
+enable_out_web_443: true
+
+
+
+# Default ports incomming
+enable_web80: false
+enable_web443: false
+
+# System ports incomming
+enable_crowdsec: true
+enable_portainer: false
+enable_watchtower: false
+enable_cockpit: false
+
+local_lan_ufw:
+  - 10.0.0.0/8 
+  - 172.16.0.0/12
+  - 192.168.0.0/16 
+  - fd00::/8
