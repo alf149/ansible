@@ -48,3 +48,21 @@
 
   vars_files:
     - group_vars/secrets.yml
+
+#### SRV202.LAN ####
+- name: Run on "srv202.lan"
+  hosts: srv01.test
+  gather_facts: true
+  become: true
+
+  vars_files:
+    - group_vars/secrets.yml
+
+#### SRV203.LAN ####
+- name: Run on "srv203.lan"
+  hosts: srv01.test
+  gather_facts: true
+  become: true
+
+  vars_files:
+    - group_vars/secrets.yml
