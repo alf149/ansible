@@ -6,7 +6,7 @@ remove_persistent_data: false
 remove_existing_container: false
 persistent_data_path: "{{ docker_dir }}:/data"
 container_image: portainer/portainer:{{ version }}
-container_name: portainer 
+container_name: portainer
 container_labels: {}
 container_network:
 container_restart_policy: always
@@ -27,4 +27,3 @@ admin_password: "{{ portainer_password_sec }}"
 
 # Endpoints
 endpoint_name: local
-

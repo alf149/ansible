@@ -1,5 +1,5 @@
 ---
-- name: "Deploy Portainer to {{ inventory_hostname }}"
+- name: Deploy Portainer
   community.docker.docker_container:
     name: "{{ container_name }}"
     image: "{{ container_image }}"
@@ -16,23 +16,25 @@
       - "{{ persistent_data_path }}"
   register: portainer_docker
 
-- set_fact:
+- name: Set fact - portainer is runinning
+  ansible.builtin.set_fact:
     portainer_is_running: "{{ portainer_docker.container.State.Running }}"
 
-- set_fact:
+- name: Set fact - portainer endpoint
+  ansible.builtin.set_fact:
     portainer_endpoint: "http://{{ portainer_docker.container.NetworkSettings.IPAddress }}:{{ host_port }}/api"
 
 - name: "Check!!!"
-  debug:
+  ansible.builtin.debug:
     msg: "{{ portainer_is_running }} // {{ portainer_endpoint }}"
 
 - name: Check container status
-  fail:
+  ansible.builtin.fail:
     msg: "Portainer did not start: {{ portainer_is_running }}"
   when: not portainer_is_running
 
 - name: Wait for Portainer web interface to get available
-  uri:
+  ansible.builtin.uri:
     url: "http://{{ portainer_docker.container.NetworkSettings.IPAddress }}:{{ host_port }}"
     method: GET
   register: wait_portainer_result

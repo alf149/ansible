@@ -1,10 +1,12 @@
 ---
-- include_tasks: clean-up.yml
+- name: Include clean-up
+  ansible.builtin.include_tasks: clean-up.yml
 
-- include_tasks: install.yml
+- name: Include install
+  ansible.builtin.include_tasks: install.yml
 
 - name: Configure admin user password
-  uri:
+  ansible.builtin.uri:
     url: "{{ portainer_endpoint }}/users/admin/init"
     method: POST
     return_content: true
@@ -14,7 +16,7 @@
   when: admin_user and admin_password is defined
 
 - name: Generate authentication token
-  uri:
+  ansible.builtin.uri:
     url: "{{ portainer_endpoint }}/auth"
     method: POST
     return_content: true
@@ -24,13 +26,13 @@
   when: admin_user and admin_password is defined
 
 - name: Define Endpoint
-  uri:
+  ansible.builtin.uri:
     url: "{{ portainer_endpoint }}/endpoints"
     method: POST
     return_content: true
     body_format: form-multipart
     headers:
-      Authorization: Bearer {{ (auth_token.content|from_json).jwt }}
+      Authorization: Bearer {{ (auth_token.content | from_json).jwt }}
     body:
       EndpointCreationType: "1"
       Name: "{{ endpoint_name }}"
@@ -38,4 +40,3 @@
   when:
     - remove_existing_container
     - remove_persistent_data
-
