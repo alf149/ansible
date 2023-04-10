@@ -1,4 +1,5 @@
 enable_os_update: false
 
-nfs_exports: ["/opt    192.168.56.0/24(rw,sync,no_root_squash)"]
+nfs_exports: ["/backup    *(rw,sync,no_root_squash)", "/srv    *(rw,sync,no_root_squash)", "/opt    *(rw,sync,no_root_squash)"]
+
 

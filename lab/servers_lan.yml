@@ -18,7 +18,9 @@
         autoremove: true
         update_cache: true
         cache_valid_time: 3600
-      when: ansible_os_family | lower == "debian"
+      when:
+        - ansible_os_family | lower == "debian"
+        - enable_os_update
       changed_when: false
 
   roles:
@@ -42,7 +44,7 @@
 
 #### SRV201.LAN ####
 - name: Run on "srv201.lan"
-  hosts: srv01.test
+  hosts: srv201.lan
   gather_facts: true
   become: true
 
@@ -51,18 +53,16 @@
 
 #### SRV202.LAN ####
 - name: Run on "srv202.lan"
-  hosts: srv01.test
+  hosts: srv202.lan
   gather_facts: true
   become: true
 
   vars_files:
     - group_vars/secrets.yml
 
-#### SRV203.LAN ####
-- name: Run on "srv203.lan"
-  hosts: srv01.test
-  gather_facts: true
-  become: true
+  roles:
 
-  vars_files:
-    - group_vars/secrets.yml
+    - role: geerlingguy.nfs
+      tags:
+        - nfs
+

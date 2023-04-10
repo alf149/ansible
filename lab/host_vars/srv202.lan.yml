@@ -1,0 +1,5 @@
+enable_os_update: true
+
+nfs_exports: ["/nfs/backup    *(rw,sync,no_root_squash)", "/nfs/dokcer    *(rw,sync,no_root_squash)"]
+
+
