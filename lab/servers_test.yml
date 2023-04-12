@@ -51,11 +51,7 @@
         - defaults
         - geerlingguy
 
-    - role: geerlingguy.clamav
-      tags:
-        - clamav
-        - defaults
-        - geerlingguy
+
 
 #### SRV01.test ####
 - name: Run on "srv01.test"
@@ -77,6 +73,12 @@
 
   roles:
 
+    - role: geerlingguy.clamav
+      tags:
+        - clamav
+        - defaults
+        - geerlingguy
+
     - role: geerlingguy.nfs
       tags:
         - nfs
@@ -94,10 +96,10 @@
         - containers
         - portainer
 
-    # - role: watchtower
-    #   tags:
-    #     - containers
-    #     - watchtower
+    - role: watchtower
+      tags:
+        - containers
+        - watchtower
 
     # - role: gitea
     #   tags:
@@ -109,9 +111,9 @@
     #     - containers
     #     - uptime-kuma
 
-    # - role: littlelink
-    #   tags:
-    #     - containers
-    #     - littlelink
+    - role: littlelink
+      tags:
+        - containers
+        - littlelink
 
 
