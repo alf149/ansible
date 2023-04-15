@@ -7,57 +7,35 @@
   tasks:
     - name: Add Ansible inventory mappings to ~/.ssh/config
       ansible.builtin.blockinfile:
-      path: /home/rolf/.ssh/config
-      block: |
-        {% for host in groups['servers'] %}
-        host {{ host }}
-            HostName {{ hostvars[host].ansible_host }}
-            User deploy
-            Port 22
-            IdentityFile ~/.ssh/deploy
-            StrictHostKeyChecking no
-            UserKnownHostsFile /dev/null
+        path: /home/rolf/.ssh/config
+        block: |
+            {% for host in groups['proxmox'] %}
+            host {{ host }}
+                HostName {{ hostvars[host].ansible_host }}
+                User deploy
+                Port 22
+                IdentityFile ~/.ssh/deploy
+                StrictHostKeyChecking no
+                UserKnownHostsFile /dev/null
 
-        {% endfor %}
-        {% for host in groups['test'] %}
-        host {{ host }}
-            HostName {{ hostvars[host].ansible_host }}
-            User deploy
-            Port 22
-            IdentityFile ~/.ssh/deploy
-            StrictHostKeyChecking no
-            UserKnownHostsFile /dev/null
+            {% endfor %}
+            {% for host in groups['servers'] %}
+            host {{ host }}
+                HostName {{ hostvars[host].ansible_host }}
+                User deploy
+                Port 22
+                IdentityFile ~/.ssh/deploy
+                StrictHostKeyChecking no
+                UserKnownHostsFile /dev/null
 
-        {% endfor %}
-        {% for host in groups['windows'] %}
-        host {{ host }}
-            HostName {{ hostvars[host].ansible_host }}
-            User deploy
-            Port 22
-            IdentityFile ~/.ssh/deploy
-            StrictHostKeyChecking no
-            UserKnownHostsFile /dev/null
+            {% endfor %}
+            {% for host in groups['windows'] %}
+            host {{ host }}
+                HostName {{ hostvars[host].ansible_host }}
+                User deploy
+                Port 22
+                IdentityFile ~/.ssh/deploy
+                StrictHostKeyChecking no
+                UserKnownHostsFile /dev/null
 
-        {% endfor %}
-
-        {% for host in groups['docker'] %}
-        host {{ host }}
-            HostName {{ hostvars[host].ansible_host }}
-            User deploy
-            Port 22
-            IdentityFile ~/.ssh/deploy
-            StrictHostKeyChecking no
-            UserKnownHostsFile /dev/null
-
-        {% endfor %}
-
-        {% for host in groups['proxmox'] %}
-        host {{ host }}
-            HostName {{ hostvars[host].ansible_host }}
-            User deploy
-            Port 22
-            IdentityFile ~/.ssh/deploy
-            StrictHostKeyChecking no
-            UserKnownHostsFile /dev/null
-
-        {% endfor %}
+            {% endfor %}
