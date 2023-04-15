@@ -2,6 +2,7 @@
 #
 # Tasks and roles for all hosts
 #
+
 - name: Run on all hosts
   hosts: proxmox
   gather_facts: true
@@ -42,6 +43,15 @@
         - defaults
         - geerlingguy
 
+#### pi1.LAN ####
+- name: Run on "pi1.lan"
+  hosts: pi1.lan
+  gather_facts: true
+  become: true
+
+  vars_files:
+    - group_vars/secrets.yml
+
 #### SRV201.LAN ####
 - name: Run on "srv201.lan"
   hosts: srv201.lan
@@ -62,7 +72,6 @@
 
   roles:
 
-    - role: geerlingguy.nfs
+    - role: nfs
       tags:
         - nfs
-
