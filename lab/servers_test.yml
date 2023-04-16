@@ -2,7 +2,7 @@
 #
 # Tasks and roles for all hosts
 #
-- name: Run on all hosts
+- name: Run on all test servers
   hosts: servers
   gather_facts: true
   become: true
@@ -43,13 +43,11 @@
       tags:
         - ntp
         - defaults
-        - geerlingguy
 
     - role: geerlingguy.security
       tags:
         - security
         - defaults
-        - geerlingguy
 
 
 
@@ -76,8 +74,6 @@
     - role: geerlingguy.clamav
       tags:
         - clamav
-        - defaults
-        - geerlingguy
 
     - role: geerlingguy.nfs
       tags:

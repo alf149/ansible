@@ -1,0 +1,26 @@
+---
+- name: Run on all servers
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Check the uptime
+      ansible.builtin.command: uptime
+      register: uptime_pre_reboot
+      changed_when: uptime_pre_reboot.rc != 0
+
+    - name: Debug uptime_pre_reboot
+      ansible.builtin.debug:
+        msg: "{{ uptime_pre_reboot.stdout }}"
+
+    - name: Unconditionally reboot the machine with all defaults
+      ansible.builtin.reboot:
+
+    - name: Check the uptime after reboot
+      ansible.builtin.command: uptime
+      register: uptime_post_reboot
+      changed_when: uptime_post_reboot.rc != 0
+
+    - name: Debug uptime_post_reboot
+      ansible.builtin.debug:
+        msg: "{{ uptime_post_reboot.stdout }}"
