@@ -1,1 +1,0 @@
-sudo mount -t nfs 192.168.56.22:/opt /mnt/srv02_test
