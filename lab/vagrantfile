@@ -46,8 +46,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # srv03
   config.vm.define "srv03.test", autostart: false do |srv03|
     srv03.vm.provider "libvirt" do |v|
-      v.memory = 1024
-      v.cpus = 1
+      v.memory = 2048
+      v.cpus = 2
     end
     srv03.vm.box = "generic/ubuntu2204"
     srv03.vm.box_check_update = false
@@ -63,8 +63,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # srv04
   config.vm.define "srv04.test", autostart: false do |srv04|
     srv04.vm.provider "libvirt" do |v|
-      v.memory = 1024
-      v.cpus = 1
+      v.memory = 2048
+      v.cpus = 2
     end
     srv04.vm.box = "generic/ubuntu2204"
     srv04.vm.box_check_update = false
