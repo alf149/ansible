@@ -1,0 +1,37 @@
+---
+#
+# Tasks and roles for all hosts
+#
+
+- name: Run on allPROD_SERVERS
+  hosts: pi4.lan:pve.lan
+  become: true
+
+  vars_files:
+    - group_vars/secrets.yml
+
+  pre_tasks:
+
+    - name: Upgrade apt packages (Debian and Ubuntu)
+      ansible.builtin.apt:
+        upgrade: true
+        autoremove: true
+        update_cache: true
+        cache_valid_time: 3600
+      when:
+        - ansible_os_family | lower == "debian"
+        - enable_os_update
+      changed_when: false
+
+#### PI4.LAN ####
+- name: Run on "pi4.lan"
+  hosts: pi4.lan
+  gather_facts: true
+  become: true
+
+
+#### pve.LAN ####
+- name: Run on "pi2.lan"
+  hosts: pi2.lan
+  gather_facts: true
+  become: true
