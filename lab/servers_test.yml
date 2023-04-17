@@ -75,7 +75,7 @@
       tags:
         - clamav
 
-    - role: geerlingguy.nfs
+    - role: nfs
       tags:
         - nfs
 
@@ -112,4 +112,31 @@
         - containers
         - littlelink
 
+#### SRV03.test ####
+- name: Run on "srv03.test"
+  hosts: srv03.test
+  gather_facts: true
+  become: true
 
+  vars_files:
+    - group_vars/secrets.yml
+
+  roles:
+
+    - role: geerlingguy.pip
+      tags:
+        - containers
+
+    - role: geerlingguy.docker
+      tags:
+        - containers
+
+    - role: portainer
+      tags:
+        - containers
+        - portainer
+
+    - role: watchtower
+      tags:
+        - containers
+        - watchtower
