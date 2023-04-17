@@ -10,10 +10,10 @@
       ansible.builtin.blockinfile:
         path: /etc/hosts
         block: |
-          {% for host in groups['prod-servers'] %}
+          {% for host in groups['prod_servers'] %}
           {{ hostvars[host].ansible_host }}   {{ host }}
           {% endfor %}
-          {% for host in groups['test-servers'] %}
+          {% for host in groups['test_servers'] %}
           {{ hostvars[host].ansible_host }}   {{ host }}
           {% endfor %}
           {% for host in groups['windows'] %}

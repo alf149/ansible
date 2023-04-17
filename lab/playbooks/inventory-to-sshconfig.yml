@@ -9,7 +9,7 @@
       ansible.builtin.blockinfile:
         path: /home/rolf/.ssh/config
         block: |
-            {% for host in groups['prod-servers'] %}
+            {% for host in groups['prod_servers'] %}
             host {{ host }}
                 HostName {{ hostvars[host].ansible_host }}
                 User deploy
@@ -19,7 +19,7 @@
                 UserKnownHostsFile /dev/null
 
             {% endfor %}
-            {% for host in groups['test-servers'] %}
+            {% for host in groups['test_servers'] %}
             host {{ host }}
                 HostName {{ hostvars[host].ansible_host }}
                 User deploy

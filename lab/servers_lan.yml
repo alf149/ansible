@@ -3,8 +3,8 @@
 # Tasks and roles for all hosts
 #
 
-- name: Run on allPROD-SERVERS
-  hosts: prod-servers
+- name: Run on allPROD_SERVERS
+  hosts: prod_servers
   gather_facts: true
   become: true
 
