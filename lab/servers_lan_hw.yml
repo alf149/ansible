@@ -23,15 +23,15 @@
         - enable_os_update
       changed_when: false
 
-#### PI4.LAN ####
-- name: Run on "pi4.lan"
-  hosts: pi4.lan
-  gather_facts: true
-  become: true
+# #### PI4.LAN ####
+# - name: Run on "pi4.lan"
+#   hosts: pi4.lan
+#   gather_facts: true
+#   become: true
 
 
-#### pve.LAN ####
-- name: Run on "pi2.lan"
-  hosts: pi2.lan
-  gather_facts: true
-  become: true
+# #### pve.LAN ####
+# - name: Run on "pve.lan"
+#   hosts: pve.lan
+#   gather_facts: true
+#   become: true
