@@ -1,5 +1,5 @@
 ---
-- name: Localhost playbooks inventory to hostfile
+- name: Localhost playbooks inventory to hostfile ans ~/.ssh/config
   hosts: localhost
   gather_facts: false
   become: true
@@ -19,12 +19,38 @@
           {% for host in groups['windows'] %}
           {{ hostvars[host].ansible_host }}   {{ host }}
           {% endfor %}
+          {% for host in groups['pi4_hw'] %}
+          {{ hostvars[host].ansible_host }}   {{ host }}
+          {% endfor %}
+          {% for host in groups['pve_hw'] %}
+          {{ hostvars[host].ansible_host }}   {{ host }}
+          {% endfor %}
 
     - name: Add Ansible inventory mappings to ~/.ssh/config
       become: false
       ansible.builtin.blockinfile:
         path: /home/rolf/.ssh/config
         block: |
+            {% for host in groups['pi4_hw'] %}
+            host {{ host }}
+                HostName {{ hostvars[host].ansible_host }}
+                User {{ hostvars[host].ansible_user }}
+                Port 22
+                IdentityFile {{ hostvars[host].ansible_ssh_private_key_file }}
+                StrictHostKeyChecking no
+                UserKnownHostsFile /dev/null
+
+            {% endfor %}
+            {% for host in groups['pve_hw'] %}
+            host {{ host }}
+                HostName {{ hostvars[host].ansible_host }}
+                User {{ hostvars[host].ansible_user }}
+                Port 22
+                IdentityFile {{ hostvars[host].ansible_ssh_private_key_file }}
+                StrictHostKeyChecking no
+                UserKnownHostsFile /dev/null
+
+            {% endfor %}
             {% for host in groups['prod_servers'] %}
             host {{ host }}
                 HostName {{ hostvars[host].ansible_host }}
@@ -55,4 +81,3 @@
                 UserKnownHostsFile /dev/null
 
             {% endfor %}
-
