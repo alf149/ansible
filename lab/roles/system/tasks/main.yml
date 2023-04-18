@@ -8,7 +8,10 @@
   when: ansible_os_family | lower == 'debian'
 
 - name: Create user Deploy
-  ansible.builtin.include_tasks: user.yml
+  ansible.builtin.include_tasks: user_deploy.yml
+
+- name: Create user Sema_Deploy
+  ansible.builtin.include_tasks: user_sema_deploy.yml
 
 - name: Disable_ipv6
   ansible.builtin.include_tasks: disable_ipv6.yml

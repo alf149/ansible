@@ -1,0 +1,8 @@
+---
+roles:
+  - geerlingguy.security
+  - geerlingguy.ntp
+  - geerlingguy.pip
+  - geerlingguy.docker
+  - geerlingguy.clamav
+
