@@ -1,0 +1,9 @@
+sudo snap stop semaphore
+
+sudo semaphore user add --admin \
+--login admin \
+--name=Admin \
+--email=admin@localhost \
+--password=ChangeMe2023!
+
+sudo snap start semaphore
