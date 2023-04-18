@@ -1,7 +1,0 @@
-pip_install_packages:
-      - name: docker
-      - name: docker-compose
-      # - name: panda
-
-docker_users:
-  - rolf

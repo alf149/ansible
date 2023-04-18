@@ -1,8 +1,0 @@
----
-  - name: Backup | To Master | Docker images, Docker data
-    tags: backup_to_master
-    command: rsync -avzhe ssh deploy@pi01.test:/home/deploy/backup/ ~/Tools/ansible/lab/backup/ 
-    become: true
-    become_user: rolf
-    delegate_to: 127.0.0.1
-  
