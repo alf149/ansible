@@ -7,10 +7,6 @@
   ansible.builtin.include_tasks: essential-debian.yml
   when: ansible_os_family | lower == 'debian'
 
-# - name: Del snap
-#   ansible.builtin.include_tasks: del_snap.yml
-#   when: ansible_os_family | lower == 'debian'
-
 - name: User
   ansible.builtin.include_tasks: user.yml
 
