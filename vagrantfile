@@ -46,7 +46,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # srv03
   config.vm.define "srv03.test", autostart: false do |srv03|
     srv03.vm.provider "libvirt" do |v|
-      v.memory = 4096
+      v.memory = 8192
       v.cpus = 4
     end
     srv03.vm.box = "generic/ubuntu2204"
@@ -59,7 +59,58 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       ansible.playbook = "provision.yml"
     end
   end
-    
+
+  # ora generic/oracle8
+  config.vm.define "ora01.test", autostart: false do |ora01|
+    ora01.vm.provider "libvirt" do |v|
+      v.memory = 4096
+      v.cpus = 2
+    end
+    ora01.vm.box = "generic/oracle8"
+    ora01.vm.box_check_update = false
+    ora01.vm.hostname = "ora01.test"
+    ora01.vm.network :private_network, ip: "192.168.56.71", hostname: true
+    ora01.vm.provision "ansible" do |ansible|
+      ansible.compatibility_mode = "2.0"
+      ansible.config_file = "ansible.cfg"
+      ansible.playbook = "provision.yml"
+    end
+  end
+  
+  # ora generic/oracle8
+  config.vm.define "ora02.test", autostart: false do |ora02|
+    ora02.vm.provider "libvirt" do |v|
+      v.memory = 4096
+      v.cpus = 2
+    end
+    ora02.vm.box = "generic/oracle8"
+    ora02.vm.box_check_update = false
+    ora02.vm.hostname = "ora02.test"
+    ora02.vm.network :private_network, ip: "192.168.56.72", hostname: true
+    ora02.vm.provision "ansible" do |ansible|
+      ansible.compatibility_mode = "2.0"
+      ansible.config_file = "ansible.cfg"
+      ansible.playbook = "provision.yml"
+    end
+  end
+  
+  # ora generic/oracle8
+  config.vm.define "ora03.test", autostart: false do |ora03|
+    ora03.vm.provider "libvirt" do |v|
+      v.memory = 4096
+      v.cpus = 2
+    end
+    ora03.vm.box = "generic/oracle8"
+    ora03.vm.box_check_update = false
+    ora03.vm.hostname = "ora03.test"
+    ora03.vm.network :private_network, ip: "192.168.56.73", hostname: true
+    ora03.vm.provision "ansible" do |ansible|
+      ansible.compatibility_mode = "2.0"
+      ansible.config_file = "ansible.cfg"
+      ansible.playbook = "provision.yml"
+    end
+  end
+
   #win2022
   config.vm.define "win2022.test", autostart: false do |win2022|
     win2022.vm.provider "libvirt" do |v|

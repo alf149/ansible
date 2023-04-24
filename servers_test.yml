@@ -23,6 +23,25 @@
         - enable_os_update
       changed_when: false
 
+    - name: Upgrade all packages (Redhat and Oracle)
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+      when:
+        - ansible_os_family | lower == "redhat"
+        - enable_os_update
+      changed_when: false
+
+    - name: Check if a reboot is required.
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+        get_md5: false
+      register: reboot_required_file
+
+    - name: Reboot the server (if required).
+      ansible.builtin.reboot:
+      when: reboot_required_file.stat.exists
+
   roles:
 
     # - role: devsec.hardening.os_hardening
@@ -48,8 +67,6 @@
       tags:
         - security
         - defaults
-
-
 
 #### SRV01.test ####
 - name: Run on "srv01.test"
@@ -121,22 +138,26 @@
   vars_files:
     - group_vars/secrets.yml
 
-  roles:
+  # roles:
 
-    - role: geerlingguy.pip
-      tags:
-        - containers
+  #   - role: geerlingguy.pip
+  #     tags:
+  #       - containers
 
-    - role: geerlingguy.docker
-      tags:
-        - containers
+  #   - role: geerlingguy.docker
+  #     tags:
+  #       - containers
 
-    - role: portainer
-      tags:
-        - containers
-        - portainer
+  #   - role: portainer
+  #     tags:
+  #       - containers
+  #       - portainer
 
-    - role: watchtower
-      tags:
-        - containers
-        - watchtower
+  #### ORA01.test ####
+- name: Run on "ora01.test"
+  hosts: ora01.test
+  gather_facts: true
+  become: true
+
+  vars_files:
+    - group_vars/secrets.yml

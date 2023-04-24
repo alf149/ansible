@@ -1,3 +1,4 @@
+---
 - name: Provision a new server on test og lab
   hosts: all
   gather_facts: true

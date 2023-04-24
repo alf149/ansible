@@ -1,5 +1,5 @@
 ---
-- name: User | Create a login user
+- name: User | Create a login user Debian
   become: true
   ansible.builtin.user:
     name: "{{ username_sec }}"
@@ -7,11 +7,27 @@
     password: "{{ userpassword_sec }}"
     update_password: on_create
     groups:
-      - "{{ sudo_group }}"
+      - sudo
       - users
     state: present
     append: true
   tags: users
+  when: ansible_os_family | lower == 'debian'
+
+- name: User | Create a login user Redhat
+  become: true
+  ansible.builtin.user:
+    name: "{{ username_sec }}"
+    create_home: true
+    password: "{{ userpassword_sec }}"
+    update_password: on_create
+    groups:
+      - wheel
+      - users
+    state: present
+    append: true
+  tags: users
+  when: ansible_os_family | lower == 'redhat'
 
 - name: User | Ensure group exists "{{ username_sec }}"
   become: true

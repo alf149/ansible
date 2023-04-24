@@ -42,4 +42,3 @@
   retries: 10
   delay: 3
   changed_when: false
-
