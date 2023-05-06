@@ -1,10 +1,13 @@
 ---
+# Portainer version
+version: latest
+
 # Role settings
 configure_settings: false
 configure_registry: false
 remove_persistent_data: false
 remove_existing_container: false
-persistent_data_path: "{{ docker_dir }}:/data"
+persistent_data_path: "{{ docker_dir }}/data:/data"
 container_image: portainer/portainer:{{ version }}
 container_name: portainer
 container_labels: {}
@@ -12,8 +15,6 @@ container_network:
 container_restart_policy: always
 container_recreate: false
 auth_method: 1
-# Portainer version
-version: latest
 
 # Networking
 host_ip: 192.168.56.22
@@ -23,7 +24,7 @@ container_ports:
 
 # Admin User
 admin_user: admin
-admin_password: "{{ portainer_password_test_sec }}"
+admin_password: "{{ portainer_password_sec }}"
 
 # Endpoints
 endpoint_name: local

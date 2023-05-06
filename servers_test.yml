@@ -2,7 +2,7 @@
 #
 # Tasks and roles for all hosts
 #
-- name: Run on all test TEST_SERVERSd
+- name: Run on all test TEST_SERVERS
   hosts: test_servers
   gather_facts: true
   become: true
@@ -104,25 +104,30 @@
       tags:
         - containers
 
-    - role: portainer
-      tags:
-        - containers
-        - portainer
+    # - role: portainersimple
+    #   tags:
+    #     - containers
+    #     - portainersimple
 
     - role: watchtower
       tags:
         - containers
         - watchtower
 
-    # - role: gitea
-    #   tags:
-    #     - containers
-    #     - gitea
+    - role: pialert
+      tags:
+        - containers
+        - pialert
 
-    # - role: uptime-kuma
-    #   tags:
-    #     - containers
-    #     - uptime-kuma
+    - role: gitea
+      tags:
+        - containers
+        - gitea
+
+    - role: uptime-kuma
+      tags:
+        - containers
+        - uptime-kuma
 
     - role: littlelink
       tags:

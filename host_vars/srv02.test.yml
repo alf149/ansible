@@ -2,9 +2,9 @@ enable_os_update: true
 enable_extra_packages: true
 enable_extra_packages_nettools: false
 enable_cockpit: false
-enable_auditd: true
-enable_rkhunter: true
-enable_lynis: true
+enable_auditd: false
+enable_rkhunter: false
+enable_lynis: false
 enable_os_hardening: false
 
 nfs_exports: ["/nfs/backup    192.168.56.0/24(rw,sync,no_root_squash)", "/nfs/dokcer    192.168.56.0/24(rw,sync,no_root_squash)"]

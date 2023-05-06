@@ -34,7 +34,7 @@
     owner: root
     group: root
     mode: '0644'
-  notify: reload nfs
+  notify: Reload nfs
 
 - name: Ensure nfs is running.
   ansible.builtin.service:
