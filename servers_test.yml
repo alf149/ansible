@@ -55,7 +55,7 @@
 
     - role: system
       tags:
-        - users
+        - system
         - defaults
 
     - role: geerlingguy.ntp
@@ -76,6 +76,23 @@
 
   vars_files:
     - group_vars/secrets.yml
+
+  roles:
+
+    - role: system
+      tags:
+        - system
+        - defaults
+
+    - role: geerlingguy.ntp
+      tags:
+        - ntp
+        - defaults
+
+    - role: geerlingguy.security
+      tags:
+        - security
+        - defaults
 
 #### SRV02.test ####
 - name: Run on "srv02.test"
@@ -104,20 +121,18 @@
       tags:
         - containers
 
-    # - role: portainersimple
-    #   tags:
-    #     - containers
-    #     - portainersimple
+## sudo pip uninstall requests
+## sudo pip install requests==2.29.0
+
+    - role: portainer
+      tags:
+        - containers
+        - portainer
 
     - role: watchtower
       tags:
         - containers
         - watchtower
-
-    - role: pialert
-      tags:
-        - containers
-        - pialert
 
     - role: gitea
       tags:
