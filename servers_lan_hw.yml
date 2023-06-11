@@ -3,7 +3,7 @@
 # Tasks and roles for all hosts
 #
 
-- name: Run on allPROD_SERVERS
+- name: Run on all PROD_SERVERS
   hosts: pi4.lan:pve.lan
   become: true
 
