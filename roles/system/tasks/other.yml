@@ -104,10 +104,10 @@
     - not enable_aide
 
 # Lynis
-- name: Git Clone Lynis
+- name: Install Lynis from GIT
   ansible.builtin.git:
     repo: "https://github.com/CISOfy/lynis.git"
-    version: "HEAD"
+    version: "3.0.8"
     dest: /opt/lynis
   when:
     - enable_lynis is defined
