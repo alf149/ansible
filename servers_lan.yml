@@ -5,7 +5,7 @@
 
 - name: Run on all PROD_SERVERS
   hosts: prod_servers
-  gather_facts: true
+  #gather_facts: true
   become: true
 
   vars_files:
@@ -74,47 +74,47 @@
       tags:
         - nfs
 
-# #### DOCKER01.LAN ####
-# - name: Run on "docker01.lan"
-#   hosts: docker01.lan
-#   gather_facts: true
-#   become: true
+#### DOCKER01.LAN ####
+- name: Run on "docker01.lan"
+  hosts: docker01.lan
+  #gather_facts: true
+  become: true
 
-#   vars_files:
-#     - group_vars/secrets.yml
+  vars_files:
+    - group_vars/secrets.yml
 
-#   roles:
+  roles:
 
-#     - role: geerlingguy.pip
-#       tags:
-#         - containers
+    - role: geerlingguy.pip
+      tags:
+        - containers
 
-#     - role: geerlingguy.docker
-#       tags:
-#         - containers
+    - role: geerlingguy.docker
+      tags:
+        - containers
 
-#     - role: portainer
-#       vars:
-#         remove_persistent_data: false
-#         remove_existing_container: false
-#         # Networking
-#         host_ip: 192.168.30.151
-#         host_port: 9000
-#         container_ports:
-#           - "9000:9000"
-#         # Admin User
-#         admin_user: admin
-#         admin_password: "{{ portainer_password_prod_sec }}"
-#         # Endpoints
-#         endpoint_name: docker01.lan
-#       tags:
-#         - containers
-#         - portainer
+    - role: portainer
+      vars:
+        remove_persistent_data: false
+        remove_existing_container: false
+        # Networking
+        host_ip: 192.168.30.201
+        host_port: 9000
+        container_ports:
+          - "9000:9000"
+        # Admin User
+        admin_user: admin
+        admin_password: "{{ portainer_password_prod_sec }}"
+        # Endpoints
+        endpoint_name: docker01.lan
+      tags:
+        - containers
+        - portainer
 
-#     - role: watchtower
-#       tags:
-#         - containers
-#         - watchtower
+    - role: watchtower
+      tags:
+        - containers
+        - watchtower
 
 #### SRV201.LAN ####
 - name: Run on "srv201.lan"
