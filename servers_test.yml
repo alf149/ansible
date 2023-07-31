@@ -27,6 +27,7 @@
       ansible.builtin.dnf:
         name: "*"
         state: latest
+        update_only: true
       when:
         - ansible_os_family | lower == "redhat"
         - enable_os_update
@@ -121,9 +122,6 @@
       tags:
         - containers
 
-## sudo pip uninstall requests
-## sudo pip install requests==2.29.0
-
     - role: portainer
       tags:
         - containers
@@ -150,13 +148,13 @@
         - littlelink
 
 #### SRV03.test ####
-- name: Run on "srv03.test"
-  hosts: srv03.test
-  gather_facts: true
-  become: true
+# - name: Run on "srv03.test"
+#   hosts: srv03.test
+#   gather_facts: true
+#   become: true
 
-  vars_files:
-    - group_vars/secrets.yml
+#   vars_files:
+#     - group_vars/secrets.yml
 
   # roles:
 
@@ -174,10 +172,10 @@
   #       - portainer
 
   #### ORA01.test ####
-- name: Run on "ora01.test"
-  hosts: ora01.test
-  gather_facts: true
-  become: true
+# - name: Run on "ora01.test"
+#   hosts: ora01.test
+#   gather_facts: true
+#   become: true
 
-  vars_files:
-    - group_vars/secrets.yml
+#   vars_files:
+#     - group_vars/secrets.yml
