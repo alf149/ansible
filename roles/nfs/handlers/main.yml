@@ -1,5 +1,3 @@
 ---
 - name: Restart nfs
   ansible.builtin.command: 'exportfs -ra'
-  register: exportfs_output
-  changed_when: exportfs_output.rc != 0
