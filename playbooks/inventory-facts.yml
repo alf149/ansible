@@ -4,6 +4,9 @@
   gather_facts: true
   hosts: all
 
+  vars_files:
+    - group_vars/secrets.yml
+
   tasks:
     - name: Get services facts
       ansible.builtin.service_facts:
@@ -21,6 +24,10 @@
       when:
         - ansible.builtin.ansible_facts.services['crowdsec-firewall-bouncer.service']['status'] == 'enabled'
         - ansible.builtin.ansible_facts.services['crowdsec-firewall-bouncer.service']['state'] == 'running'
+
+    - name: Show password from vault
+      ansible.builtin.debug:
+        var: username_sec
 
 # tasks:
     # - debug: var=inventory_hostname

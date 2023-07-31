@@ -5,7 +5,7 @@
 
 - name: Run on all PROD_SERVERS
   hosts: prod_servers
-  # gather_facts: true
+  gather_facts: true
   become: true
 
   vars_files:
@@ -40,14 +40,16 @@
       tags:
         - ntp
         - defaults
-  tasks:
 
-    # #### NAS.LAN ####
-    - name: Setup nas.lan
-      ansible.builtin.include_tasks: servers_nas_lan.yml
+- name: Run on nas.lan
+  hosts: nas.lan
+  gather_facts: true
+  become: true
+  vars_files: group_vars/secrets.yml
+  roles:
+    - role: nfs
       tags:
-        - nas
-
+        - nfs
 
 #### PI1.LAN ####
 - name: Run on "pi1.lan"

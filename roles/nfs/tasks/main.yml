@@ -34,9 +34,10 @@
     owner: root
     group: root
     mode: '0644'
-  notify: Reload nfs
+  notify: Restart nfs
+  when: nfs_exports | length
 
 - name: Ensure nfs is running.
   ansible.builtin.service:
     name: "{{ nfs_server_daemon }} state=started enabled=yes"
-  when: nfs_exports|length
+  when: nfs_exports | length

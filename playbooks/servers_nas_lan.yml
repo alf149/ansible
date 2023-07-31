@@ -1,4 +1,3 @@
----
 # #### NAS.LAN ####
 - name: Run on nas.lan
   hosts: nas.lan
@@ -7,9 +6,8 @@
 
   vars_files:
     - group_vars/secrets.yml
+  tasks:
+    - debug: var=username_sec
 
-  roles:
 
-    - role: nfs
-      tags:
-        - nfs
+ 
