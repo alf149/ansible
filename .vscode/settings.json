@@ -1,3 +1,13 @@
 {
-    "ansible.python.interpreterPath": "/bin/python3"
+    // "ansible.python.interpreterPath": "/bin/python3",
+    "ansibleServer.trace.server": "verbose",
+    "ansible.validation.enabled": true,
+    "ansible.validation.lint.enabled": true,
+    // "files.associations": {
+    //     "servers_*.yml": "ansible",
+    //     "main*.yml": "ansible",
+    //     "site*.yml": "ansible",
+    //     "playbooks/*.yml": "ansible"
+    //   },
+      "ansible.python.interpreterPath": "/bin/python3"
 }

@@ -5,7 +5,7 @@
 
 - name: Run on all PROD_SERVERS
   hosts: prod_servers
-  #gather_facts: true
+  # gather_facts: true
   become: true
 
   vars_files:
@@ -40,6 +40,14 @@
       tags:
         - ntp
         - defaults
+  tasks:
+
+    # #### NAS.LAN ####
+    - name: Setup nas.lan
+      ansible.builtin.include_tasks: servers_nas_lan.yml
+      tags:
+        - nas
+
 
 #### PI1.LAN ####
 - name: Run on "pi1.lan"
@@ -59,25 +67,10 @@
   vars_files:
     - group_vars/secrets.yml
 
-# #### NAS.LAN ####
-- name: Run on "nas.lan"
-  hosts: nas.lan
-  gather_facts: true
-  become: true
-
-  vars_files:
-    - group_vars/secrets.yml
-
-  roles:
-
-    - role: nfs
-      tags:
-        - nfs
-
 #### DOCKER01.LAN ####
 - name: Run on "docker01.lan"
   hosts: docker01.lan
-  #gather_facts: true
+  # gather_facts: true
   become: true
 
   vars_files:
@@ -115,85 +108,3 @@
       tags:
         - containers
         - watchtower
-
-#### SRV201.LAN ####
-- name: Run on "srv201.lan"
-  hosts: srv201.lan
-  gather_facts: true
-  become: true
-
-  vars_files:
-    - group_vars/secrets.yml
-
-  roles:
-
-    - role: geerlingguy.clamav
-      tags:
-        - clamav
-
-    - role: geerlingguy.pip
-      tags:
-        - containers
-
-    - role: geerlingguy.docker
-      tags:
-        - containers
-
-## sudo pip uninstall requests
-## sudo pip install requests==2.29.0
-
-    - role: portainer
-      tags:
-        - containers
-        - portainer
-      vars:
-        host_ip: 192.168.30.201
-        configure_settings: false
-        configure_registry: false
-        remove_persistent_data: false
-        remove_existing_container: false
-        endpoint_name: srv201.lan
-
-    - role: watchtower
-      tags:
-        - containers
-        - watchtower
-
-    - role: uptime-kuma
-      tags:
-        - containers
-        - uptime-kuma
-
-# #### SRV202.LAN ####
-# - name: Run on "srv202.lan"
-#   hosts: srv202.lan
-#   gather_facts: true
-#   become: true
-
-#   vars_files:
-#     - group_vars/secrets.yml
-
-
-# #### SRV203.LAN ####
-- name: Run on "srv203.lan"
-  hosts: srv203.lan
-  gather_facts: true
-  become: true
-
-  vars_files:
-    - group_vars/secrets.yml
-
-  roles:
-
-    - role: geerlingguy.clamav
-      tags:
-        - clamav
-
-    - role: geerlingguy.pip
-      tags:
-        - containers
-
-    - role: nfs
-      tags:
-        - nfs
-
