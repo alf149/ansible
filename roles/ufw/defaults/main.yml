@@ -1,21 +1,29 @@
 ---
+enable_ufw: true
+resetufw: false
 
-# UFW install configuration
-ufw_packages:
-  - ufw
+# Outgoing
+enable_ufw_deny_out: false
 
-# UFW basic configuration
-ufw_ipv6: "yes"
-ufw_default_input_policy: DROP
-ufw_default_output_policy: ACCEPT
-ufw_default_forward_policy: DROP
-ufw_default_application_policy: SKIP
-ufw_logging: "off"
+# Default ports Outgoing
+enable_out_ssh_22: true
+enable_out_dns_53: true
+enable_out_web_80: true
+enable_out_ntp_123: true
+enable_out_web_443: true
 
-# UFW service configuration
-ufw_state: enabled
-ufw_reset: yes
+# Default ports incomming
+enable_web80: false
+enable_web443: false
 
-# UFW custom configuration
-ufw_rules: [{ port: 22, rule: allow }]
-ufw_applications: []
+# System ports incomming
+enable_crowdsec: false
+enable_portainer: false
+enable_watchtower: false
+enable_cockpit: false
+
+local_lan_ufw:
+  - 10.0.0.0/8 
+  - 172.16.0.0/12
+  - 192.168.0.0/16 
+  - fd00::/8

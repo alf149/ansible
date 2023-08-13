@@ -1,6 +1,0 @@
----
-- name: restart_ufw
-  tags: ufw
-  service:
-    name: ufw
-    state: restarted

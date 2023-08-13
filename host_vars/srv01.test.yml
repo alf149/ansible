@@ -1,4 +1,2 @@
 enable_os_update: false
 
-nfs_exports: []
-
