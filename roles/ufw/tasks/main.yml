@@ -11,100 +11,101 @@
     - enable_ufw
 
 - name: Allow outgoing
-  ufw: 
+  community.general.ufw:
     comment: default allow outgoing
     default: allow
     direction: outgoing
   when:
-    - enable_ufw is defined 
+    - enable_ufw is defined
     - not enable_ufw_deny_out
 
 - name: Deny outgoing
-  ufw: 
+  community.general.ufw:
     comment: default allow outgoing
     default: deny
     direction: outgoing
   when:
     - enable_ufw is defined
-    - enable_ufw_deny_out  
+    - enable_ufw_deny_out
 
 - name: Disallow incoming
-  ufw: 
+  community.general.ufw:
     comment: default deny incoming
     default: deny
     direction: incoming
   when:
-    - enable_ufw is defined 
+    - enable_ufw is defined
     - enable_ufw
 
-#reset UFW
+# reset UFW
 - name: Reset UFW
-  ufw: 
-    logging: on
+  community.general.ufw:
+    logging: true
     state: reset
   notify:
     - restart_ufw
   when:
-    - resetufw is defined 
-    - resetufw 
+    - resetufw is defined
+    - resetufw
 
-- name: Out allow 22
-  ufw:
-    comment: allow ssh 
+- name: Out allow ssh 22
+  community.general.ufw:
+    comment: Out allow ssh 22
     rule: allow
     direction: out
     port: '22'
     proto: tcp
   when:
-    - allow_out_22
+    - enable_ufw is defined
+    - enable_out_ssh_22
 
 - name: Out allow 53 DNS
-  ufw:
-    comment: allow ssh 
+  community.general.ufw:
+    comment: Out allow dns 53
     rule: allow
     direction: out
     port: '53'
   when:
     - enable_ufw is defined
-    - enable_ufw_deny_out 
+    - enable_ufw_deny_out
 
 - name: Out allow 123 NTP
-  ufw:
-    comment: allow ssh 
+  community.general.ufw:
+    comment: Out allow 123 Ntp
     rule: allow
     direction: out
     port: '123'
     proto: udp
   when:
     - enable_ufw is defined
-    - enable_ufw_deny_out 
+    - enable_ufw_deny_out
 
 - name: Out allow 80 http
-  ufw:
-    comment: allow ssh 
+  community.general.ufw:
+    comment: Out allow web 80
     rule: allow
     direction: out
     port: '80'
     proto: tcp
   when:
     - enable_ufw is defined
-    - enable_ufw_deny_out 
+    - enable_ufw_deny_out
 
 - name: Out allow 443 https
-  ufw:
-    comment: allow ssh 
+  community.general.ufw:
+    comment: Out allow https 443
     rule: allow
     direction: out
     port: '443'
     proto: tcp
   when:
     - enable_ufw is defined
-    - enable_ufw_deny_out 
+    - enable_ufw_deny_out
 
-# SSH 
+# SSH
 - name: Grant ssh access
-  ufw:
-    comment: allow ssh 
+  community.general.ufw:
+    comment: In allow ssh 22
     rule: allow
     direction: in
     port: '22'
@@ -113,56 +114,13 @@
   loop: "{{ local_lan_ufw }}"
   when:
     - enable_ufw is defined
-    - enable_ufw 
+    - enable_ufw
 
-# dns pi-hole
-- name: allow 81 pihole (tcp)
+# Web server
+- name: Web server allow http (80)
   tags: ufw
-  ufw:
-    comment: allow 81 pihole  (tcp)
-    rule: allow
-    port: '81'
-    proto: tcp
-    src: '{{ item }}'
-  loop: "{{ local_lan_ufw }}"
-  when:
-    - enable_pihole is defined
-    - enable_pihole 
-    - enable_ufw 
-
-- name: allow dns pihole (tcp)
-  tags: ufw
-  ufw:
-    comment: allow dns pihole (tcp)
-    rule: allow
-    port: '53'
-    proto: tcp
-    src: '{{ item }}'
-  loop: "{{ local_lan_ufw }}"
-  when:
-    - enable_pihole is defined
-    - enable_pihole 
-    - enable_ufw 
-
-- name: allow dns pihole (udp)
-  tags: ufw
-  ufw:
-    comment: allow dns pihole (udp)
-    rule: allow
-    port: '53'
-    proto: udp
-    src: '{{ item }}'
-  loop: "{{ local_lan_ufw }}"
-  when:
-    - enable_pihole is defined
-    - enable_pihole 
-    - enable_ufw 
-
-# web server
-- name: web server allow http (80)
-  tags: ufw
-  ufw:
-    comment: web server allow http (80)
+  community.general.ufw:
+    comment: In web server allow http (80)
     rule: allow
     port: '80'
     proto: tcp
@@ -170,13 +128,13 @@
   loop: "{{ local_lan_ufw }}"
   when:
     - enable_web80 is defined
-    - enable_web80 
-    - enable_ufw 
+    - enable_web80
+    - enable_ufw
 
-- name: web server allow https (443)
+- name: Web server allow https (443)
   tags: ufw
-  ufw:
-    comment: web server allow https (443)
+  community.general.ufw:
+    comment: In web server allow https (443)
     rule: allow
     port: '443'
     proto: tcp
@@ -184,14 +142,14 @@
   loop: "{{ local_lan_ufw }}"
   when:
     - enable_web443 is defined
-    - enable_web443 
-    - enable_ufw 
+    - enable_web443
+    - enable_ufw
 
 # Portainer
 - name: Portainer (9000)
   tags: ufw
-  ufw:
-    comment: Portainer (9000)
+  community.general.ufw:
+    comment: In Portainer (9000)
     rule: allow
     port: '9000'
     proto: tcp
@@ -199,14 +157,14 @@
   loop: "{{ local_lan_ufw }}"
   when:
     - enable_portainer is defined
-    - enable_portainer 
-    - enable_ufw 
+    - enable_portainer
+    - enable_ufw
 
 # Cockpit
 - name: Cockpit (9090)
   tags: ufw
-  ufw:
-    comment: Cockpit (9090)
+  community.general.ufw:
+    comment: In Cockpit (9090)
     rule: allow
     port: '9090'
     proto: tcp
@@ -214,14 +172,14 @@
   loop: "{{ local_lan_ufw }}"
   when:
     - enable_cockpit is defined
-    - enable_cockpit 
-    - enable_ufw 
+    - enable_cockpit
+    - enable_ufw
 
 # Crowdsec
 - name: Crowdsec (6060)
   tags: ufw
-  ufw:
-    comment: Crowdsec (6060)
+  community.general.ufw:
+    comment: In Crowdsec (6060)
     rule: allow
     port: '6060'
     proto: tcp
@@ -234,8 +192,8 @@
 # Crowdsec
 - name: Crowdsec (6080)
   tags: ufw
-  ufw:
-    comment: Crowdsec (6080)
+  community.general.ufw:
+    comment: In Crowdsec (6080)
     rule: allow
     port: '6080'
     proto: tcp
@@ -243,14 +201,14 @@
   loop: "{{ local_lan_ufw }}"
   when:
     - enable_crowdsec is defined
-    - enable_crowdsec 
-    - enable_ufw 
+    - enable_crowdsec
+    - enable_ufw
 
 # Crowdsec
 - name: Crowdsec (8080)
   tags: ufw
-  ufw:
-    comment: Crowdsec (8080)
+  community.general.ufw:
+    comment: In Crowdsec (8080)
     rule: allow
     port: '8080'
     proto: tcp
@@ -258,17 +216,15 @@
   loop: "{{ local_lan_ufw }}"
   when:
     - enable_crowdsec is defined
-    - enable_crowdsec 
-    - enable_ufw 
+    - enable_crowdsec
+    - enable_ufw
 
 - name: Enable Firewall ufw
-  ufw: 
-    logging: on
+  community.general.ufw:
+    logging: true
     state: enabled
   notify:
     - restart_ufw
   when:
     - enable_ufw is defined
-    - enable_ufw 
-
-    
+    - enable_ufw

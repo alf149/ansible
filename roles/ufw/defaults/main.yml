@@ -23,7 +23,6 @@ enable_watchtower: false
 enable_cockpit: false
 
 local_lan_ufw:
-  - 10.0.0.0/8 
-  - 172.16.0.0/12
-  - 192.168.0.0/16 
+  - 172.17.0.0/12 # Default Docker Nets
+  - 192.168.0.0/16 # Default HomeNet
   - fd00::/8

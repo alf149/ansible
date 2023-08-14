@@ -5,3 +5,33 @@ enable_cockpit: false
 enable_auditd: true
 enable_rkhunter: true
 enable_lynis: true
+
+## Firewall 
+enable_ufw: true
+resetufw: false
+
+# Outgoing
+enable_ufw_deny_out: true
+
+# Default ports Outgoing
+enable_out_ssh_22: true
+enable_out_dns_53: true
+enable_out_web_80: true
+enable_out_ntp_123: true
+enable_out_web_443: true
+
+# Default ports incomming
+enable_web80: false
+enable_web443: false
+
+# System ports incomming
+enable_crowdsec: false
+enable_portainer: true
+enable_watchtower: false
+
+local_lan_ufw:
+  - 172.17.0.0/12 # Docker Nets
+  - 172.16.0.0/12 # Docker Nets
+  - 192.168.30.0/16 # Vlan homlab
+  - 192.168.10.0/16 # Vlan secure
+  - fd00::/8

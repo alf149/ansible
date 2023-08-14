@@ -110,3 +110,8 @@
       tags:
         - containers
         - watchtower
+
+    - role: ufw
+      tags:
+        - firewall
+        - ufw
