@@ -1,35 +1,37 @@
 ---
-- block:
-  - name: Reset UFW
-    ufw: 
-      state: reset
 
-  - name: Allow outgoing
-    ufw: 
-      comment: default allow outgoing
-      default: allow
-      direction: outgoing
+- name: Install and configure UFW firewall
+  block:
+    - name: Reset UFW
+      community.general.ufw:
+        state: reset
 
-  - name: Disallow ingoing
-    ufw: 
-      comment: default deny incoming
-      default: deny
-      direction: incoming
+    - name: Allow outgoing
+      community.general.ufw:
+        comment: default allow outgoing
+        default: allow
+        direction: outgoing
+
+    - name: Disallow ingoing
+      community.general.ufw:
+        comment: default deny incoming
+        default: deny
+        direction: incoming
 
   always:
     - name: Grant ssh access
-      ufw:
-        comment: allow ssh 
+      community.general.ufw:
+        comment: allow ssh
         rule: allow
         direction: in
         port: '22'
         proto: tcp
         src: '{{ item }}'
-      loop: "{{ local_lan_ufw }}"  
+      loop: "{{ local_lan_ufw }}"
 
     - name: Enable Firewall
-      ufw: 
-        logging: on
+      community.general.ufw:
+        logging: "on"
         state: enabled
       notify:
         - restart_ufw

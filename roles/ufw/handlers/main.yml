@@ -1,6 +1,6 @@
 ---
-- name: restart_ufw
+- name: Restart_ufw
   tags: ufw
-  service:
+  ansible.builtin.service:
     name: ufw
     state: restarted

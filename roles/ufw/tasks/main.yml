@@ -1,11 +1,11 @@
 ---
 - name: Install package ufw
   tags: ufw
-  package:
-    state: latest
+  ansible.builtin.package:
+    state: present
     name: ufw
   notify:
-    - restart_ufw
+    - Restart_ufw
   when:
     - enable_ufw is defined
     - enable_ufw
@@ -43,7 +43,7 @@
     logging: true
     state: reset
   notify:
-    - restart_ufw
+    - Restart_ufw
   when:
     - resetufw is defined
     - resetufw
@@ -252,7 +252,7 @@
     logging: "on"
     state: enabled
   notify:
-    - restart_ufw
+    - Restart_ufw
   when:
     - enable_ufw is defined
     - enable_ufw
