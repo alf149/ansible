@@ -1,5 +1,4 @@
 ---
-# Include variables and define needed variables.
 - name: Include OS-specific variables.
   ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
 
@@ -9,7 +8,6 @@
     - ansible_os_family == 'RedHat'
     - ansible_distribution == "Fedora"
 
-# Setup/install tasks.
 - name: Setup-RedHat
   ansible.builtin.include_tasks: setup-RedHat.yml
   when: ansible_os_family == 'RedHat'
@@ -19,7 +17,7 @@
   when: ansible_os_family == 'Debian'
 
 - name: Ensure directories to export exist
-  ansible.builtin.file:  # noqa 208
+  ansible.builtin.file:
     path: "{{ item.strip().split()[0] }}"
     state: directory
     owner: root
