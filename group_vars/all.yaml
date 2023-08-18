@@ -25,7 +25,7 @@ pip_install_packages:
       - name: docker-compose
 
 # Used in geerlingguy.docker
-docker_daemon_options: {"iptables": false}
+docker_daemon_options: {"iptables": true}
 docker_users:
   - "{{ username_sec }}"
 

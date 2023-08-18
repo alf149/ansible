@@ -23,6 +23,8 @@ enable_watchtower: false
 enable_cockpit: false
 
 local_lan_ufw:
-  - 172.17.0.0/12 # Default Docker Nets
-  - 192.168.0.0/16 # Default HomeNet
+# - 172.17.0.0/16     # Docker Nets allowed in and out when enable_ufw
+  - 10.0.0.0/8        # Default RFC1918 networks
+  - 172.16.0.0/12     # Default RFC1918 networks
+  - 192.168.0.0/16    # Default RFC1918 networks
   - fd00::/8

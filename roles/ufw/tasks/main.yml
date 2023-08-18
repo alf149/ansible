@@ -219,9 +219,37 @@
     - enable_crowdsec
     - enable_ufw
 
+# Docker
+- name: DockerNet 172.17.x.x allow in
+  tags: ufw
+  community.general.ufw:
+    comment: DockerNet Allow in
+    rule: allow
+    direction: in
+    src: '172.17.0.0/16'
+    to_ip: '172.17.0.0/16'
+  when:
+    - enable_docker is defined
+    - enable_docker
+    - enable_ufw
+
+# Docker
+- name: DockerNet 172.17.x.x allow out
+  tags: ufw
+  community.general.ufw:
+    comment: DockerNet Allow out
+    rule: allow
+    direction: out
+    src: '172.17.0.0/16'
+    to_ip: '172.17.0.0/16'
+  when:
+    - enable_docker is defined
+    - enable_docker
+    - enable_ufw
+
 - name: Enable Firewall ufw
   community.general.ufw:
-    logging: true
+    logging: "on"
     state: enabled
   notify:
     - restart_ufw
