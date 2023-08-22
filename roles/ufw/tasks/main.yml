@@ -145,6 +145,36 @@
     - enable_web443
     - enable_ufw
 
+# DNS server
+- name: DNS 53 udp
+  tags: ufw
+  community.general.ufw:
+    comment: In DNS udp (53)
+    rule: allow
+    port: '53'
+    proto: udp
+    src: '{{ item }}'
+  loop: "{{ local_lan_ufw }}"
+  when:
+    - enable_dns53 is defined
+    - enable_dns53
+    - enable_ufw
+ 
+ # DNS server
+- name: DNS 53 tcp
+  tags: ufw
+  community.general.ufw:
+    comment: In DNS tcp (53)
+    rule: allow
+    port: '53'
+    proto: tcp
+    src: '{{ item }}'
+  loop: "{{ local_lan_ufw }}"
+  when:
+    - enable_dns53 is defined
+    - enable_dns53
+    - enable_ufw
+
 # Portainer
 - name: Portainer (9000)
   tags: ufw

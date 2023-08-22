@@ -51,6 +51,11 @@
       tags:
         - nfs
 
+    - role: ufw
+      tags:
+        - firewall
+        - ufw
+
 #### PI1.LAN ####
 - name: Run on "pi1.lan"
   hosts: pi1.lan
@@ -60,6 +65,12 @@
   vars_files:
     - group_vars/secrets.yml
 
+  roles:
+    - role: ufw
+      tags:
+        - firewall
+        - ufw
+
 #### PI2.LAN ####
 - name: Run on "pi2.lan"
   hosts: pi2.lan
@@ -68,6 +79,12 @@
 
   vars_files:
     - group_vars/secrets.yml
+
+  roles:
+    - role: ufw
+      tags:
+        - firewall
+        - ufw
 
 #### DOCKER01.LAN ####
 - name: Run on "docker01.lan"
@@ -111,3 +128,10 @@
 
   vars_files:
     - group_vars/secrets.yml
+
+  roles:
+
+    - role: ufw
+      tags:
+        - firewall
+        - ufw
