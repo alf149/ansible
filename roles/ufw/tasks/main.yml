@@ -159,7 +159,7 @@
     - enable_dns53 is defined
     - enable_dns53
     - enable_ufw
- 
+
  # DNS server
 - name: DNS 53 tcp
   tags: ufw
@@ -248,6 +248,37 @@
     - enable_crowdsec is defined
     - enable_crowdsec
     - enable_ufw
+
+# Littlelink
+- name: Littlelink (8001)
+  tags: ufw
+  community.general.ufw:
+    comment: In Littlelink (8001)
+    rule: allow
+    port: '8001'
+    proto: tcp
+    src: '{{ item }}'
+  loop: "{{ local_lan_ufw }}"
+  when:
+    - enable_littlelink is defined
+    - enable_littlelink
+    - enable_ufw
+
+# Uptime-Kuma
+- name: Uptime-Kuma (3001)
+  tags: ufw
+  community.general.ufw:
+    comment: In Uptime-Kuma (3001)
+    rule: allow
+    port: '3001'
+    proto: tcp
+    src: '{{ item }}'
+  loop: "{{ local_lan_ufw }}"
+  when:
+    - enable_uptimekuma is defined
+    - enable_uptimekuma
+    - enable_ufw
+
 
 # Docker
 - name: DockerNet 172.17.x.x allow in
