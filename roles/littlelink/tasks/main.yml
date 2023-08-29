@@ -20,13 +20,12 @@
       FAVICON_URL: ''
       AVATAR_URL: ''
       AVATAR_2X_URL: ''
-      AVATAR_ALT: 'Rolf Amfelt Profile Pic'
+      AVATAR_ALT: ''
       NAME: 'Rolf Amfelt'
       BIO: 'Homelab | Almost Nerd'
       BUTTON_ORDER: MASTODON,LINKED_IN,TWITTER,GITHUB,TWITTER
 
       GITHUB: 'https://github.com/alf149'
-      TWITTER: 'https://twitter.com/alf149'
       LINKED_IN: 'https://dk.linkedin.com/in/rolf-amfelt-81a43'
       MASTODON: 'https://norrebro.space/@alf194'
       FOOTER: Rolf Amfelt © 2022

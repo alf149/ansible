@@ -7,7 +7,7 @@ configure_settings: false
 configure_registry: false
 remove_persistent_data: false
 remove_existing_container: false
-persistent_data_path: "{{ docker_dir }}/data:/data"
+persistent_data_path: "{{ docker_dir }}/{{ container_name }}/data:/data"
 container_image: portainer/portainer:{{ version }}
 container_name: portainer
 container_labels: {}

@@ -41,6 +41,9 @@ enable_web443: false
 enable_docker: true
 enable_crowdsec: false
 enable_portainer: true
+enable_littlelink: true
+enable_uptimekuma: true
+
 enable_watchtower: false
 
 local_lan_ufw:
