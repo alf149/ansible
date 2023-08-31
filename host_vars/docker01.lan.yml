@@ -7,8 +7,8 @@ enable_rkhunter: true
 enable_lynis: true
 
 ## Portainer
-remove_persistent_data: false
-remove_existing_container: false
+remove_persistent_data: true
+remove_existing_container: true
 host_ip: 192.168.30.201
 host_port: 9000
 container_ports:
@@ -37,12 +37,12 @@ enable_web80: false
 enable_web443: false
 
 # System ports incomming
+enable_nfs: true
 enable_docker: true
 enable_crowdsec: false
 enable_portainer: true
 enable_littlelink: true
 enable_uptimekuma: true
-
 enable_watchtower: false
 
 local_lan_ufw:

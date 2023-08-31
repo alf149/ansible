@@ -41,6 +41,11 @@
         - ntp
         - defaults
 
+    - role: ufw
+      tags:
+        - firewall
+        - ufw
+
 - name: Run on nas.lan
   hosts: nas.lan
   gather_facts: true
@@ -51,10 +56,15 @@
       tags:
         - nfs
 
-    - role: ufw
+- name: Run on nas01.lan
+  hosts: nas01.lan
+  gather_facts: true
+  become: true
+  vars_files: group_vars/secrets.yml
+  roles:
+    - role: nfs
       tags:
-        - firewall
-        - ufw
+        - nfs
 
 #### PI1.LAN ####
 - name: Run on "pi1.lan"
@@ -65,12 +75,6 @@
   vars_files:
     - group_vars/secrets.yml
 
-  roles:
-    - role: ufw
-      tags:
-        - firewall
-        - ufw
-
 #### PI2.LAN ####
 - name: Run on "pi2.lan"
   hosts: pi2.lan
@@ -79,12 +83,6 @@
 
   vars_files:
     - group_vars/secrets.yml
-
-  roles:
-    - role: ufw
-      tags:
-        - firewall
-        - ufw
 
 #### DOCKER01.LAN ####
 - name: Run on "docker01.lan"
@@ -96,6 +94,11 @@
     - group_vars/secrets.yml
 
   roles:
+
+    - role: nfsclient
+      tags:
+        - containers
+        - nfsclient
 
     - role: geerlingguy.pip
       tags:
@@ -126,11 +129,6 @@
         - containers
         - littlelink
 
-    - role: ufw
-      tags:
-        - firewall
-        - ufw
-
 #### CLOUDF01.LAN ####
 - name: Run on "cloudf01.lan"
   hosts: cloudf01.lan
@@ -139,10 +137,3 @@
 
   vars_files:
     - group_vars/secrets.yml
-
-  roles:
-
-    - role: ufw
-      tags:
-        - firewall
-        - ufw

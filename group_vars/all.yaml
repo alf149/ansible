@@ -29,7 +29,7 @@ docker_daemon_options: {"iptables": true}
 docker_users:
   - "{{ username_sec }}"
 
-docker_dir: /opt/docker
+docker_dir: /opt/docker/share
 
 extra_packages: 
   - curl

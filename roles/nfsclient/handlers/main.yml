@@ -1,7 +1,0 @@
----
----
-- name: Ensure NFS utilities are installed.
-  ansible.builtin.package:
-    name: nfs-utils 
-    state: present
-

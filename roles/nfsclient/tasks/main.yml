@@ -1,41 +1,15 @@
 ---
-- name: Include OS-specific variables.
-  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
+- name: Ensure NFS utilities are installed.
+  ansible.builtin.apt:
+    name:
+      - nfs-common
+    state: present
 
-- name: Include overrides specific to Fedora.
-  ansible.builtin.include_vars: Fedora.yml
-  when:
-    - ansible_os_family == 'RedHat'
-    - ansible_distribution == "Fedora"
-
-- name: Setup-RedHat
-  ansible.builtin.include_tasks: setup-RedHat.yml
-  when: ansible_os_family == 'RedHat'
-
-- name: Setup-Debian
-  ansible.builtin.include_tasks: setup-Debian.yml
-  when: ansible_os_family == 'Debian'
-
-- name: Ensure directories to export exist
-  ansible.builtin.file:
-    path: "{{ item.strip().split()[0] }}"
-    state: directory
-    owner: root
-    group: root
-    mode: '0777'
-  with_items: "{{ nfs_exports }}"
-
-- name: Copy exports file.
-  ansible.builtin.template:
-    src: exports.j2
-    dest: /etc/exports
-    owner: root
-    group: root
-    mode: '0644'
-  notify: Restart nfs
-  when: nfs_exports | length
-
-- name: Ensure nfs is running.
-  ansible.builtin.service:
-    name: "{{ nfs_server_daemon }} state=started enabled=yes"
-  when: nfs_exports | length
+- name: Mount an NFS volume
+  ansible.posix.mount:
+    src: "{{ nfsclient_nfs_connect }}"
+    path: "{{ nfsclient_local_folder }}"
+    opts: rw,sync
+    boot: false
+    state: mounted
+    fstype: nfs
