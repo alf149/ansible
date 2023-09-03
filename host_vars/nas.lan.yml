@@ -37,6 +37,6 @@ local_lan_ufw:
   - 192.168.10.0/24   # Vlan secure
   - fd00::/8          # # Default Lan Ipv6
 
-nfs_exports: ["/nfs/dokcer    192.168.30.0/24(rw,sync,no_root_squash)" ]
+nfs_exports: ["/mnt/share/docker    192.168.30.0/24(rw,sync,no_root_squash)", "/mnt/share/backup  192.168.30.0/24(rw,sync,no_root_squash)" ]
 
 

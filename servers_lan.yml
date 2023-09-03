@@ -4,7 +4,7 @@
 #
 
 - name: Run on all PROD_SERVERS
-  hosts: prod_servers
+  hosts: prod_servers:nas_server
   gather_facts: true
   become: true
 
