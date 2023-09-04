@@ -4,7 +4,7 @@
 #
 
 - name: Run on all PROD_SERVERS
-  hosts: prod_servers:nas_server
+  hosts: prod_servers
   gather_facts: true
   become: true
 
@@ -52,19 +52,9 @@
   become: true
   vars_files: group_vars/secrets.yml
   roles:
-    - role: nfs
+    - role: nfs_server
       tags:
-        - nfs
-
-- name: Run on nas01.lan
-  hosts: nas01.lan
-  gather_facts: true
-  become: true
-  vars_files: group_vars/secrets.yml
-  roles:
-    - role: nfs
-      tags:
-        - nfs
+        - nfs-server
 
 #### PI1.LAN ####
 - name: Run on "pi1.lan"

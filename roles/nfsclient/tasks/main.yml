@@ -10,6 +10,6 @@
     src: "{{ nfsclient_nfs_connect }}"
     path: "{{ nfsclient_local_folder }}"
     opts: rw,sync
-    boot: false
+    boot: true
     state: mounted
     fstype: nfs

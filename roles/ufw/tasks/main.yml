@@ -279,14 +279,14 @@
     - enable_uptimekuma
     - enable_ufw
 
-# NFS
+# NFS In
 - name: Nfs (111)
   tags: ufw
   community.general.ufw:
-    comment: In tcp nfs (111)
+    comment: In tcp/udp nfs (111)
     rule: allow
     port: '111'
-    proto: tcp
+    proto: any
     src: '{{ item }}'
   loop: "{{ local_lan_ufw }}"
   when:
@@ -297,10 +297,10 @@
 - name: Nfs (2049)
   tags: ufw
   community.general.ufw:
-    comment: In tcp nfs (2049)
+    comment: In tcp/udp nfs (2049)
     rule: allow
     port: '2049'
-    proto: tcp
+    proto: any
     src: '{{ item }}'
   loop: "{{ local_lan_ufw }}"
   when:
@@ -308,27 +308,13 @@
     - enable_nfs
     - enable_ufw
 
-- name: Nfs (111)
+- name: Nfs (4045)
   tags: ufw
   community.general.ufw:
-    comment: In udp nfs (111)
+    comment: In tcp/udp nfs (4045)
     rule: allow
-    port: '111'
-    proto: udp
-    src: '{{ item }}'
-  loop: "{{ local_lan_ufw }}"
-  when:
-    - enable_nfs is defined
-    - enable_nfs
-    - enable_ufw
-
-- name: Nfs (2049)
-  tags: ufw
-  community.general.ufw:
-    comment: In tcp nfs (2049)
-    rule: allow
-    port: '2049'
-    proto: udp
+    port: '4045'
+    proto: any
     src: '{{ item }}'
   loop: "{{ local_lan_ufw }}"
   when:
@@ -340,10 +326,10 @@
 - name: Nfs (111)
   tags: ufw
   community.general.ufw:
-    comment: Out tcp nfs (111)
+    comment: Out tcp/udp nfs (111)
     rule: allow
     port: '111'
-    proto: tcp
+    proto: any
     dest: '{{ item }}'
     direction: out
   loop: "{{ local_lan_ufw }}"
@@ -355,10 +341,10 @@
 - name: Nfs (2049)
   tags: ufw
   community.general.ufw:
-    comment: Out tcp nfs (2049)
+    comment: Out tcp/udp nfs (2049)
     rule: allow
     port: '2049'
-    proto: tcp
+    proto: any
     dest: '{{ item }}'
     direction: out
   loop: "{{ local_lan_ufw }}"
@@ -367,28 +353,13 @@
     - enable_nfs
     - enable_ufw
 
-- name: Nfs (111)
+- name: Nfs (4045)
   tags: ufw
   community.general.ufw:
-    comment: Out udp nfs (111)
+    comment: Out tcp/udp nfs (4045)
     rule: allow
-    port: '111'
-    proto: udp
-    dest: '{{ item }}'
-    direction: out
-  loop: "{{ local_lan_ufw }}"
-  when:
-    - enable_nfs is defined
-    - enable_nfs
-    - enable_ufw
-
-- name: Nfs (2049)
-  tags: ufw
-  community.general.ufw:
-    comment: Out tcp nfs (2049)
-    rule: allow
-    port: '2049'
-    proto: udp
+    port: '4045'
+    proto: any
     dest: '{{ item }}'
     direction: out
   loop: "{{ local_lan_ufw }}"
@@ -425,9 +396,12 @@
     - enable_docker
     - enable_ufw
 
+- name: Set logging
+  community.general.ufw:
+    logging: 'full'
+
 - name: Enable Firewall ufw
   community.general.ufw:
-    logging: "on"
     state: enabled
   notify:
     - Restart_ufw

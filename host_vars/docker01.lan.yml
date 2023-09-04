@@ -49,3 +49,6 @@ local_lan_ufw:
   - 192.168.30.0/24   # Vlan homlab
   - 192.168.10.0/24   # Vlan secure
   - fd00::/8          # # Default Lan Ipv6
+
+nfsclient_local_folder: "/opt/share/docker"
+nfsclient_nfs_connect: "192.168.30.103:/mnt/share/docker" 

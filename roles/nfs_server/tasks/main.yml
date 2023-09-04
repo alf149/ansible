@@ -1,0 +1,32 @@
+---
+- name: Check mount directory
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: directory
+    mode: "0777"
+    owner: root
+    group: root
+  with_items: "{{ nfs_exportfs_configs }}"
+
+- name: Ensure NFS Utilities are installed
+  ansible.builtin.package:
+    name:
+      # - nfs-common
+      - nfs-kernel-server
+    state: present
+    update_cache: true
+
+- name: Copy /etc/exports
+  ansible.builtin.template:
+    src: exports.j2
+    dest: /etc/exports
+    mode: '0644'
+  when: nfs_exportfs_configs is defined
+  notify: Restart NFS Server
+
+- name: Copy /etc/nfs.conf
+  ansible.builtin.template:
+    src: nfs.conf.j2
+    dest: /etc/nfs.conf
+    mode: '0644'
+  notify: Restart NFS Server

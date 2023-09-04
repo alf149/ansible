@@ -1,0 +1,8 @@
+---
+# nfs_exportfs_configs:
+#   - client_ip: ip
+#     path: /nfs
+#     mount_options: "(rw)"
+#   - client_ip: ip
+#     path: /nfs2
+#     mount_options: "(rw,sync,no_subtree_check)"

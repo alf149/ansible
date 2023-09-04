@@ -1,3 +1,0 @@
----
-- name: Restart nfs
-  ansible.builtin.command: 'exportfs -ra'
