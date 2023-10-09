@@ -1,7 +1,7 @@
 ---
 
 - name: Run on all PROD_SERVERS
-  hosts: pi4.lan:pve.lan:pve1.lan
+  hosts: pve.lan:pve1.lan
   become: true
 
   vars_files:
