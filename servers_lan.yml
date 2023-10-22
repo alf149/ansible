@@ -120,10 +120,10 @@
         - littlelink
 
 #### CLOUDF01.LAN ####
-- name: Run on "cloudf01.lan"
-  hosts: cloudf01.lan
-  gather_facts: true
-  become: true
+# - name: Run on "cloudf01.lan"
+#   hosts: cloudf01.lan
+#   gather_facts: true
+#   become: true
 
-  vars_files:
-    - group_vars/secrets.yml
+#   vars_files:
+#     - group_vars/secrets.yml

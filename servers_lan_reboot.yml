@@ -1,0 +1,50 @@
+---
+#
+# Tasks and roles for all hosts
+#
+
+# - name: Run on all PROD_SERVERS
+#   hosts: pve1.lan:!pve.lan
+#   become: true
+#   tasks:
+#     - name: Reboot systems
+#       ansible.builtin.reboot:
+
+# - name: Run on all PROD_SERVERS
+#   hosts: pve.lan:!pve1.lan
+#   become: true
+#   tasks:
+#     - name: Reboot systems
+#       ansible.builtin.reboot:
+
+- name: Run on nas.lan
+  hosts: nas.lan
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Reboot systems
+      ansible.builtin.reboot:
+
+- name: Run on docker01.lan
+  hosts: docker01.lan
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Reboot systems
+      ansible.builtin.reboot:
+
+- name: Run on pi1.lan
+  hosts: pi1.lan
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Reboot systems
+      ansible.builtin.reboot:
+
+- name: Run on pi2.lan
+  hosts: pi2.lan
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Reboot systems
+      ansible.builtin.reboot:

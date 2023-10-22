@@ -7,8 +7,8 @@ enable_rkhunter: true
 enable_lynis: true
 
 ## Portainer
-remove_persistent_data: true
-remove_existing_container: true
+remove_persistent_data: false
+remove_existing_container: false
 host_ip: 192.168.30.201
 host_port: 9000
 container_ports:
