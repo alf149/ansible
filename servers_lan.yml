@@ -41,83 +41,84 @@
         - ntp
         - defaults
 
-    - role: ufw
-      tags:
-        - firewall
-        - ufw
+    # - role: ufw
+    #   tags:
+    #     - firewall
+    #     - ufw
 
-- name: Run on nas.lan
-  hosts: nas.lan
-  gather_facts: true
-  become: true
-  vars_files: group_vars/secrets.yml
-  roles:
-    - role: nfs_server
-      tags:
-        - nfs-server
+# #### NAS.LAN ####
+# - name: Run on nas.lan
+#   hosts: nas.lan
+#   gather_facts: true
+#   become: true
+#   vars_files: group_vars/secrets.yml
+#   roles:
+#     - role: nfs_server
+#       tags:
+#         - nfs-server
 
-#### PI1.LAN ####
-- name: Run on "pi1.lan"
-  hosts: pi1.lan
-  gather_facts: true
-  become: true
+# #### PI1.LAN ####
+# - name: Run on "pi1.lan"
+#   hosts: pi1.lan
+#   gather_facts: true
+#   become: true
 
-  vars_files:
-    - group_vars/secrets.yml
+#   vars_files:
+#     - group_vars/secrets.yml
 
-#### PI2.LAN ####
-- name: Run on "pi2.lan"
-  hosts: pi2.lan
-  gather_facts: true
-  become: true
+# #### PI2.LAN ####
+# - name: Run on "pi2.lan"
+#   hosts: pi2.lan
+#   gather_facts: true
+#   become: true
 
-  vars_files:
-    - group_vars/secrets.yml
+#   vars_files:
+#     - group_vars/secrets.yml
 
-#### DOCKER01.LAN ####
-- name: Run on "docker01.lan"
-  hosts: docker01.lan
-  # gather_facts: true
-  become: true
+# #### DOCKER01.LAN ####
+# - name: Run on "docker01.lan"
+#   hosts: docker01.lan
+#   # gather_facts: true
+#   become: true
 
-  vars_files:
-    - group_vars/secrets.yml
+#   vars_files:
+#     - group_vars/secrets.yml
 
-  roles:
+#   roles:
 
-    - role: nfsclient
-      tags:
-        - containers
-        - nfsclient
+#     - role: nfsclient
+#       tags:
+#         - containers
+#         - nfsclient
 
-    - role: geerlingguy.pip
-      tags:
-        - containers
+#     - role: geerlingguy.pip
+#       tags:
+#         - containers
 
-    - role: geerlingguy.docker
-      tags:
-        - containers
+#     - role: geerlingguy.docker
+#       tags:
+#         - containers
 
-    - role: portainer
-      tags:
-        - containers
-        - portainer
+#     - role: portainer
+#       tags:
+#         - containers
+#         - portainer
 
-    - role: watchtower
-      tags:
-        - containers
-        - watchtower
+#     - role: watchtower
+#       tags:
+#         - containers
+#         - watchtower
 
-    - role: uptimekuma
-      tags:
-        - containers
-        - uptimekuma
+#     - role: uptimekuma
+#       tags:
+#         - containers
+#         - uptimekuma
 
 
-    - role: littlelink
-      tags:
-        - containers
-        - littlelink
+#     - role: littlelink
+#       tags:
+#         - containers
+#         - littlelink
 
 #### CLOUDF01.LAN ####
 # - name: Run on "cloudf01.lan"
