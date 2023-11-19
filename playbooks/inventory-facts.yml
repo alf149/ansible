@@ -1,33 +1,38 @@
 ---
 
 - name: Network Getting Started First Playbook
-  gather_facts: true
+  gather_facts: false
   hosts: all
 
   vars_files:
-    - group_vars/secrets.yml
+    - ../group_vars/secrets.yml
 
   tasks:
-    - name: Get services facts
-      ansible.builtin.service_facts:
+    # - name: Get services facts
+    #   ansible.builtin.service_facts:
 
-    - name: Get services facts of crowdsec.service
-      ansible.builtin.debug:
-        var: ansible_facts.services['crowdsec.service']
-      when:
-        - ansible.builtin.ansible_facts.services['crowdsec.service']['status'] == 'enabled'
-        - ansible.builtin.ansible_facts.services['crowdsec.service']['state'] == 'running'
+    # - name: Get services facts of crowdsec.service
+    #   ansible.builtin.debug:
+    #     var: ansible_facts.services['crowdsec.service']
+    #   when:
+    #     - ansible.builtin.ansible_facts.services['crowdsec.service']['status'] == 'enabled'
+    #     - ansible.builtin.ansible_facts.services['crowdsec.service']['state'] == 'running'
 
-    - name: Get services facts of crowdsec-firewall-bouncer.service
-      ansible.builtin.debug:
-        var: ansible_facts.services['crowdsec-firewall-bouncer.service']
-      when:
-        - ansible.builtin.ansible_facts.services['crowdsec-firewall-bouncer.service']['status'] == 'enabled'
-        - ansible.builtin.ansible_facts.services['crowdsec-firewall-bouncer.service']['state'] == 'running'
+    # - name: Get services facts of crowdsec-firewall-bouncer.service
+    #   ansible.builtin.debug:
+    #     var: ansible_facts.services['crowdsec-firewall-bouncer.service']
+    #   when:
+    #     - ansible.builtin.ansible_facts.services['crowdsec-firewall-bouncer.service']['status'] == 'enabled'
+    #     - ansible.builtin.ansible_facts.services['crowdsec-firewall-bouncer.service']['state'] == 'running'
 
     - name: Show password from vault
       ansible.builtin.debug:
         var: username_sec
+
+    - name: Show password from vault
+      ansible.builtin.debug:
+        var: userpassword_sec
+
 
 # tasks:
     # - debug: var=inventory_hostname

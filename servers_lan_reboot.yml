@@ -48,3 +48,11 @@
   tasks:
     - name: Reboot systems
       ansible.builtin.reboot:
+
+- name: Run on pi4.lan
+  hosts: pi4.lan
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Reboot systems
+      ansible.builtin.reboot:

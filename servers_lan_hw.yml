@@ -1,7 +1,7 @@
 ---
 
 - name: Run on all PROD_SERVERS
-  hosts: pve.lan:pve1.lan
+  hosts: pve.lan:pve1.lan:pi4.lan
   become: true
 
   vars_files:
@@ -19,10 +19,31 @@
         - enable_os_update
       changed_when: false
 
-# - name: Run on "pi4.lan"
-#   hosts: pi4.lan
-#   gather_facts: true
-#   become: true
+- name: Run on "pi4.lan"
+  hosts: pi4.lan
+  gather_facts: true
+  become: true
+
+  vars_files:
+    - group_vars/secrets.yml
+
+  roles:
+
+    - role: system
+      tags:
+        - users
+        - defaults
+
+    - role: geerlingguy.security
+      tags:
+        - security
+        - defaults
+
+    - role: geerlingguy.ntp
+      tags:
+        - ntp
+        - defaults
+
 
 # - name: Run on "pve.lan"
 #   hosts: pve.lan
