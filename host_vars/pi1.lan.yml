@@ -35,5 +35,6 @@ local_lan_ufw:
   - 192.168.10.0/24   # Vlan secure
   - 192.168.20.0/24   # Vlan mart
   - 192.168.30.0/24   # Vlan homlab
+  - 192.168.31.0/29   # Vlan homlab DMZ
   - 192.168.99.0/24   # Vlan insecure
   - fd00::/8          # # Default Lan Ipv6
