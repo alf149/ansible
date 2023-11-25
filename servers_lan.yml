@@ -41,10 +41,10 @@
         - ntp
         - defaults
 
-    # - role: ufw
-    #   tags:
-    #     - firewall
-    #     - ufw
+    - role: ufw
+      tags:
+        - firewall
+        - ufw
 
 # #### NAS.LAN ####
 # - name: Run on nas.lan
