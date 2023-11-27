@@ -32,6 +32,7 @@ enable_portainer: false
 enable_watchtower: false
 
 local_lan_ufw:
+  - 192.168.3.0/24    # VLAN VPN
   - 192.168.10.0/24   # Vlan secure
   - 192.168.20.0/24   # Vlan mart
   - 192.168.30.0/24   # Vlan homlab

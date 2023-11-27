@@ -4,18 +4,7 @@ enable_extra_packages_nettools: false
 enable_cockpit: false
 enable_auditd: true
 enable_rkhunter: true
-enable_lynis: true
-
-## Portainer
-remove_persistent_data: false
-remove_existing_container: false
-host_ip: 192.168.30.201
-host_port: 9000
-container_ports:
-  - "9000:9000"
-admin_user: admin
-admin_password: "{{ portainer_password_prod_sec }}"
-endpoint_name: docker01
+enable_lynis: false
 
 ## Firewall 
 enable_ufw: true
@@ -40,12 +29,10 @@ enable_web443: false
 enable_nfs: true
 enable_docker: true
 enable_crowdsec: false
-enable_portainer: true
 enable_littlelink: true
 enable_uptimekuma: true
 enable_watchtower: false
 enable_dockge: true 
-
 
 local_lan_ufw:
   - 192.168.30.0/24   # Vlan homlab
