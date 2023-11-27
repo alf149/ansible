@@ -56,3 +56,19 @@
   tasks:
     - name: Reboot systems
       ansible.builtin.reboot:
+
+- name: Run on ad01.lan
+  hosts: ad01.lan
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Reboot systems
+      ansible.builtin.reboot:
+
+- name: Run on ad02.lan
+  hosts: ad02.lan
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Reboot systems
+      ansible.builtin.reboot:
