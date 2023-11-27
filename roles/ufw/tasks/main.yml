@@ -279,6 +279,37 @@
     - enable_uptimekuma
     - enable_ufw
 
+# Adguard@home
+- name: Adguard@home(3000)
+  tags: ufw
+  community.general.ufw:
+    comment: In Adguard@home (3000)
+    rule: allow
+    port: '3000'
+    proto: tcp
+    src: '{{ item }}'
+  loop: "{{ local_lan_ufw }}"
+  when:
+    - enable_adguard is defined
+    - enable_adguard
+    - enable_ufw
+
+# Dockge
+- name: Dockge(5001)
+  tags: ufw
+  community.general.ufw:
+    comment: In Dockge (5001)
+    rule: allow
+    port: '5001'
+    proto: tcp
+    src: '{{ item }}'
+  loop: "{{ local_lan_ufw }}"
+  when:
+    - enable_dockge is defined
+    - enable_dockge
+    - enable_ufw
+
+
 # NFS In
 - name: Nfs (111)
   tags: ufw
