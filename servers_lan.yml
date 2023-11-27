@@ -75,47 +75,82 @@
 #   vars_files:
 #     - group_vars/secrets.yml
 
-# #### DOCKER01.LAN ####
-# - name: Run on "docker01.lan"
-#   hosts: docker01.lan
-#   # gather_facts: true
-#   become: true
+#### DOCKER01.LAN ####
+- name: Run on "docker01.lan"
+  hosts: docker01.lan
+  # gather_facts: true
+  become: true
 
-#   vars_files:
-#     - group_vars/secrets.yml
+  vars_files:
+    - group_vars/secrets.yml
 
-#   roles:
+  roles:
 
-#     - role: nfsclient
-#       tags:
-#         - containers
-#         - nfsclient
+    - role: nfsclient
+      tags:
+        - containers
+        - nfsclient
 
-#     - role: geerlingguy.pip
-#       tags:
-#         - containers
+    - role: geerlingguy.pip
+      tags:
+        - containers
 
-#     - role: geerlingguy.docker
-#       tags:
-#         - containers
+    - role: geerlingguy.docker
+      tags:
+        - containers
 
-#     - role: portainer
-#       tags:
-#         - containers
-#         - portainer
+    # - role: portainer
+    #   tags:
+    #     - containers
+    #     - portainer
 
-#     - role: watchtower
-#       tags:
-#         - containers
-#         - watchtower
+    # - role: watchtower
+    #   tags:
+    #     - containers
+    #     - watchtower
 
-#     - role: uptimekuma
-#       tags:
-#         - containers
-#         - uptimekuma
+    - role: uptimekuma
+      tags:
+        - containers
+        - uptimekuma
 
 
-#     - role: littlelink
-#       tags:
-#         - containers
-#         - littlelink
+    - role: littlelink
+      tags:
+        - containers
+        - littlelink
+
+
+#### DOCKER02.LAN ####
+- name: Run on "docker02.lan"
+  hosts: docker02.lan
+  # gather_facts: true
+  become: true
+
+  vars_files:
+    - group_vars/secrets.yml
+
+  roles:
+
+    - role: nfsclient
+      tags:
+        - containers
+        - nfsclient
+# mkdir /opt/share/docker01_lan/stacks
+# mkdir /opt/share/docker01_lan/dockge
+# cd /opt/share/docker01_lan/dockge
+
+    - role: geerlingguy.pip
+      tags:
+        - containers
+
+    - role: geerlingguy.docker
+      tags:
+        - containers
+
+
+# # Download the compose.yaml
+# curl https://raw.githubusercontent.com/louislam/dockge/master/compose.yaml --output compose.yaml
+
+# # Start the server
+# docker compose up -d
