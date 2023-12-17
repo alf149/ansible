@@ -99,16 +99,6 @@
       tags:
         - containers
 
-    # - role: portainer
-    #   tags:
-    #     - containers
-    #     - portainer
-
-    # - role: watchtower
-    #   tags:
-    #     - containers
-    #     - watchtower
-
     - role: uptimekuma
       tags:
         - containers
