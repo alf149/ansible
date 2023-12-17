@@ -29,8 +29,6 @@ docker_daemon_options: {"iptables": true}
 docker_users:
   - "{{ username_sec }}"
 
-docker_dir: /opt/docker/share
-
 extra_packages: 
   - curl
   - nano
@@ -39,7 +37,7 @@ extra_packages:
 
 extra_packages_nettools: []
 
-enable_os_update: true
+enable_os_update: false
 enable_extra_packages: false
 enable_extra_packages_nettools: false
 enable_cockpit: false
