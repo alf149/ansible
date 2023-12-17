@@ -6,17 +6,6 @@ enable_auditd: true
 enable_rkhunter: true
 enable_lynis: true
 
-## Portainer
-remove_persistent_data: false
-remove_existing_container: false
-host_ip: 192.168.30.201
-host_port: 9000
-container_ports:
-  - "9000:9000"
-admin_user: admin
-admin_password: "{{ portainer_password_prod_sec }}"
-endpoint_name: docker01
-
 ## Firewall 
 enable_ufw: true
 resetufw: false
@@ -40,11 +29,11 @@ enable_web443: false
 enable_nfs: true
 enable_docker: true
 enable_crowdsec: false
-enable_portainer: true
+enable_portainer: false
 enable_littlelink: true
-enable_uptimekuma: true
+enable_uptimekuma: false
 enable_watchtower: false
-enable_dockge: true 
+enable_dockge: false 
 
 
 local_lan_ufw:
@@ -52,5 +41,7 @@ local_lan_ufw:
   - 192.168.10.0/24   # Vlan secure
   - fd00::/8          # # Default Lan Ipv6
 
-nfsclient_local_folder: "/opt/share/docker01_lan"
+nfsclient_local_folder: "/opt/share/docker"
 nfsclient_nfs_connect: "192.168.30.103:/mnt/share/docker" 
+
+docker_dir: /opt/share/docker/docker01_lan
