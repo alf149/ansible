@@ -104,12 +104,10 @@
         - containers
         - uptimekuma
 
-
     - role: littlelink
       tags:
         - containers
         - littlelink
-
 
 #### DOCKER02.LAN ####
 - name: Run on "docker02.lan"
@@ -137,7 +135,6 @@
     - role: geerlingguy.docker
       tags:
         - containers
-
 
 # # Download the compose.yaml
 # curl https://raw.githubusercontent.com/louislam/dockge/master/compose.yaml --output compose.yaml
