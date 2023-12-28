@@ -46,8 +46,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # srv03
   config.vm.define "srv03.test", autostart: false do |srv03|
     srv03.vm.provider "libvirt" do |v|
-      v.memory = 8192
-      v.cpus = 4
+      v.memory = 2048
+      v.cpus = 2
     end
     srv03.vm.box = "generic/ubuntu2204"
     srv03.vm.box_check_update = false
@@ -60,81 +60,81 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
-  # ora generic/oracle8
-  config.vm.define "ora01.test", autostart: false do |ora01|
-    ora01.vm.provider "libvirt" do |v|
-      v.memory = 4096
-      v.cpus = 2
-    end
-    ora01.vm.box = "generic/oracle8"
-    ora01.vm.box_check_update = false
-    ora01.vm.hostname = "ora01.test"
-    ora01.vm.network :private_network, ip: "192.168.56.71", hostname: true
-    ora01.vm.provision "ansible" do |ansible|
-      ansible.compatibility_mode = "2.0"
-      ansible.config_file = "ansible.cfg"
-      ansible.playbook = "provision.yml"
-    end
-  end
+  # # ora generic/oracle8
+  # config.vm.define "ora01.test", autostart: false do |ora01|
+  #   ora01.vm.provider "libvirt" do |v|
+  #     v.memory = 4096
+  #     v.cpus = 2
+  #   end
+  #   ora01.vm.box = "generic/oracle8"
+  #   ora01.vm.box_check_update = false
+  #   ora01.vm.hostname = "ora01.test"
+  #   ora01.vm.network :private_network, ip: "192.168.56.71", hostname: true
+  #   ora01.vm.provision "ansible" do |ansible|
+  #     ansible.compatibility_mode = "2.0"
+  #     ansible.config_file = "ansible.cfg"
+  #     ansible.playbook = "provision.yml"
+  #   end
+  # end
   
-  # ora generic/oracle8
-  config.vm.define "ora02.test", autostart: false do |ora02|
-    ora02.vm.provider "libvirt" do |v|
-      v.memory = 4096
-      v.cpus = 2
-    end
-    ora02.vm.box = "generic/oracle8"
-    ora02.vm.box_check_update = false
-    ora02.vm.hostname = "ora02.test"
-    ora02.vm.network :private_network, ip: "192.168.56.72", hostname: true
-    ora02.vm.provision "ansible" do |ansible|
-      ansible.compatibility_mode = "2.0"
-      ansible.config_file = "ansible.cfg"
-      ansible.playbook = "provision.yml"
-    end
-  end
+  # # ora generic/oracle8
+  # config.vm.define "ora02.test", autostart: false do |ora02|
+  #   ora02.vm.provider "libvirt" do |v|
+  #     v.memory = 4096
+  #     v.cpus = 2
+  #   end
+  #   ora02.vm.box = "generic/oracle8"
+  #   ora02.vm.box_check_update = false
+  #   ora02.vm.hostname = "ora02.test"
+  #   ora02.vm.network :private_network, ip: "192.168.56.72", hostname: true
+  #   ora02.vm.provision "ansible" do |ansible|
+  #     ansible.compatibility_mode = "2.0"
+  #     ansible.config_file = "ansible.cfg"
+  #     ansible.playbook = "provision.yml"
+  #   end
+  # end
   
-  # ora generic/oracle8
-  config.vm.define "ora03.test", autostart: false do |ora03|
-    ora03.vm.provider "libvirt" do |v|
-      v.memory = 4096
-      v.cpus = 2
-    end
-    ora03.vm.box = "generic/oracle8"
-    ora03.vm.box_check_update = false
-    ora03.vm.hostname = "ora03.test"
-    ora03.vm.network :private_network, ip: "192.168.56.73", hostname: true
-    ora03.vm.provision "ansible" do |ansible|
-      ansible.compatibility_mode = "2.0"
-      ansible.config_file = "ansible.cfg"
-      ansible.playbook = "provision.yml"
-    end
-  end
+  # # ora generic/oracle8
+  # config.vm.define "ora03.test", autostart: false do |ora03|
+  #   ora03.vm.provider "libvirt" do |v|
+  #     v.memory = 4096
+  #     v.cpus = 2
+  #   end
+  #   ora03.vm.box = "generic/oracle8"
+  #   ora03.vm.box_check_update = false
+  #   ora03.vm.hostname = "ora03.test"
+  #   ora03.vm.network :private_network, ip: "192.168.56.73", hostname: true
+  #   ora03.vm.provision "ansible" do |ansible|
+  #     ansible.compatibility_mode = "2.0"
+  #     ansible.config_file = "ansible.cfg"
+  #     ansible.playbook = "provision.yml"
+  #   end
+  # end
 
-  #win2022
-  config.vm.define "win2022.test", autostart: false do |win2022|
-    win2022.vm.provider "libvirt" do |v|
-      v.memory = 4096
-      v.cpus = 2
-    end
-    win2022.vm.box = "peru/windows-server-2022-standard-x64-eval"
-    win2022.vm.box_check_update = false
-    win2022.vm.hostname = "win2022"
-    win2022.vm.network :private_network, ip: "192.168.56.81", hostname: true
-    win2022.vm.network :forwarded_port, guest: 3389, host: 53389, auto_correct: true
-    win2022.vm.network :forwarded_port, guest: 80, host: 680, auto_correct: true
-    win2022.vm.network :forwarded_port, guest: 443, host: 6443, auto_correct: true
-    win2022.vm.boot_timeout = 300
-    win2022.winrm.execution_time_limit = "PT2H"
-    win2022.winrm.ssl_peer_verification = false
-    win2022.winrm.max_tries = 50
-    win2022.winrm.retry_delay = 10
-    win2022.vm.provision "ansible" do |ansible|
-      ansible.compatibility_mode = "2.0"
-      ansible.config_file = "ansible.cfg"
-      ansible.playbook = "server_windows.yml"
-    end
-  end
+  # #win2022
+  # config.vm.define "win2022.test", autostart: false do |win2022|
+  #   win2022.vm.provider "libvirt" do |v|
+  #     v.memory = 4096
+  #     v.cpus = 2
+  #   end
+  #   win2022.vm.box = "peru/windows-server-2022-standard-x64-eval"
+  #   win2022.vm.box_check_update = false
+  #   win2022.vm.hostname = "win2022"
+  #   win2022.vm.network :private_network, ip: "192.168.56.81", hostname: true
+  #   win2022.vm.network :forwarded_port, guest: 3389, host: 53389, auto_correct: true
+  #   win2022.vm.network :forwarded_port, guest: 80, host: 680, auto_correct: true
+  #   win2022.vm.network :forwarded_port, guest: 443, host: 6443, auto_correct: true
+  #   win2022.vm.boot_timeout = 300
+  #   win2022.winrm.execution_time_limit = "PT2H"
+  #   win2022.winrm.ssl_peer_verification = false
+  #   win2022.winrm.max_tries = 50
+  #   win2022.winrm.retry_delay = 10
+  #   win2022.vm.provision "ansible" do |ansible|
+  #     ansible.compatibility_mode = "2.0"
+  #     ansible.config_file = "ansible.cfg"
+  #     ansible.playbook = "server_windows.yml"
+  #   end
+  # end
 
 end
 
