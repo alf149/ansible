@@ -30,10 +30,10 @@ enable_nfs: false
 enable_docker: false
 enable_crowdsec: false
 enable_portainer: false
-enable_littlelink: false
+enable_littlelink: true
 enable_uptimekuma: false
 enable_watchtower: false
-enable_dockge: false 
+enable_dockge: true 
 
 
 local_lan_ufw:
