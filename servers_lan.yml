@@ -46,16 +46,16 @@
         - firewall
         - ufw
 
-# #### NAS.LAN ####
-# - name: Run on nas.lan
-#   hosts: nas.lan
-#   gather_facts: true
-#   become: true
-#   vars_files: group_vars/secrets.yml
-#   roles:
-#     - role: nfs_server
-#       tags:
-#         - nfs-server
+#### NAS.LAN ####
+- name: Run on nas.lan
+  hosts: nas.lan
+  gather_facts: true
+  become: true
+  vars_files: group_vars/secrets.yml
+  roles:
+    - role: nfs_server
+      tags:
+        - nfs-server
 
 # #### PI1.LAN ####
 # - name: Run on "pi1.lan"
@@ -141,3 +141,28 @@
 
 # # Start the server
 # docker compose up -d
+
+
+#### CLOUD01.LAN ####
+- name: Run on "cloud01.lan"
+  hosts: cloud01.lan
+  # gather_facts: true
+  become: true
+
+  vars_files:
+    - group_vars/secrets.yml
+
+  roles:
+
+    - role: geerlingguy.pip
+      tags:
+        - containers
+
+    - role: geerlingguy.docker
+      tags:
+        - containers
+
+    - role: littlelink
+      tags:
+        - containers
+        - littlelink
