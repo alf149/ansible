@@ -1,0 +1,62 @@
+---
+
+## Missing a way to delete users not active og not in script. 
+## Missing a way yo delete sudoers files in /etc/sudoers.d/ if user not exist or active. 
+- name: Add users
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    comment: "{{ item.comment }}"
+    password: "{{ item.password }}"
+    groups: "{{ item.groups }}"
+    append: true
+    shell: /bin/bash
+    update_password: always
+    create_home: true
+    # password_expire_warn: 60
+    # password_expire_max: 390
+    # password_expire_min: 365
+    state: present
+  loop: "{{ users }}"
+  tags: users
+
+- name: Add ssh authorized_keys to users
+  ansible.posix.authorized_key:
+    user: "{{ item.name }}"
+    key: "{{ item.ssh_keys | join('\n') }}"
+    exclusive: true
+  loop: "{{ users }}"
+
+- name: User | Suppress login messages for users
+  ansible.builtin.file:
+    name: /home/{{ item.name }}/.hushlogin
+    mode: '644'
+    state: touch
+    modification_time: preserve
+    access_time: preserve
+  loop: "{{ users }}"
+  tags: users
+
+- name: User | copy '.bash_aliases' file. to users
+  ansible.builtin.copy:
+    src: files/dot_files/.bash_aliases
+    dest: /home/{{ item.name }}/.bash_aliases
+    owner: "{{ item.name }}"
+    mode: '644'
+  loop: "{{ users }}"
+  tags: users
+
+- name: User | copy '.bash_aliases' file to root user.
+  ansible.builtin.copy:
+    src: files/dot_files/.bash_aliases
+    dest: /root/.bash_aliases
+    owner: root
+    mode: '644'
+  tags: users
+
+- name: Make sudo without password for sudoers
+  copy:
+    dest: /etc/sudoers.d/{{ item }}
+    content: "{{ item }} ALL=(ALL) NOPASSWD:ALL"
+    mode: 0440
+    validate: visudo -cf %s
+  loop: "{{ sudoers }}"
