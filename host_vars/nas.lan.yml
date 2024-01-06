@@ -35,7 +35,7 @@ enable_watchtower: false
 local_lan_ufw:
   - 192.168.30.0/24   # Vlan homlab
   - 192.168.31.0/24   # Vlan dmz
-  # - 192.168.10.0/24   # Vlan secure
+  - 192.168.10.0/24   # Vlan secure
   - fd00::/8          # # Default Lan Ipv6
 
 nfs_exportfs_configs:
