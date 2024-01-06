@@ -1,7 +1,7 @@
 ---
 
-## Missing a way to delete users not active og not in script. 
-## Missing a way yo delete sudoers files in /etc/sudoers.d/ if user not exist or active. 
+## Missing a way to delete users not active og not in script.
+## Missing a way yo delete sudoers files in /etc/sudoers.d/ if user not exist or active.
 - name: Add users
   ansible.builtin.user:
     name: "{{ item.name }}"
@@ -54,9 +54,9 @@
   tags: users
 
 - name: Make sudo without password for sudoers
-  copy:
+  ansible.builtin.copy:
     dest: /etc/sudoers.d/{{ item }}
     content: "{{ item }} ALL=(ALL) NOPASSWD:ALL"
-    mode: 0440
+    mode: "0440"
     validate: visudo -cf %s
   loop: "{{ sudoers }}"
