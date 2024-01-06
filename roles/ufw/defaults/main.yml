@@ -1,6 +1,16 @@
 ---
 enable_ufw: true
-resetufw: false
+resetufw: true
+
+open_ports_in:
+  - { src: '192.168.10.0/24', port: '22', proto: 'tcp', comment: 'In: SSH' }
+  - { src: '192.168.30.0/24', port: '22', proto: 'tcp', comment: 'In: SSH' }
+
+open_ports_out:
+  - { src: any, port: '22', proto: 'tcp', comment: 'Out: SSH' }
+  - { src: any, port: '53', proto: 'tcp', comment: 'Out: DNS Local' }
+  - { src: any, port: '80', proto: 'tcp', comment: 'Out: HTTP(80)' }
+  - { src: any, port: '443', proto: 'tcp', comment: 'Out: HTTPS(443)' }
 
 # Outgoing
 enable_ufw_deny_out: false

@@ -2,7 +2,8 @@
 #
 # Tasks and roles for all hosts
 #
-- name: Run on all test TEST_SERVERS
+
+- name: Run on all PROD_SERVERS
   hosts: test_servers
   gather_facts: true
   become: true
@@ -23,159 +24,15 @@
         - enable_os_update
       changed_when: false
 
-    - name: Upgrade all packages (Redhat and Oracle)
-      ansible.builtin.dnf:
-        name: "*"
-        state: latest
-        update_only: true
-      when:
-        - ansible_os_family | lower == "redhat"
-        - enable_os_update
-      changed_when: false
-
-    - name: Check if a reboot is required.
-      ansible.builtin.stat:
-        path: /var/run/reboot-required
-        get_md5: false
-      register: reboot_required_file
-
-    - name: Reboot the server (if required).
-      ansible.builtin.reboot:
-      when: reboot_required_file.stat.exists
-
-  roles:
-
-    # - role: devsec.hardening.os_hardening
-    #   vars:
-    #   sysctl_overwrite:
-    #     # Enable IPv4 traffic forwarding.
-    #     net.ipv4.ip_forward: 1
-    #   when:
-    #     - enable_os_hardening is defined
-    #     - enable_os_hardening
-
-    - role: system
-      tags:
-        - system
-        - defaults
-
-    - role: geerlingguy.ntp
-      tags:
-        - ntp
-        - defaults
-
-    - role: geerlingguy.security
-      tags:
-        - security
-        - defaults
-
-#### SRV01.test ####
-- name: Run on "srv01.test"
-  hosts: srv01.test
-  gather_facts: true
-  become: true
-
-  vars_files:
-    - group_vars/secrets.yml
-
   roles:
 
     - role: system
       tags:
-        - system
+        - users
         - defaults
 
-    - role: geerlingguy.ntp
+    - role: ufw
       tags:
-        - ntp
-        - defaults
+        - firewall
+        - ufw
 
-    - role: geerlingguy.security
-      tags:
-        - security
-        - defaults
-
-#### SRV02.test ####
-- name: Run on "srv02.test"
-  hosts: srv02.test
-  gather_facts: true
-  become: true
-
-  vars_files:
-    - group_vars/secrets.yml
-
-  roles:
-
-    - role: geerlingguy.clamav
-      tags:
-        - clamav
-
-    - role: nfs
-      tags:
-        - nfs
-
-    - role: geerlingguy.pip
-      tags:
-        - containers
-
-    - role: geerlingguy.docker
-      tags:
-        - containers
-
-    - role: portainer
-      tags:
-        - containers
-        - portainer
-
-    - role: watchtower
-      tags:
-        - containers
-        - watchtower
-
-    - role: gitea
-      tags:
-        - containers
-        - gitea
-
-    - role: uptime-kuma
-      tags:
-        - containers
-        - uptime-kuma
-
-    - role: littlelink
-      tags:
-        - containers
-        - littlelink
-
-#### SRV03.test ####
-# - name: Run on "srv03.test"
-#   hosts: srv03.test
-#   gather_facts: true
-#   become: true
-
-#   vars_files:
-#     - group_vars/secrets.yml
-
-  # roles:
-
-  #   - role: geerlingguy.pip
-  #     tags:
-  #       - containers
-
-  #   - role: geerlingguy.docker
-  #     tags:
-  #       - containers
-
-  #   - role: portainer
-  #     tags:
-  #       - containers
-  #       - portainer
-
-  #### ORA01.test ####
-# - name: Run on "ora01.test"
-#   hosts: ora01.test
-#   gather_facts: true
-#   become: true
-
-#   vars_files:
-#     - group_vars/secrets.yml
