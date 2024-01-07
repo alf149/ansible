@@ -33,7 +33,7 @@
     rule: allow
     direction: "{{ item.direction | default('in') }}"
     from_ip: "{{ item.src | default('any') }}"
-    to_ip: "{{ item.dest | default('any')}}"
+    to_ip: "{{ item.dest | default('any') }}"
     port: "{{ item.port | default('') }}"
     proto: "{{ item.proto | default('any') }}"
     comment: "{{ item.comment }}"
