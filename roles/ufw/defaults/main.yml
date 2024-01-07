@@ -1,40 +1,39 @@
 ---
 enable_ufw: true
-resetufw: true
+enable_ufw_deny_out: true
+resetufw: false
 
-open_ports_in:
-  - { src: '192.168.10.0/24', port: '22', proto: 'tcp', comment: 'In: SSH' }
-  - { src: '192.168.30.0/24', port: '22', proto: 'tcp', comment: 'In: SSH' }
+open_ports:
+  - { src: any, dest: any, port: '22', proto: 'tcp', direction: out, comment: 'SSH' }
+  - { src: any, dest: any, port: '53', proto: any, direction: out, comment: 'DNS' }
+  - { src: any, dest: any, port: '123', proto: 'tcp', direction: out, comment: 'NTP' }
+  - { src: any, dest: any, port: '80', proto: 'tcp', direction: out, comment: 'http' }
+  - { src: any, dest: any, port: '443', proto: 'tcp', direction: out, comment: 'https' }
+#  - { src: any, dest: any, port: '7844', proto: any, direction: out, comment: 'Cloudflaretunnels' }
 
-open_ports_out:
-  - { src: any, port: '22', proto: 'tcp', comment: 'Out: SSH' }
-  - { src: any, port: '53', proto: 'tcp', comment: 'Out: DNS Local' }
-  - { src: any, port: '80', proto: 'tcp', comment: 'Out: HTTP(80)' }
-  - { src: any, port: '443', proto: 'tcp', comment: 'Out: HTTPS(443)' }
+  - { src: '192.168.10.0/24', dest: '', port: '22', proto: 'tcp', direction: in, comment: 'SSH # Secure Vlan' }
+  - { src: '192.168.30.0/24', dest: '', port: '22', proto: 'tcp', direction: in, comment: 'SSH # Homelab Vlan' }
+  - { src: '192.168.31.0/24', dest: '', port: '22', proto: 'tcp', direction: in, comment: 'SSH # HomeLab DMZ' }
+  - { src: '192.168.56.0/24', dest: '', port: '22', proto: 'tcp', direction: in, comment: 'SSH # KVM / vagrant on localhost' }
+  - { src: '192.168.121.0/24', dest: '', port: '22', proto: 'tcp', direction: in, comment: 'SSH # KVM / vagrant on localhost' }
 
-# Outgoing
-enable_ufw_deny_out: false
+  - { src: '192.168.56.0/24', dest: '', port: '80', proto: 'tcp', direction: in, comment: 'http any' } # HTTP
+  - { src: '192.168.56.0/24', dest: '', port: '443', proto: 'tcp', direction: in, comment: 'https any' } # HTTPS
+  - { src: '192.168.56.0/24', dest: '', port: '9000', proto: 'tcp', direction: in, comment: 'Portainer' } # Portainer
+  - { src: '192.168.56.0/24', dest: '', port: '9090', proto: 'tcp', direction: in, comment: 'Cockpit' } # Cockpit
+  - { src: '192.168.56.0/24', dest: '', port: '6060', proto: 'tcp', direction: in, comment: 'Crowdsec' } # Crowdsec
+  - { src: '192.168.56.0/24', dest: '', port: '6080', proto: 'tcp', direction: in, comment: 'Crowdsec' } # Crowdsec
+  - { src: '192.168.56.0/24', dest: '', port: '8080', proto: 'tcp', direction: in, comment: 'Crowdsec' } # Crowdsec
+  - { src: '192.168.56.0/24', dest: '', port: '8001', proto: 'tcp', direction: in, comment: 'Littlelink' } # Littlelink
+  - { src: '192.168.56.0/24', dest: '', port: '3001', proto: 'tcp', direction: in, comment: 'Uptime-Kuma' } # Uptime-Kuma
+  - { src: '192.168.56.0/24', dest: '', port: '5001', proto: 'tcp', direction: in, comment: 'Dockge' } # Dockge
 
-# Default ports Outgoing
-enable_out_ssh_22: true
-enable_out_dns_53: true
-enable_out_web_80: true
-enable_out_ntp_123: true
-enable_out_web_443: true
+  - { src: any, dest: any, port: '111', proto: any, direction: out, comment: 'NFS' } # NFS
+  - { src: any, dest: any, port: '2049', proto: any, direction: out, comment: 'NFS' } # NFS
+  - { src: any, dest: any, port: '4045', proto: any, direction: out, comment: 'NFS' } # NFS
+  - { src: '192.168.56.0/24', dest: '', port: '111', proto: any, direction: in, comment: 'NFS' } # NFS
+  - { src: '192.168.56.0/24', dest: '', port: '2049', proto: any, direction: in, comment: 'NFS' } # NFS
+  - { src: '192.168.56.0/24', dest: '', port: '4045', proto: any, direction: in, comment: 'NFS' } # NFS
 
-# Default ports incomming
-enable_web80: false
-enable_web443: false
-
-# System ports incomming
-enable_crowdsec: false
-enable_portainer: false
-enable_watchtower: false
-enable_cockpit: false
-
-local_lan_ufw:
-# - 172.17.0.0/16     # Docker Nets allowed in and out when enable_ufw
-  - 10.0.0.0/8        # Default RFC1918 networks
-  - 172.16.0.0/12     # Default RFC1918 networks
-  - 192.168.0.0/16    # Default RFC1918 networks
-  - fd00::/8
+  - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: '', proto: 'any', direction: out, comment: 'Docker' } # Docker
+  - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } # Docker
