@@ -2,42 +2,11 @@ enable_os_update: true
 enable_extra_packages: true
 enable_extra_packages_nettools: false
 enable_cockpit: false
-enable_auditd: true
-enable_rkhunter: true
+enable_auditd: false
+enable_rkhunter: false
 enable_lynis: false
 
-## Firewall 
-enable_ufw: true
-resetufw: false
-
-# Outgoing
-enable_ufw_deny_out: true
-
-# Default ports Outgoing
-enable_out_ssh_22: true
-enable_out_dns_53: true
-enable_out_web_80: true
-enable_out_ntp_123: true
-enable_out_web_443: true
-
-# Default ports incomming
-enable_dns53: false
-enable_web80: false
-enable_web443: false
-
-# System ports incomming
-enable_nfs: true
-enable_docker: false
-enable_crowdsec: false
-enable_portainer: false
-enable_watchtower: false
-
-local_lan_ufw:
-  - 192.168.30.0/24   # Vlan homlab
-  - 192.168.31.0/24   # Vlan dmz
-  - 192.168.10.0/24   # Vlan secure
-  - fd00::/8          # # Default Lan Ipv6
-
+#NFS
 nfs_exportfs_configs:
     # Vlan homlab
   - client_ip: 192.168.30.0/24
@@ -55,3 +24,17 @@ nfs_exportfs_configs:
     mount_options: "(rw,sync,no_subtree_check,no_root_squash)"
     # Vlan secure
 
+## Firewall 
+enable_ufw: true
+enable_ufw_deny_out: true
+resetufw: false
+
+open_ports:
+  - { src: any, dest: any, port: '22', proto: 'tcp', direction: out, comment: 'SSH' }
+  - { src: any, dest: any, port: '53', proto: any, direction: out, comment: 'DNS' }
+  - { src: any, dest: any, port: '123', proto: 'tcp', direction: out, comment: 'NTP' }
+  - { src: any, dest: any, port: '80', proto: 'tcp', direction: out, comment: 'http' }
+  - { src: any, dest: any, port: '443', proto: 'tcp', direction: out, comment: 'https' }
+  - { src: any, dest: any, port: '7844', proto: any, direction: out, comment: 'Cloudflaretunnels' }
+
+  - { src: '192.168.10.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # Secure Vlan' }
