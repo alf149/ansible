@@ -31,14 +31,14 @@
 - name: Allow necessary ports in UFW
   community.general.ufw:
     rule: allow
-    direction: "{{ item.direction | default('in')  }}"
+    direction: "{{ item.direction | default('in') }}"
     from_ip: "{{ item.src | default('any') }}"
     to_ip: "{{ item.dest | default('any')}}"
     port: "{{ item.port | default('') }}"
     proto: "{{ item.proto | default('any') }}"
     comment: "{{ item.comment }}"
   loop: "{{ open_ports }}"
-  notify: reload ufw
+  notify: Reload ufw
   when:
     - enable_ufw is defined
     - enable_ufw

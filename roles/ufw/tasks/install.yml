@@ -6,7 +6,7 @@
     state: present
     name: ufw
   notify:
-    - Restart_ufw
+    - Reload ufw
   when:
     - enable_ufw is defined
     - enable_ufw

@@ -1,8 +1,8 @@
 ---
-- name: fix dropped ssh sessions
+- name: Fix dropped ssh sessions
   ansible.builtin.import_tasks: fix-dropped-ssh-sessions.yml
-  
-- name: install
+
+- name: Install UFW
   ansible.builtin.import_tasks: install.yml
 
 - name: Configure
@@ -16,7 +16,7 @@
   community.general.ufw:
     state: enabled
   notify:
-    -   reload ufw
+    - Reload ufw
   when:
     - enable_ufw is defined
     - enable_ufw
