@@ -14,3 +14,20 @@
         - system
         - user
         - defaults
+
+    - role: ufw
+      tags:
+        - firewall
+        - ufw
+      vars:
+        ## Firewall
+        enable_ufw: true
+        enable_ufw_deny_out: true
+        resetufw: false
+
+        open_ports:
+          - { src: any, dest: any, port: '22', proto: 'tcp', direction: out, comment: 'SSH' }
+          - { src: any, dest: any, port: '53', proto: any, direction: out, comment: 'DNS' }
+          - { src: any, dest: any, port: '123', proto: 'tcp', direction: out, comment: 'NTP' }
+          - { src: any, dest: any, port: '80', proto: 'tcp', direction: out, comment: 'http' }
+          - { src: any, dest: any, port: '443', proto: 'tcp', direction: out, comment: 'https' }
