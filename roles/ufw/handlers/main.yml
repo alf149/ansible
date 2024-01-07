@@ -1,6 +1,4 @@
 ---
-- name: Restart_ufw
-  tags: ufw
-  ansible.builtin.service:
-    name: ufw
-    state: restarted
+- name: reload ufw
+  community.general.ufw:
+    state: reloaded

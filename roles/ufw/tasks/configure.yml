@@ -1,0 +1,44 @@
+# tasks file
+---
+
+- name: Allow outgoing
+  community.general.ufw:
+    comment: default allow outgoing
+    default: allow
+    direction: outgoing
+  when:
+    - enable_ufw is defined
+    - not enable_ufw_deny_out
+
+- name: Deny outgoing
+  community.general.ufw:
+    comment: default allow outgoing
+    default: deny
+    direction: outgoing
+  when:
+    - enable_ufw is defined
+    - enable_ufw_deny_out
+
+- name: Disallow incoming
+  community.general.ufw:
+    comment: default deny incoming
+    default: deny
+    direction: incoming
+  when:
+    - enable_ufw is defined
+    - enable_ufw
+
+- name: Allow necessary ports in UFW
+  community.general.ufw:
+    rule: allow
+    direction: "{{ item.direction | default('in')  }}"
+    from_ip: "{{ item.src | default('any') }}"
+    to_ip: "{{ item.dest | default('any')}}"
+    port: "{{ item.port | default('') }}"
+    proto: "{{ item.proto | default('any') }}"
+    comment: "{{ item.comment }}"
+  loop: "{{ open_ports }}"
+  notify: reload ufw
+  when:
+    - enable_ufw is defined
+    - enable_ufw

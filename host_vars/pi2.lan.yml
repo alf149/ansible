@@ -27,4 +27,3 @@ open_ports:
   - { src: '192.168.30.0/24', dest: any, port: '53', proto: any, direction: in, comment: 'DNS # HomeLab Vlan' }
   - { src: '192.168.31.0/24', dest: any, port: '53', proto: any, direction: in, comment: 'DNS # HomeLab DMZ Vlan' }
   - { src: '192.168.99.0/24', dest: any, port: '53', proto: any, direction: in, comment: 'DNS # Insecure Vlan' }
-æ

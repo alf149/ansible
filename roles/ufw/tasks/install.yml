@@ -1,0 +1,12 @@
+# tasks file
+---
+- name: Install package ufw
+  tags: ufw
+  ansible.builtin.package:
+    state: present
+    name: ufw
+  notify:
+    - Restart_ufw
+  when:
+    - enable_ufw is defined
+    - enable_ufw
