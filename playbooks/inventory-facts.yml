@@ -1,39 +1,35 @@
 ---
 
 - name: Network Getting Started First Playbook
-  gather_facts: false
+  gather_facts: true
+  become: true
   hosts: all
 
   vars_files:
     - ../group_vars/secrets.yml
 
   tasks:
-    # - name: Get services facts
-    #   ansible.builtin.service_facts:
+    - name: Get services facts
+      ansible.builtin.service_facts:
 
-    # - name: Get services facts of crowdsec.service
-    #   ansible.builtin.debug:
-    #     var: ansible_facts.services['crowdsec.service']
-    #   when:
-    #     - ansible.builtin.ansible_facts.services['crowdsec.service']['status'] == 'enabled'
-    #     - ansible.builtin.ansible_facts.services['crowdsec.service']['state'] == 'running'
-
-    # - name: Get services facts of crowdsec-firewall-bouncer.service
-    #   ansible.builtin.debug:
-    #     var: ansible_facts.services['crowdsec-firewall-bouncer.service']
-    #   when:
-    #     - ansible.builtin.ansible_facts.services['crowdsec-firewall-bouncer.service']['status'] == 'enabled'
-    #     - ansible.builtin.ansible_facts.services['crowdsec-firewall-bouncer.service']['state'] == 'running'
-
-    - name: Show password from vault
+    - name: Loop over all services and print name
       ansible.builtin.debug:
-        var: username_sec
+        msg: "{{ item }}"
+      with_items: "{{ ansible_facts.services }}"
+      when:
+        - ansible_facts.services[item].state == 'running'
 
-    - name: Show password from vault
-      ansible.builtin.debug:
-        var: userpassword_sec
 
+    # - name: Gather facts on listening ports
+    #   community.general.listen_ports_facts:
 
+    # - name: List all TCP ports
+    #   ansible.builtin.debug:
+    #     msg: "{{ ansible_facts.tcp_listen }}"
+
+    # - name: List all UDP ports
+    #   ansible.builtin.debug:
+    #     msg: "{{ ansible_facts.udp_listen }}"
 # tasks:
     # - debug: var=inventory_hostname
     # - debug: var=ansible_hostname

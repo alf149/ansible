@@ -16,9 +16,6 @@
           {% for host in groups['test_servers'] %}
           {{ hostvars[host].ansible_host }}   {{ host }}
           {% endfor %}
-          {% for host in groups['windows'] %}
-          {{ hostvars[host].ansible_host }}   {{ host }}
-          {% endfor %}
           {% for host in groups['pi4_hw'] %}
           {{ hostvars[host].ansible_host }}   {{ host }}
           {% endfor %}
@@ -62,16 +59,6 @@
 
             {% endfor %}
             {% for host in groups['test_servers'] %}
-            host {{ host }}
-                HostName {{ hostvars[host].ansible_host }}
-                User deploy
-                Port 22
-                IdentityFile ~/.ssh/deploy
-                StrictHostKeyChecking no
-                UserKnownHostsFile /dev/null
-
-            {% endfor %}
-            {% for host in groups['windows'] %}
             host {{ host }}
                 HostName {{ hostvars[host].ansible_host }}
                 User deploy

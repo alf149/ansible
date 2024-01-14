@@ -1,7 +1,7 @@
 ---
 
 - name: Run on all PROD_SERVERS
-  hosts: pve.lan:pve1.lan:pi4.lan
+  hosts: pve.lan:pve1.lan
   become: true
 
   vars_files:
@@ -18,37 +18,3 @@
         - ansible_os_family | lower == "debian"
         - enable_os_update
       changed_when: false
-
-- name: Run on "pi4.lan"
-  hosts: pi4.lan
-  gather_facts: true
-  become: true
-
-  vars_files:
-    - group_vars/secrets.yml
-
-  roles:
-
-    - role: system
-      tags:
-        - users
-        - defaults
-
-    - role: geerlingguy.security
-      tags:
-        - security
-        - defaults
-
-    - role: geerlingguy.ntp
-      tags:
-        - ntp
-        - defaults
-
-
-# - name: Run on "pve.lan"
-#   hosts: pve.lan
-#   gather_facts: true
-
-# - name: Run on "pve1.lan"
-#   hosts: pve1.lan
-#   gather_facts: true
