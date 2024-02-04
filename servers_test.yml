@@ -35,3 +35,49 @@
       tags:
         - firewall
         - ufw
+
+
+#### DEV01.LAN ####
+- name: Run on "dev01.test"
+  hosts: dev01.test
+  # gather_facts: true
+  become: true
+
+  vars_files:
+    - group_vars/secrets.yml
+
+  roles:
+
+    - role: geerlingguy.pip
+      tags:
+        - containers
+
+    - role: geerlingguy.docker
+      tags:
+        - containers
+
+  tasks:
+
+    - name: Essential-debian | Install extra packages
+      ansible.builtin.package:
+        name: "{{ extra_packages }}"
+        state: present
+      tags:
+        - wget
+        - apt-transport-https
+        - install ca-certificates
+        - curl
+        - nano
+        - dnsutils
+        - net-tools
+        - jq
+        - htop
+        - git
+        - rsync
+        - unzip
+        - python3
+        - python3-pip
+
+    # - name: Install tailscale client
+    #   ansible.builtin.shell: 'curl -fsSL https://tailscale.com/install.sh | sh'
+
