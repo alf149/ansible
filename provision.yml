@@ -15,19 +15,29 @@
         - user
         - defaults
 
-    - role: ufw
-      tags:
-        - firewall
-        - ufw
-      vars:
-        ## Firewall
-        enable_ufw: true
-        enable_ufw_deny_out: true
-        resetufw: false
+  tasks:
+    - name: Install package ufw
+      tags: ufw
+      ansible.builtin.package:
+        state: present
+        name: ufw
+      notify:
+        - Reload ufw
 
-        open_ports:
-          - { src: any, dest: any, port: '22', proto: 'tcp', direction: out, comment: 'SSH' }
-          - { src: any, dest: any, port: '53', proto: any, direction: out, comment: 'DNS' }
-          - { src: any, dest: any, port: '123', proto: 'tcp', direction: out, comment: 'NTP' }
-          - { src: any, dest: any, port: '80', proto: 'tcp', direction: out, comment: 'http' }
-          - { src: any, dest: any, port: '443', proto: 'tcp', direction: out, comment: 'https' }
+    - name: Set logging
+      community.general.ufw:
+        logging: 'on'
+
+    - name: Allow necessary ports in UFW
+      community.general.ufw:
+        rule: allow
+        direction: 'in'
+        from_ip: 'any'
+        to_ip: 'any'
+        port: 22
+        proto: 'tcp'
+        comment: "Allow ssh from any"
+
+    - name: Enable Firewall ufw
+      community.general.ufw:
+        state: enabled
