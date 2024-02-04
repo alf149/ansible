@@ -1,0 +1,34 @@
+enable_os_update: true
+enable_extra_packages: true
+enable_extra_packages_nettools: true
+enable_cockpit: false
+enable_auditd: false
+enable_rkhunter: false
+enable_lynis: false
+
+## Firewall 
+enable_ufw: true
+resetufw: true
+enable_ufw_deny_out: true
+enable_ufw_fix_sessions: true
+
+open_ports:
+  - { src: any, dest: any, port: '22', proto: 'tcp', direction: out, comment: 'SSH' }
+  - { src: any, dest: any, port: '53', proto: any, direction: out, comment: 'DNS' }
+  - { src: any, dest: any, port: '123', proto: 'tcp', direction: out, comment: 'NTP' }
+  - { src: any, dest: any, port: '80', proto: 'tcp', direction: out, comment: 'http' }
+  - { src: any, dest: any, port: '443', proto: 'tcp', direction: out, comment: 'https' }
+
+  - { src: 'any', dest: '', port: '22', proto: 'tcp', direction: in, comment: 'SSH # KVM / vagrant on localhost' }
+
+  - { src: '192.168.56.0/24', dest: '', port: '80', proto: 'tcp', direction: in, comment: 'http any' } #HTTP
+  - { src: '192.168.56.0/24', dest: '', port: '443', proto: 'tcp', direction: in, comment: 'https any' } #HTTPS
+  - { src: '192.168.56.0/24', dest: '', port: '5001', proto: 'tcp', direction: in, comment: 'Dockge' } #Dockge
+
+  - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: , proto: 'any', direction: out, comment: 'Docker' } #Docker
+  - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: , proto: 'any', direction: in, comment: 'Docker' } #Docker
+
+  - { src: any, dest: any, port: '41641', proto: udp, direction: out, comment: 'tailscale' } #https://tailscale.com/kb/1130/lxc-unprivileged
+  - { src: any, dest: any, port: '3478', proto: udp, direction: out, comment: 'tailscale' }
+  - { src: any, dest: any, port: '41641', proto: udp, direction: in, comment: 'tailscale' }
+  - { src: any, dest: any, port: '3478', proto: udp, direction: in, comment: 'tailscale' }
