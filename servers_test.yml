@@ -78,6 +78,26 @@
         - python3
         - python3-pip
 
-    # - name: Install tailscale client
-    #   ansible.builtin.shell: 'curl -fsSL https://tailscale.com/install.sh | sh'
+#### SRV=02.LAN ####
+- name: Run on "srv02.lan"
+  hosts: srv02.lan
+  # gather_facts: true
+  become: true
 
+  vars_files:
+    - group_vars/secrets.yml
+
+  roles:
+
+    - role: geerlingguy.pip
+      tags:
+        - containers
+
+    - role: geerlingguy.docker
+      tags:
+        - containers
+
+    - role: littlelink
+      tags:
+        - containers
+        - littlelink
