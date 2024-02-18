@@ -9,5 +9,6 @@
     //     "site*.yml": "ansible",
     //     "playbooks/*.yml": "ansible"
     //   },
-      "ansible.python.interpreterPath": "/bin/python3"
+      "ansible.python.interpreterPath": "/bin/python3",
+      "editor.fontFamily": "'CaskaydiaCove Nerd Font Mono', 'Droid Sans Mono', 'monospace', monospace"
 }
