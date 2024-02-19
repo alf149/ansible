@@ -1,8 +1,4 @@
 ---
-- name: Essential-redhat
-  ansible.builtin.include_tasks: essential-redhat.yml
-  when: ansible_os_family | lower == 'redhat'
-
 - name: Essential-debian
   ansible.builtin.include_tasks: essential-debian.yml
   when: ansible_os_family | lower == 'debian'
