@@ -9,8 +9,6 @@ alias which='alias | /usr/bin/which --tty-only --read-alias --show-dot --show-ti
 # Update
 alias updateall='echo  && echo ---update/upgrade/certupdate/autoremove and flatpack -requeres sudo--- ; echo && echo  && sudo echo  echo ---update--- ; echo  && echo  && sudo apt update && sudo echo  && echo ---upgrade--- ; echo  && echo  && sudo apt upgrade -y && sudo echo  && echo ---update certificates--- ; echo  && echo  && sudo update-ca-certificates && sudo echo  && echo -- autoremove--- ; echo  && echo  && sudo apt autoremove -y && sudo echo  && echo ---update Flatpak--- ; echo  && echo  && sudo flatpak update -y  && echo  && echo  '
 alias update='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
-alias updatedist='sudo apt update && sudo apt dist-upgrade -y && sudo apt autoremove -y'
-alias updatefull='sudo apt update && sudo apt full-upgrade -y && sudo apt autoremove -y'
 
 #screen 
 alias cls='clear'
@@ -19,7 +17,6 @@ alias cls='clear'
 alias ..='cd ..'
 alias home='cd ~'
 alias cd..='cd ..'
-
 
 #Grep
 alias hg='history|grep'
