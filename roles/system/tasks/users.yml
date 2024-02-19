@@ -12,9 +12,6 @@
     shell: /bin/bash
     update_password: always
     create_home: true
-    # password_expire_warn: 60
-    # password_expire_max: 390
-    # password_expire_min: 365
     state: present
   loop: "{{ users }}"
   tags: users

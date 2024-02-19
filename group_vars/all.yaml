@@ -28,8 +28,7 @@ pip_install_packages:
 docker_daemon_options: {"iptables": true}
 docker_users:
   - deploy
-  - rolf
-
+  
 extra_packages: 
   - curl
   - git
