@@ -41,3 +41,4 @@
     - name: Enable Firewall ufw
       community.general.ufw:
         state: enabled
+
