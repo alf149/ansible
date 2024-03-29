@@ -9,7 +9,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   
   #### Home lab
   
-  # srv01
+  # dev01
   config.vm.define "dev01.test", autostart: false do |dev01|
     dev01.vm.provider "libvirt" do |v|
       v.memory = 4096
