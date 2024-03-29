@@ -76,6 +76,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       ansible.playbook = "provision.yml"
     end
   end
+
+  # # win11
+  # config.vm.define "win11.test", autostart: false do |win11|
+  #   win11.vm.provider "libvirt" do |v|
+  #     v.memory = 8192
+  #     v.cpus = 4
+  #   end
+  #   win11.vm.box = "valengus/windows11-22h2-x64"
+  # end
 end
 
 
