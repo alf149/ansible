@@ -17,11 +17,10 @@ Just a playground for me, but is public.
 
 ### Vagrant host in this lab.
 >Home test setup 
-* dev01 (ubuntu 22.04 server)
-* srv01 (ubuntu 22.04 server)
-* srv02 (ubuntu 22.04 server)
-* srv03 (ubuntu 22.04 server)
-* srv04 (ubuntu 22.04 server)
+* dev01.test (ubuntu 22.04 server)
+* srv01v (ubuntu 22.04 server)
+* srv02v (ubuntu 22.04 server)
+* srv03v (ubuntu 22.04 server)
 
 
 ## 2 - Build the Virtual Machine
@@ -49,7 +48,7 @@ Just a playground for me, but is public.
 * setup of basic security, sshm firewall
 
 ## 4 - Ansible inventory and Adhoc commands.
-> Vagrant name eg. srv01 ansible host is srv01.test (with domain)
+> Vagrant name eg. srv01.test ansible host is srv01.test (with domain)
 * read more about adhoc at [docs.ansible.com](https://docs.ansible.com/ansible/latest/user_guide/intro_adhoc.html)
 * ping single host `ansible srv01.test -m ping`
 * ping selected hosts `ansible "srv01.test,pi02.test" -m ping `
