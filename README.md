@@ -6,7 +6,7 @@ Just a playground for me, but is public.
 ## Ansible master
 > Could be you own laptop, with some amount of ram. 
 
-## 1 - Install dependencies (VirtualBox, Vagrant, Ansible)
+## 1 - Install dependencies (libvirt, Vagrant, Ansible)
 > Only testet on Linux
 1. Download and install [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
 2. Download and install [vagrant](https://www.vagrantup.com/downloads).
@@ -17,31 +17,18 @@ Just a playground for me, but is public.
 
 ### Vagrant host in this lab.
 >Home test setup 
-* docker01 (ubuntu 20.04 server, with docker and some containers)
-* srv01 (ubuntu 20.04 server)
-* srv02 (ubuntu 20.04 server)
-* srv03 (ubuntu 20.04 server)
-* srv04 (ubuntu 20.04 server)
->test server to test ansible roles
-* roc8 (Rocky linux)
-* alma8 (Alma Linux)
-* ora8 (Oracle Linux 8)
-* ora7 (Oracle Linux 7)
-* deb11 (Debian 11)
-* deb10 (Debian 10)
-* ubt2110 (ubuntu 21.10 server)
-* win2019 (Windows server 2019/2022)
-> Test security
-* Kali
+* dev01 (ubuntu 22.04 server)
+* srv01 (ubuntu 22.04 server)
+* srv02 (ubuntu 22.04 server)
+* srv03 (ubuntu 22.04 server)
+* srv04 (ubuntu 22.04 server)
 
 
 ## 2 - Build the Virtual Machine
 * Download this project and put it wherever you want.
 * Open Terminal, cd to this directory.
-*  Run `ansible-playbook playbooks/create-lab-ssh-key.yml` once, to create the local ssh keys used for this lab(deploy).This does not work on Windows server. 
 * On first run `ansible-galaxy install -r requirements.yml` to download role requirements
-* run `ansible-playbook playbooks/inventory-to-hostfile.yml -K and provide localhost sudo password` once, to get vagrant host in local /etc/hosts 
-* run `ansible-playbook playbooks/inventory-to-sshconfig.yml -K and provide localhost sudo password` once, to get vagrant host in local ~/.ssh/config 
+* run `ansible-playbook playbooks/inventory_update.yml -K and provide localhost sudo password` once, to get vagrant host in local /etc/hosts AND to get vagrant host in local ~/.ssh/config 
 
 * use Vagrant to start stop hosts.
   * **up/start**
@@ -57,9 +44,9 @@ Just a playground for me, but is public.
     * `vagrant destroy -f` to remove all hosts
 
 ## 3 - My basic ansible setup 
-* Cerate 'deploy' user part og wheel og sudo. 
+* Cerate 'deploy' user part and sudo. 
   - copy files/.bash_aliases to new user 
-* setup of basic security, ssh
+* setup of basic security, sshm firewall
 
 ## 4 - Ansible inventory and Adhoc commands.
 > Vagrant name eg. srv01 ansible host is srv01.test (with domain)
@@ -71,15 +58,6 @@ Just a playground for me, but is public.
 * reboot a host `ansible srv01.test -m shell -a 'sudo reboot -h now'`
 * get host uptime `ansible srv01.test -m shell -a 'uptime'`
 
-## 5 - Ansible cmdb and Adhoc commands.
-* Read more at [ansible-cmdb.readthedocs.io](https://ansible-cmdb.readthedocs.io/en/latest/installation/)
-* To install `sudo pip install ansible-cmdb`
-* mkdir /out
-* ansible -m setup --tree out/ all
-* ansible-cmdb out/ > overview.html
-
-## 6 - Ansible windows host
-> Using winrm as conection insted of ssh 
 
 
 
