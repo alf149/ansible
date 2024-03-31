@@ -5,20 +5,48 @@
   become: true
   hosts: all
 
-  vars_files:
-    - ../group_vars/secrets.yml
+  # vars_files:
+  #   - secrets.yml
+  vars:
+
+    users:
+    - name: deploy
+      comment: System Administration
+      password: !vault |
+              $ANSIBLE_VAULT;1.1;AES256
+              66663364353336613839376565636464393637636434636437333631623163363632623131393063
+              3031376561303431663834366337373833313935383466620a663463366436353564343866353031
+              64333631323735313438356635353966373063303863623237626265336565393661343566333635
+              3531643131306531340a613762333239313636366432653436373566666363656231383334643836
+              3163
 
   tasks:
-    - name: Get services facts
-      ansible.builtin.service_facts:
+    - name: "Set variables"
+      ansible.builtin.set_fact:
+        user_name: "admin"
+        user_password: !vault |
+              $ANSIBLE_VAULT;1.1;AES256
+              66663364353336613839376565636464393637636434636437333631623163363632623131393063
+              3031376561303431663834366337373833313935383466620a663463366436353564343866353031
+              64333631323735313438356635353966373063303863623237626265336565393661343566333635
+              3531643131306531340a613762333239313636366432653436373566666363656231383334643836
+              3163
 
-    - name: Loop over all services and print name
+    - name: Output
       ansible.builtin.debug:
-        msg: "{{ item }}"
-      with_items: "{{ ansible_facts.services }}"
-      when:
-        - ansible_facts.services[item].state == 'running'
+        msg: "The user '{{ user_name }}' has a password '{{ user_password }}'"
 
+
+
+  # - name: Get services facts
+    #   ansible.builtin.service_facts:
+
+    # - name: Loop over all services and print name
+    #   ansible.builtin.debug:
+    #     msg: "{{ item }}"
+    #   with_items: "{{ ansible_facts.services }}"
+    #   when:
+    #     - ansible_facts.services[item].state == 'running'
 
     # - name: Gather facts on listening ports
     #   community.general.listen_ports_facts:
@@ -30,7 +58,6 @@
     # - name: List all UDP ports
     #   ansible.builtin.debug:
     #     msg: "{{ ansible_facts.udp_listen }}"
-# tasks:
     # - debug: var=inventory_hostname
     # - debug: var=ansible_hostname
     # - debug: var=ansible_distribution
@@ -55,4 +82,5 @@
     # - debug: var=docker_container_info
     # - debug: var=ansible_processor_cores
 
-    # #- debug: var=hostvars
+    # - debug: var=hostvars
+    # - debug: var=users
