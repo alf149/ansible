@@ -10,6 +10,15 @@ reqs *FORCE:
 vup HOST:
   vagrant up {{HOST}}
 
+vstop HOST:
+  vagrant halt {{HOST}}
+
+vstatus:
+  vagrant status
+
+vboxupd:
+  vagrant box update
+
 ## Ansible stuff
 ahw HOST *TAGS:
   ansible-playbook playbooks/servers_lan_hw.yml --limit {{HOST}} {{TAGS}}
