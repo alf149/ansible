@@ -34,7 +34,6 @@
             - ansible_os_family | lower == "debian"
             - enable_os_update
           changed_when: false
-
         - name: Check if a reboot is needed on all servers
           register: reboot_required_file
           ansible.builtin.stat:
@@ -105,6 +104,5 @@
       ansible.builtin.command: "/usr/local/bin/pihole restartdns reload"
       when: enable_pihole_update
       tags: piholeupdate
-
 
 ###

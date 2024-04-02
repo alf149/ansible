@@ -14,7 +14,7 @@
     - role: geerlingguy.ntp
       tags: ntp
 
-
+###
 - name: Run on "dev01.test"
   hosts: dev01.test
   gather_facts: true
@@ -36,7 +36,7 @@
         name: "{{ extra_packages }}"
         state: present
 
-
+###
 - name: Run on "srv01.test"
   hosts: srv01.lan
   gather_facts: true
@@ -56,7 +56,7 @@
         - containers
         - littlelink
 
-
+###
 - name: Run on "srv02.test"
   hosts: srv02.lan
   gather_facts: true
@@ -72,7 +72,7 @@
     - role: ufw
       tags: ufw
 
-
+###
 - name: Run on "srv03.test"
   hosts: srv03.lan
   gather_facts: true
