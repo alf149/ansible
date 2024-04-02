@@ -25,11 +25,3 @@
         state: absent
         purge: true
 
-    - name: Del_snap | Remove the snap folders
-      ansible.builtin.file:
-        name: "{{ item }}"
-        state: absent
-      with_items:
-        - /home/{{ username }}/snap
-        - /var/snap
-        - /var/lib/snap

@@ -1,14 +1,9 @@
 enable_os_update: true
 enable_extra_packages: true
-enable_extra_packages_nettools: false
-enable_cockpit: false
-enable_auditd: false
-enable_rkhunter: false
-enable_lynis: false
 
 ## Firewall 
 enable_ufw: true
-resetufw: true
+resetufw: false
 enable_ufw_deny_out: true
 
 open_ports:
