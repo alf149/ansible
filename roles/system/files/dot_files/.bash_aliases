@@ -3,7 +3,6 @@
 alias ls='ls -l --color=auto'
 alias ll='ls -ltrah --color=auto'
 alias root='sudo -u root -i'
-alias which='alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
 
 # Update
 alias updateall='echo  && echo ---update/upgrade/certupdate/autoremove and flatpack -requeres sudo--- ; echo && echo  && sudo echo  echo ---update--- ; echo  && echo  && sudo apt update && sudo echo  && echo ---upgrade--- ; echo  && echo  && sudo apt upgrade -y && sudo echo  && echo ---update certificates--- ; echo  && echo  && sudo update-ca-certificates && sudo echo  && echo -- autoremove--- ; echo  && echo  && sudo apt autoremove -y && sudo echo  && echo ---update Flatpak--- ; echo  && echo  && sudo flatpak update -y  && echo  && echo  '
