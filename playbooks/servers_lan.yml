@@ -8,64 +8,103 @@
   gather_facts: true
   become: true
 
-  vars_files:
-    - group_vars/secrets.yml
-
-  pre_tasks:
-
-    - name: Upgrade apt packages (Debian and Ubuntu)
-      ansible.builtin.apt:
-        upgrade: true
-        autoremove: true
-        update_cache: true
-        cache_valid_time: 3600
-      when:
-        - ansible_os_family | lower == "debian"
-        - enable_os_update
-      changed_when: false
+  vars_files: ../group_vars/secrets.yml
 
   roles:
-
     - role: system
-      tags:
-        - users
-        - defaults
-
+      tags: system
     - role: geerlingguy.security
-      tags:
-        - security
-        - defaults
-
+      tags: security
     - role: geerlingguy.ntp
-      tags:
-        - ntp
-        - defaults
+      tags: ntp
 
-    - role: ufw
-      tags:
-        - firewall
-        - ufw
+  tasks:
+    - name: Upgrade apt packages (Debian and Ubuntu)
+      when: enable_os_update
+      tags: os_update
+      block:
+        - name: Upgrade apt packages (Debian and Ubuntu)
+          ansible.builtin.apt:
+            force_apt_get: true
+            upgrade: true
+            autoremove: true
+            update_cache: true
+            cache_valid_time: 3600
+          when:
+            - ansible_os_family | lower == "debian"
+            - enable_os_update
+          changed_when: false
 
-#### CLOUD01.LAN ####
+        - name: Check if a reboot is needed on all servers
+          register: reboot_required_file
+          ansible.builtin.stat:
+            path: /var/run/reboot-required
+        - name: Reboot the box if kernel updated
+          ansible.builtin.reboot:
+            msg: "Reboot initiated by Ansible for kernel updates"
+          when: reboot_required_file.stat.exists
+
+###
 - name: Run on "cloud01.lan"
   hosts: cloud01.lan
-  # gather_facts: true
+  gather_facts: true
   become: true
 
-  vars_files:
-    - group_vars/secrets.yml
+  vars_files: ../group_vars/secrets.yml
 
   roles:
-
     - role: geerlingguy.pip
-      tags:
-        - containers
-
+      tags: containers
     - role: geerlingguy.docker
-      tags:
-        - containers
-
+      tags: containers
+    - role: ufw
+      tags: ufw
     - role: littlelink
-      tags:
-        - containers
-        - littlelink
+      tags: containers
+
+###
+- name: Run on "pi1.lan and pi2.lan"
+  hosts: pi1.lan, pi2.lan
+  gather_facts: true
+  become: true
+
+  vars_files: ../group_vars/secrets.yml
+
+  roles:
+    - role: ufw
+      tags: ufw
+
+  tasks:
+    - name: Add ssh authorized_keys to users
+      ansible.posix.authorized_key:
+        user: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          32306365653061653732623066353232363763363362663036303336313563663331393431356563
+          6162313465373734373862623236393636336331616665370a373662333138353236396437616430
+          39303832333330396234653333366331396366666164643761386262663934313866636364633238
+          6330363463306339380a353839656537373530653139303063363436303631313439653932353163
+          3034
+        key: "{{ pi_sync_key }}"
+        exclusive: false
+
+    - name: Update PiHole with bash
+      register: ouputup
+      changed_when: ouputup.rc != 0
+      ansible.builtin.command: "/usr/local/bin/pihole -up"
+      when: enable_pihole_update
+      tags: piholeupdate
+    - name: Update PiHole Gravaty with bash
+      register: ouputg
+      changed_when: ouputg.rc != 0
+      ansible.builtin.command: "/usr/local/bin/pihole -g"
+      when: enable_pihole_update
+      tags: piholeupdate
+    - name: Restart PiHole DNS with bash
+      register: ouputdns
+      changed_when: ouputdns.rc != 0
+      ansible.builtin.command: "/usr/local/bin/pihole restartdns reload"
+      when: enable_pihole_update
+      tags: piholeupdate
+
+
+###

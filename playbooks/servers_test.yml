@@ -1,103 +1,89 @@
 ---
-#
-# Tasks and roles for all hosts
-#
-
 - name: Run on all TEST_SERVERS
   hosts: test_servers
   gather_facts: true
   become: true
 
-  vars_files:
-    - group_vars/secrets.yml
-
-  pre_tasks:
-
-    - name: Upgrade apt packages (Debian and Ubuntu)
-      ansible.builtin.apt:
-        upgrade: true
-        autoremove: true
-        update_cache: true
-        cache_valid_time: 3600
-      when:
-        - ansible_os_family | lower == "debian"
-        - enable_os_update
-      changed_when: false
+  vars_files: ../group_vars/secrets.yml
 
   roles:
-
     - role: system
-      tags:
-        - users
-        - defaults
-
-    - role: ufw
-      tags:
-        - firewall
-        - ufw
+      tags: system
+    - role: geerlingguy.security
+      tags: security
+    - role: geerlingguy.ntp
+      tags: ntp
 
 
-#### DEV01.LAN ####
 - name: Run on "dev01.test"
   hosts: dev01.test
-  # gather_facts: true
+  gather_facts: true
   become: true
 
-  vars_files:
-    - group_vars/secrets.yml
+  vars_files: ../group_vars/secrets.yml
 
   roles:
-
     - role: geerlingguy.pip
-      tags:
-        - containers
-
+      tags: containers
     - role: geerlingguy.docker
-      tags:
-        - containers
+      tags: containers
+    - role: ufw
+      tags: ufw
 
   tasks:
-
     - name: Essential-debian | Install extra packages
       ansible.builtin.package:
         name: "{{ extra_packages }}"
         state: present
-      tags:
-        - wget
-        - apt-transport-https
-        - install ca-certificates
-        - curl
-        - nano
-        - dnsutils
-        - net-tools
-        - jq
-        - htop
-        - git
-        - rsync
-        - unzip
-        - python3
-        - python3-pip
 
-#### SRV=02.LAN ####
-- name: Run on "srv02.lan"
-  hosts: srv02.lan
-  # gather_facts: true
+
+- name: Run on "srv01.test"
+  hosts: srv01.lan
+  gather_facts: true
   become: true
 
-  vars_files:
-    - group_vars/secrets.yml
+  vars_files: ../group_vars/secrets.yml
 
   roles:
-
     - role: geerlingguy.pip
-      tags:
-        - containers
-
+      tags: containers
     - role: geerlingguy.docker
-      tags:
-        - containers
-
+      tags: containers
+    - role: ufw
+      tags: ufw
     - role: littlelink
       tags:
         - containers
         - littlelink
+
+
+- name: Run on "srv02.test"
+  hosts: srv02.lan
+  gather_facts: true
+  become: true
+
+  vars_files: ../group_vars/secrets.yml
+
+  roles:
+    - role: geerlingguy.pip
+      tags: containers
+    - role: geerlingguy.docker
+      tags: containers
+    - role: ufw
+      tags: ufw
+
+
+- name: Run on "srv03.test"
+  hosts: srv03.lan
+  gather_facts: true
+  become: true
+
+  vars_files: ../group_vars/secrets.yml
+
+  roles:
+    - role: geerlingguy.pip
+      tags: containers
+    - role: geerlingguy.docker
+      tags: containers
+    - role: ufw
+      tags: ufw
