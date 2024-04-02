@@ -27,7 +27,7 @@
   ansible.posix.authorized_key:
     user: "{{ item.name }}"
     key: "{{ item.ssh_key }}"
-    exclusive: true
+    exclusive: false
   loop: "{{ users }}"
 
 - name: User | Suppress login messages for users
