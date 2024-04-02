@@ -1,10 +1,6 @@
-enable_os_update: true
+enable_os_update: false
 enable_extra_packages: true
-enable_extra_packages_nettools: false
-enable_cockpit: false
-enable_auditd: false
-enable_rkhunter: false
-enable_lynis: false
+enable_pihole_update: false
 
 ## Firewall 
 enable_ufw: true
@@ -30,3 +26,5 @@ open_ports:
   - { src: '192.168.30.0/24', dest: any, port: '53', proto: any, direction: in, comment: 'DNS # HomeLab Vlan' }
   - { src: '192.168.31.0/24', dest: any, port: '53', proto: any, direction: in, comment: 'DNS # HomeLab DMZ Vlan' }
   - { src: '192.168.99.0/24', dest: any, port: '53', proto: any, direction: in, comment: 'DNS # Insecure Vlan' }
+
+pi_sync_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC41NoPBWDAYCSp0dhiqzwrdFG+/lwhDYJ4ITGG1IJmsaXRBG2++JQ9LdicurC0lEPvrc7cti20uZQI+80lotF84iybyI9s7NI9ci+8cgnIPmeN4QH3rUmp7xMMrFHTYc9v1b1YYr45Kc8fRQahzMGVN0wTwIb6bs2mpxpQlim0Irih9S6WVxyu2IggrfgxuB/rA8uKt13JyOq8T7iac5FA2KrAP+/iougq4BLk4QwS2NJ7TxWLCfqe96AKZkeaGrTF537KtoodxV0cQHZaRiBVBsRp6jyRfEZlDQVlsm2wSNK6twOfn0t/5JtzZceaFaGFmWa/CJNiHGmg4lvJaJcfJoU2DNlYdERmmX1HNgYtO3otFetCWdOZ5ovpmLNpoo4Wx5Qw+64jF28uegzLZwwaQn1sJOEasvTMgmZ87lAN43C10xywVYickgmUK2/WnZNWgXOAbvWqq6TCRGEdoVia3dHkBuLKaeSWTThjhE/uOdxjPlJZj4uO2tS0iuWR+DU= deploy@pi2
