@@ -20,14 +20,20 @@ vboxupd:
   vagrant box update
 
 ## Ansible stuff
-ahw HOST *TAGS:
+ansihw HOST *TAGS:
   ansible-playbook playbooks/servers_lan_hw.yml --limit {{HOST}} {{TAGS}}
 
-alan HOST *TAGS:
+ansiprod HOST *TAGS:
   ansible-playbook playbooks/servers_lan.yml  --limit {{HOST}} {{TAGS}}
 
-atest HOST *TAGS:
+ansiprodupd HOST:
+  ansible-playbook playbooks/servers_lan.yml  --limit {{HOST}} --tags os_update --extra-vars "enable_os_update=true"
+
+ansiprodpiupd HOST:
+  ansible-playbook playbooks/servers_lan.yml  --limit {{HOST}} --tags piholeupdate --extra-vars "enable_pihole_update=true"
+
+ansitest HOST *TAGS:
   ansible-playbook playbooks/servers_test.yml  --limit {{HOST}} {{TAGS}}
 
-aenv:
+ansienv:
   ansible-playbook playbooks/inventory_update.yml -K
