@@ -1,6 +1,12 @@
 enable_os_update: true
 enable_extra_packages: true
 
+#NFS
+nfsclient_local_folder: "/opt/docker"
+nfsclient_nfs_connect: "nas.lan:/volume1/docker_nas" 
+docker_dir: "{{ nfsclient_local_folder }}/docker_test"
+
+
 ## Firewall 
 enable_ufw: true
 resetufw: false

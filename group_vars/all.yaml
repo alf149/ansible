@@ -12,7 +12,7 @@ ntp_manage_config: true
 ntp_timezone: "{{ timezone }}"
 
 # Used in geerlingguy.security
-security_sudoers_passwordless: [ 'deploy']
+security_sudoers_passwordless: [ 'deploy' ]
 security_fail2ban_enabled: false
 
 # Used in geerlingguy.pip
@@ -24,8 +24,7 @@ pip_install_packages:
 
 # Used in geerlingguy.docker
 docker_daemon_options: {"iptables": true}
-docker_users:
-  - deploy
+docker_users: [ 'deploy' ]
   
 extra_packages: 
   - curl
