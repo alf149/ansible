@@ -1,3 +1,3 @@
 ---
 nfsclient_local_folder: "{{ docker_dir }}"          ## change this
-nfsclient_nfs_connect: "192.168.30.103:/mnt/share/docker"   ## change this
+nfsclient_nfs_connect: "nas.lan://volume1/docker_nas"   ## change this
