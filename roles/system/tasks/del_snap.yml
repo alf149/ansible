@@ -24,4 +24,3 @@
         package: snapd
         state: absent
         purge: true
-
