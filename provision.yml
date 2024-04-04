@@ -8,12 +8,8 @@
     - group_vars/secrets.yml
 
   roles:
-
     - role: system
-      tags:
-        - system
-        - user
-        - defaults
+      tags: system
 
   tasks:
     - name: Install package ufw
