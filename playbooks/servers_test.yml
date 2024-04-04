@@ -71,19 +71,3 @@
       tags: containers
     - role: ufw
       tags: ufw
-
-###
-- name: Run on "srv03.test"
-  hosts: srv03.lan
-  gather_facts: true
-  become: true
-
-  vars_files: ../group_vars/secrets.yml
-
-  roles:
-    - role: geerlingguy.pip
-      tags: containers
-    - role: geerlingguy.docker
-      tags: containers
-    - role: ufw
-      tags: ufw
