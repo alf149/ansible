@@ -8,6 +8,9 @@ v_up HOST:
 v_stop HOST:
   vagrant halt {{HOST}}
 
+v_del HOST:
+  vagrant destroy {{HOST}}
+
 v_status:
   vagrant status
 
