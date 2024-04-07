@@ -38,7 +38,7 @@
 
 ###
 - name: Run on "srv01.test"
-  hosts: srv01.lan
+  hosts: srv01.test
   gather_facts: true
   become: true
 
@@ -51,6 +51,8 @@
       tags: containers
     - role: ufw
       tags: ufw
+    - role: dockge
+      tags: dockge
     - role: littlelink
       tags:
         - containers
@@ -58,7 +60,7 @@
 
 ###
 - name: Run on "srv02.test"
-  hosts: srv02.lan
+  hosts: srv02.test
   gather_facts: true
   become: true
 
@@ -71,3 +73,94 @@
       tags: containers
     - role: ufw
       tags: ufw
+
+###
+- name: Run on "ubt.test"
+  hosts: ubt.test
+  gather_facts: true
+  become: true
+
+  vars_files: ../group_vars/secrets.yml
+
+  roles:
+    - role: geerlingguy.pip
+      tags: containers
+    - role: ufw
+      tags: ufw
+
+  tasks:
+    - name: Add repository remote
+      community.general.flatpak_remote:
+        name: flathub
+        state: present
+        flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+        method: system
+      tags: flatpak
+    - name: Install multiple packages
+      community.general.flatpak:
+        name:
+          - org.videolan.VLC        ## VLC
+          - com.google.Chrome       ## Chrome Browser
+        state: present
+      tags: flatpak
+    - name: Remove multiple packages
+      community.general.flatpak:
+        name:
+          - im.riot.Riot            ## Element matrix client
+          - com.visualstudio.code   ## VisualStudio
+        state: absent
+      tags: flatpak
+
+    - name: Get starship install script
+      ansible.builtin.get_url:
+        url: https://starship.rs/install.sh
+        dest: /tmp/starship_install.sh
+        mode: '0755'
+      tags: starship
+    - name: Install starship
+      ansible.builtin.shell:
+        cmd: /tmp/starship_install.sh --yes
+        executable: /bin/sh
+      register: my_starship
+      changed_when: my_starship.rc != 0
+      become: true
+      tags: starship
+
+    - name: Get VisualStudio install script
+      ansible.builtin.command: 'sudo curl -L -o /tmp/code.deb https://go.microsoft.com/fwlink/?LinkID=760868'
+      register: my_visualstudiocurl
+      changed_when: my_visualstudiocurl.rc != 0
+      tags: code
+    - name: Chmod Install deb
+      ansible.builtin.command: 'sudo chmod +x /tmp/code.deb'
+      register: my_visualstudiodeb
+      changed_when: my_visualstudiodeb.rc != 0
+      tags: code
+    - name: Install VisualStudio
+      ansible.builtin.command: 'sudo dpkg -i /tmp/code.deb'
+      register: my_visualstudio
+      changed_when: my_visualstudio.rc != 0
+      become: true
+      tags: code
+
+    - name: Clone a repo with separate git directory
+      become_user: deploy
+      ansible.builtin.git:
+        repo: git@github.com:alf149/dotfiles.git
+        dest: ~/git/dotfiles
+        accept_hostkey: true
+        clone: true
+        update: false
+        remote: main
+        key_file: /home/deploy/.ssh/git_deploy
+      tags: dotfiles
+
+    # Config Stow another day
+    # - name: Setup Stow and Dotfiles from Git Part2
+    #   become_user: deploy
+    #   ansible.builtin.command:
+    #     chdir: ~/git/dotfiles
+    #     cmd: stow -t ~ -R */ --ignore='.*\.sh'
+    #   register: my_stow
+    #   changed_when: my_stow.rc != 0
+    #   tags: stow
