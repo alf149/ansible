@@ -5,5 +5,8 @@ roles:
   - src: geerlingguy.pip
   - src: geerlingguy.docker
   - src: geerlingguy.clamav
+  - src: ironicbadger.docker_compose_generator 
+  - src: ironicbadger.proxmox_nag_removal
+
 
 
