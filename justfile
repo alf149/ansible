@@ -2,8 +2,8 @@ recipe-name:
   echo 'This is a recipe!'
 
 ## Vagrant stuff
-v_up HOST:
-  vagrant up {{HOST}}
+v_up HOST *ARGS:
+  vagrant up {{HOST}} {{ARGS}}
 
 v_stop HOST:
   vagrant halt {{HOST}}
@@ -19,8 +19,8 @@ v_boxupd:
 
 ## Ansible stuff
 # optionally use --force to force reinstall all requirements
-ansi_reqs *FORCE:
-  ansible-galaxy install -r requirements.yml {{FORCE}}
+ansi_reqs *ARGS:
+  ansible-galaxy install -r requirements.yml {{ARGS}}
 
 ansi_env:
   ansible-playbook playbooks/inventory_update.yml -K
