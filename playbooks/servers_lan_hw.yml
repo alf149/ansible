@@ -1,11 +1,8 @@
 ---
 
-- name: Run on all PROD_SERVERS
+- name: Run on all PROD Hardware Servers
   hosts: pve.lan:pve1.lan
   become: true
-
-  vars_files:
-    - group_vars/secrets.yml
 
   pre_tasks:
     - name: Upgrade apt packages (Debian and Ubuntu)
@@ -18,3 +15,12 @@
         - ansible_os_family | lower == "debian"
         - enable_os_update
       changed_when: false
+
+###
+- name: Run on "ProxMox Servers"
+  hosts: pve.lan
+  gather_facts: false
+  become: true
+
+  roles:
+    - role: ironicbadger.proxmox_nag_removal
