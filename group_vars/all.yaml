@@ -33,7 +33,11 @@ extra_packages:
   - python3
   - python3-pip
 
-extra_packages_nettools: []
+extra_packages_nettools: 
+  - dnsutils
+  - net-tools
+  - nmap
+  - netcat
 
 enable_os_update: true
 enable_extra_packages: false
