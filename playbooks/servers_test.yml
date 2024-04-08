@@ -143,6 +143,22 @@
       become: true
       tags: code
 
+    - name: User | copy ssh key to use for Git to user.
+      become_user: deploy
+      ansible.builtin.copy:
+        src: ~/.ssh/git_deploy
+        dest: ~/.ssh/git_deploy
+        owner: deploy
+        mode: '600'
+      tags: git
+    - name: User | copy ssh key to use for Git to user.
+      become_user: deploy
+      ansible.builtin.copy:
+        src: ~/.ssh/git_deploy.pub
+        dest: ~/.ssh/git_deploy.pub
+        owner: deploy
+        mode: '644'
+      tags: git
     - name: Clone a repo with separate git directory
       become_user: deploy
       ansible.builtin.git:
@@ -150,10 +166,13 @@
         dest: ~/git/dotfiles
         accept_hostkey: true
         clone: true
-        update: false
+        update: true
         remote: main
+        force: true
         key_file: /home/deploy/.ssh/git_deploy
-      tags: dotfiles
+      tags:
+        - dotfiles
+        - git
 
     # Config Stow another day
     # - name: Setup Stow and Dotfiles from Git Part2
@@ -164,3 +183,4 @@
     #   register: my_stow
     #   changed_when: my_stow.rc != 0
     #   tags: stow
+
