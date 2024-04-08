@@ -10,27 +10,20 @@ enable_ufw_fix_sessions: true
 
 extra_packages: 
   - curl
+  - wget
   - git
   - nano
   - python3
   - python3-pip
   - apt-transport-https
   - ca-certificates
-  - wget
-  - nano
-  - dnsutils
-  - net-tools
-  - nmap
   - jq
   - htop
-  - tmux
-  - netcat
   - unzip
   - gparted
   - plocate
   - nautilus-admin
-  - flatpak
-  - stow
+
 
 open_ports:
   - { src: any, dest: any, port: '22', proto: 'tcp', direction: out, comment: 'SSH' }
