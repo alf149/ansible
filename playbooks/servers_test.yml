@@ -89,92 +89,160 @@
       tags: ufw
 
   tasks:
-    - name: Add repository remote
-      community.general.flatpak_remote:
-        name: flathub
-        state: present
-        flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
-        method: system
-      tags: flatpak
-    - name: Install multiple packages
-      community.general.flatpak:
-        name:
-          - org.videolan.VLC        ## VLC
-          - com.google.Chrome       ## Chrome Browser
-        state: present
-      tags: flatpak
-    - name: Remove multiple packages
-      community.general.flatpak:
-        name:
-          - im.riot.Riot            ## Element matrix client
-          - com.visualstudio.code   ## VisualStudio
-        state: absent
-      tags: flatpak
 
-    - name: Get starship install script
-      ansible.builtin.get_url:
-        url: https://starship.rs/install.sh
-        dest: /tmp/starship_install.sh
-        mode: '0755'
+    - name: Install | flatpak
+      tags: flatpak
+      become_user: deploy
+      block:
+        - name: Install flatpak
+          become: true
+          ansible.builtin.package:
+            name: flatpak
+            state: present
+        - name: Add repository remote
+          become: true
+          community.general.flatpak_remote:
+            name: flathub
+            state: present
+            flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+            method: system
+        - name: Install multiple packages
+          community.general.flatpak:
+            name:
+              - org.videolan.VLC        ## VLC
+            # - com.google.Chrome       ## Chrome Browser
+            state: present
+        - name: Remove multiple packages
+          community.general.flatpak:
+            name:
+              - im.riot.Riot            ## Element matrix client
+            # - com.visualstudio.code   ## VisualStudio
+            state: absent
+
+    - name: Install | starship
       tags: starship
-    - name: Install starship
-      ansible.builtin.shell:
-        cmd: /tmp/starship_install.sh --yes
-        executable: /bin/sh
-      register: my_starship
-      changed_when: my_starship.rc != 0
       become: true
-      tags: starship
+      block:
+        - name: Get starship install script
+          ansible.builtin.get_url:
+            url: https://starship.rs/install.sh
+            dest: /tmp/starship_install.sh
+            mode: '0755'
+        - name: Install starship
+          ansible.builtin.shell:
+            cmd: /tmp/starship_install.sh --yes
+            executable: /bin/sh
+          register: my_starship
+          changed_when: my_starship.rc != 0
 
-    - name: Get VisualStudio install script
-      ansible.builtin.command: 'sudo curl -L -o /tmp/code.deb https://go.microsoft.com/fwlink/?LinkID=760868'
-      register: my_visualstudiocurl
-      changed_when: my_visualstudiocurl.rc != 0
-      tags: code
-    - name: Chmod Install deb
-      ansible.builtin.command: 'sudo chmod +x /tmp/code.deb'
-      register: my_visualstudiodeb
-      changed_when: my_visualstudiodeb.rc != 0
-      tags: code
-    - name: Install VisualStudio
-      ansible.builtin.command: 'sudo dpkg -i /tmp/code.deb'
-      register: my_visualstudio
-      changed_when: my_visualstudio.rc != 0
+    - name: Install | VisualStudio
+      tags: vscode
       become: true
-      tags: code
+      block:
+        - name: Get VisualStudio install script
+          ansible.builtin.command: 'sudo curl -L -o /tmp/code.deb https://go.microsoft.com/fwlink/?LinkID=760868'
+          register: my_visualstudiocurl
+          changed_when: my_visualstudiocurl.rc != 0
+        - name: Chmod Install deb
+          ansible.builtin.command: 'sudo chmod +x /tmp/code.deb'
+          register: my_visualstudiodeb
+          changed_when: my_visualstudiodeb.rc != 0
+        - name: Install VisualStudio
+          ansible.builtin.command: 'sudo dpkg -i /tmp/code.deb'
+          register: my_visualstudio
+          changed_when: my_visualstudio.rc != 0
 
-    - name: User | copy ssh key to use for Git to user.
-      become_user: deploy
-      ansible.builtin.copy:
-        src: ~/.ssh/git_deploy
-        dest: ~/.ssh/git_deploy
-        owner: deploy
-        mode: '600'
+    - name: Install | Git, ssh keys to use with git
       tags: git
-    - name: User | copy ssh key to use for Git to user.
       become_user: deploy
-      ansible.builtin.copy:
-        src: ~/.ssh/git_deploy.pub
-        dest: ~/.ssh/git_deploy.pub
-        owner: deploy
-        mode: '644'
-      tags: git
-    - name: Clone a repo with separate git directory
+      block:
+        - name: User | copy ssh key to use for Git to user.
+          ansible.builtin.copy:
+            src: ~/.ssh/git_deploy
+            dest: ~/.ssh/git_deploy
+            owner: deploy
+            mode: '600'
+        - name: User | copy ssh key to use for Git to user.
+          become_user: deploy
+          ansible.builtin.copy:
+            src: ~/.ssh/git_deploy.pub
+            dest: ~/.ssh/git_deploy.pub
+            owner: deploy
+            mode: '644'
+        - name: Clone a dotfiles repo with separate git directory
+          become: false
+          ansible.builtin.git:
+            repo: git@github.com:alf149/dotfiles.git
+            dest: ~/git/dotfiles
+            accept_hostkey: true
+            clone: true
+            update: true
+            remote: main
+            force: true
+            key_file: /home/deploy/.ssh/git_deploy
+          tags:
+            - dotfiles
+            - git
+
+    - name: Install | Tmux and tpm
+      tags: tmux
       become_user: deploy
-      ansible.builtin.git:
-        repo: git@github.com:alf149/dotfiles.git
-        dest: ~/git/dotfiles
-        accept_hostkey: true
-        clone: true
-        update: true
-        remote: main
-        force: true
-        key_file: /home/deploy/.ssh/git_deploy
-      tags:
-        - dotfiles
-        - git
+      block:
+        - name: Install tmux
+          ansible.builtin.package:
+            name: tmux
+            state: present
+        - name: Clone a tmux tpm from github
+          ansible.builtin.git:
+            repo: git@github.com:tmux-plugins/tpm.git
+            dest: ~/.tmux/plugins/tpm
+            accept_hostkey: true
+            key_file: /home/deploy/.ssh/git_deploy
+
+    - name: Install | VPN for Work
+      ## https://www.citrix.com/downloads/workspace-app/linux/workspace-app-for-linux-latest.html
+      ansible.builtin.package:
+        name:
+          - openconnect
+          - network-manager-openconnect
+          - network-manager-openconnect-gnome
+      tags: openconnect
+
+    - name: Install | mscorefonts, NerdFontsSymbols, CascadiaCode
+      tags: fonts
+      become_user: deploy
+      block:
+        - name: Install Fonts
+          ansible.builtin.package:
+            name:
+              - ttf-mscorefonts-installer
+          tags: fonts
+        - name: Create a directory ~/.local/share/fonts
+          ansible.builtin.file:
+            path: ~/.local/share/fonts
+            state: directory
+            mode: '0755'
+        - name: Download NerdFontsSymbolsOnly.zip Fonts
+          ansible.builtin.unarchive:
+            src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/NerdFontsSymbolsOnly.zip
+            dest: ~/.local/share/fonts
+            remote_src: true
+        - name: Download CascadiaCode.zip Fonts
+          ansible.builtin.unarchive:
+            src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/CascadiaCode.zip
+            dest: ~/.local/share/fonts
+            remote_src: true
+        - name: Update the font cache
+          ansible.builtin.command: fc-cache ~/.local/share/fonts
+        - name: Update the font cache
+          ansible.builtin.command: fc-cache -fv
 
     # Config Stow another day
+    # - name: Install stow
+    #   ansible.builtin.package:
+    #     name: stow
+    #     state: present
+    #   tags: stow
     # - name: Setup Stow and Dotfiles from Git Part2
     #   become_user: deploy
     #   ansible.builtin.command:
@@ -183,4 +251,3 @@
     #   register: my_stow
     #   changed_when: my_stow.rc != 0
     #   tags: stow
-
