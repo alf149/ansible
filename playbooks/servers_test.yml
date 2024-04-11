@@ -89,34 +89,61 @@
       tags: ufw
 
   tasks:
-
-    - name: Install | flatpak
+    - name: Install | flatpak as user
       tags: flatpak
       become_user: deploy
       block:
-        - name: Install flatpak
+        - name: Install flatpak as user
           become: true
           ansible.builtin.package:
             name: flatpak
             state: present
-        - name: Add repository remote
+        - name: Add repository remote as user
           become: true
           community.general.flatpak_remote:
             name: flathub
             state: present
             flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
             method: system
-        - name: Install multiple packages
+        - name: Install multiple packages as user
           community.general.flatpak:
             name:
-              - org.videolan.VLC        ## VLC
-            # - com.google.Chrome       ## Chrome Browser
+              - org.videolan.VLC          ## VLC
             state: present
-        - name: Remove multiple packages
+        - name: Remove multiple packages as user
           community.general.flatpak:
             name:
-              - im.riot.Riot            ## Element matrix client
-            # - com.visualstudio.code   ## VisualStudio
+              - im.riot.Riot              ## Element matrix client
+            # - com.visualstudio.code     ## VisualStudio
+            state: absent
+
+    - name: Install | flatpak as root
+      tags: flatpak
+      block:
+        - name: Install flatpak as root
+          become: true
+          ansible.builtin.package:
+            name: flatpak
+            state: present
+        - name: Add repository remote as root
+          become: true
+          community.general.flatpak_remote:
+            name: flathub
+            state: present
+            flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+            method: system
+        - name: Install multiple packages as root
+          become: true
+          community.general.flatpak:
+            name:
+              - org.remmina.Remmina       ## Remmina RDP client
+              - org.keepassxc.KeePassXC   ## KeePass for linux
+              - com.jgraph.drawio.desktop ## draw.io client
+            state: present
+        - name: Remove multiple packages as root
+          community.general.flatpak:
+            name:
+              - im.riot.Riot              ## Element matrix client
             state: absent
 
     - name: Install | starship
@@ -169,7 +196,7 @@
             dest: ~/.ssh/git_deploy.pub
             owner: deploy
             mode: '644'
-        - name: Clone a dotfiles repo with separate git directory
+        - name: Clone a dotfiles repo with separate git directory # noqa: latest
           become: false
           ansible.builtin.git:
             repo: git@github.com:alf149/dotfiles.git
@@ -192,7 +219,7 @@
           ansible.builtin.package:
             name: tmux
             state: present
-        - name: Clone a tmux tpm from github
+        - name: Clone a tmux tpm from github # noqa: latest
           ansible.builtin.git:
             repo: git@github.com:tmux-plugins/tpm.git
             dest: ~/.tmux/plugins/tpm
@@ -200,13 +227,13 @@
             key_file: /home/deploy/.ssh/git_deploy
 
     - name: Install | VPN for Work
+      tags: openconnect
       ## https://www.citrix.com/downloads/workspace-app/linux/workspace-app-for-linux-latest.html
       ansible.builtin.package:
         name:
           - openconnect
           - network-manager-openconnect
           - network-manager-openconnect-gnome
-      tags: openconnect
 
     - name: Install | mscorefonts, NerdFontsSymbols, CascadiaCode
       tags: fonts
@@ -234,8 +261,25 @@
             remote_src: true
         - name: Update the font cache
           ansible.builtin.command: fc-cache ~/.local/share/fonts
+          changed_when: false
         - name: Update the font cache
           ansible.builtin.command: fc-cache -fv
+          changed_when: false
+
+    - name: Install | eza an ls/ll alternative
+      become: true
+      tags: eza
+      ansible.builtin.unarchive:
+        src: https://github.com/eza-community/eza/releases/latest/download/eza_x86_64-unknown-linux-gnu.tar.gz
+        dest: /usr/local/bin
+        remote_src: true
+        mode: '0755'
+        owner: root
+
+    - name: Install | install tldr
+      tags: tldr
+      ansible.builtin.command: pip3 install tldr
+      changed_when: false
 
     # Config Stow another day
     # - name: Install stow
