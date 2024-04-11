@@ -36,6 +36,7 @@ alias runing-service='systemctl list-units --type=service --state=running'
 
 # Filesystem diskspace usage
 alias duh='df -h'
+eval "$(fzf --bash)"
 
 
 # Tid
@@ -44,6 +45,11 @@ alias nowdate='date +"%d-%m-%Y"'
 
 ## Add date to history
 HISTTIMEFORMAT="%d/%m/%y %T: "
+
+## PATH
+export PATH="~/.local/bin:$PATH"
+
+
 
 
 # set a fancy prompt (non-color, unless we know we "want" color)
