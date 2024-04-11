@@ -23,7 +23,15 @@ extra_packages:
   - gparted
   - plocate
   - nautilus-admin
-
+  - neovim
+  - ripgrep
+  - fd-find
+  - fzf
+  - glances
+  - bat
+  - filezilla
+  - libreoffice
+  - clamtk
 
 open_ports:
   - { src: any, dest: any, port: '22', proto: 'tcp', direction: out, comment: 'SSH' }
