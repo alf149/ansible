@@ -1,7 +1,7 @@
 ---
 
 - name: Run on all PROD Hardware Servers
-  hosts: pve.lan:pve1.lan
+  hosts: pve.lan:pve1.lan, pbs.lan
   become: true
 
   pre_tasks:
@@ -24,3 +24,4 @@
 
   roles:
     - role: ironicbadger.proxmox_nag_removal
+  # Does work on PBS but restart this service insted systemctl status proxmox-backup-proxy
