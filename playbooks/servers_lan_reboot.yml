@@ -17,58 +17,50 @@
 #     - name: Reboot systems
 #       ansible.builtin.reboot:
 
-- name: Run on nas.lan
-  hosts: nas.lan
-  become: true
-  gather_facts: false
-  tasks:
-    - name: Reboot systems
-      ansible.builtin.reboot:
-
 - name: Run on docker01.lan
-  hosts: docker01.lan
+  hosts: cloud01.lan, docker01.lan, docker02.lan
   become: true
   gather_facts: false
   tasks:
-    - name: Reboot systems
+    - name: Check if a reboot is required on Ubuntu
+      when: ansible_facts['os_family'] == 'Debian'
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+      register: ubuntu_reboot_required
+
+    - name: Reboot Debian/Ubuntu if required
+      when: ubuntu_reboot_required.stat.exists | default(false)
       ansible.builtin.reboot:
+        reboot_timeout: 600
 
 - name: Run on pi1.lan
   hosts: pi1.lan
   become: true
   gather_facts: false
   tasks:
-    - name: Reboot systems
+    - name: Check if a reboot is required on Ubuntu
+      when: ansible_facts['os_family'] == 'Debian'
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+      register: ubuntu_reboot_required
+
+    - name: Reboot Debian/Ubuntu if required
+      when: ubuntu_reboot_required.stat.exists | default(false)
       ansible.builtin.reboot:
+        reboot_timeout: 600
 
 - name: Run on pi2.lan
   hosts: pi2.lan
   become: true
   gather_facts: false
   tasks:
-    - name: Reboot systems
-      ansible.builtin.reboot:
+    - name: Check if a reboot is required on Ubuntu
+      when: ansible_facts['os_family'] == 'Debian'
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+      register: ubuntu_reboot_required
 
-- name: Run on pi4.lan
-  hosts: pi4.lan
-  become: true
-  gather_facts: false
-  tasks:
-    - name: Reboot systems
+    - name: Reboot Debian/Ubuntu if required
+      when: ubuntu_reboot_required.stat.exists | default(false)
       ansible.builtin.reboot:
-
-- name: Run on ad01.lan
-  hosts: ad01.lan
-  become: true
-  gather_facts: false
-  tasks:
-    - name: Reboot systems
-      ansible.builtin.reboot:
-
-- name: Run on ad02.lan
-  hosts: ad02.lan
-  become: true
-  gather_facts: false
-  tasks:
-    - name: Reboot systems
-      ansible.builtin.reboot:
+        reboot_timeout: 600
