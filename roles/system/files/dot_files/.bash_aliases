@@ -36,8 +36,6 @@ alias runing-service='systemctl list-units --type=service --state=running'
 
 # Filesystem diskspace usage
 alias duh='df -h'
-eval "$(fzf --bash)"
-
 
 # Tid
 alias now='date +"%T"'
