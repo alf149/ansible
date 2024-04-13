@@ -36,6 +36,17 @@
         name: "{{ extra_packages }}"
         state: present
 
+    - name: Check if a reboot is required on Ubuntu
+      when: ansible_facts['os_family'] == 'Debian'
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+      register: ubuntu_reboot_required
+
+    - name: Reboot Debian/Ubuntu if required
+      when: ubuntu_reboot_required.stat.exists | default(false)
+      ansible.builtin.reboot:
+        reboot_timeout: 600
+
 ###
 - name: Run on "srv01.test"
   hosts: srv01.test
@@ -150,17 +161,23 @@
       tags: starship
       become: true
       block:
+        - name: Check that the startship exists
+          ansible.builtin.stat:
+            path: /usr/local/bin/starship
+          register: stat_starship
         - name: Get starship install script
           ansible.builtin.get_url:
             url: https://starship.rs/install.sh
             dest: /tmp/starship_install.sh
             mode: '0755'
+          when: not stat_starship.stat.exists
         - name: Install starship
           ansible.builtin.shell:
             cmd: /tmp/starship_install.sh --yes
             executable: /bin/sh
           register: my_starship
           changed_when: my_starship.rc != 0
+          when: not stat_starship.stat.exists
 
     - name: Install | VisualStudio
       tags: vscode
@@ -249,23 +266,41 @@
             path: ~/.local/share/fonts
             state: directory
             mode: '0755'
+        - name: Check that the SymbolsNerdFont exists
+          ansible.builtin.stat:
+            path: ~/.local/share/fonts/SymbolsNerdFont-Regular.ttf
+          register: stat_nerdfontssymbolsonly
         - name: Download NerdFontsSymbolsOnly.zip Fonts
           ansible.builtin.unarchive:
             src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/NerdFontsSymbolsOnly.zip
             dest: ~/.local/share/fonts
             remote_src: true
+          when: not stat_nerdfontssymbolsonly.stat.exists
+        - name: Check that the CascadiaCode exists
+          ansible.builtin.stat:
+            path: ~/.local/share/fonts/CaskaydiaCoveNerdFont-Italic.ttf
+          register: stat_cascadiacode
         - name: Download CascadiaCode.zip Fonts
           ansible.builtin.unarchive:
             src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/CascadiaCode.zip
             dest: ~/.local/share/fonts
             remote_src: true
+          when: not stat_cascadiacode.stat.exists
         - name: Update the font cache
           ansible.builtin.command: fc-cache ~/.local/share/fonts
           changed_when: false
+          when:
+            - not stat_cascadiacode.stat.exists
+            - not stat_nerdfontssymbolsonly.stat.exists
         - name: Update the font cache
-          ansible.builtin.command: fc-cache -fv
+          ansible.builtin.command: fc-cache -f -v
           changed_when: false
 
+    - name: Check that the eza exists
+      tags: eza
+      ansible.builtin.stat:
+        path: /usr/local/bin/eza
+      register: stat_eza
     - name: Install | eza an ls/ll alternative
       become: true
       tags: eza
@@ -275,11 +310,22 @@
         remote_src: true
         mode: '0755'
         owner: root
+      when: not stat_eza.stat.exists
 
+    - name: Check that the tldr exists
+      tags: tldr
+      become_user: deploy
+      ansible.builtin.stat:
+        path: ~/.local/bin/tldr
+      register: stat_tldr
     - name: Install | install tldr
       tags: tldr
+      become_user: deploy
       ansible.builtin.command: pip3 install tldr
-      changed_when: false
+      register: my_tldr
+      when: not stat_tldr.stat.exists
+      changed_when: my_tldr.rc != 0
+      # To uninstall: pip3 uninstall tldr
 
     # Config Stow another day
     # - name: Install stow
