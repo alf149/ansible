@@ -100,6 +100,26 @@
       tags: ufw
 
   tasks:
+    - name: Install | Ubuntu Desktop
+      tags: desktop
+      become: true
+      when: desktop | bool
+      block:
+        - name: Install extra packages desktop
+          ansible.builtin.package:
+            name: "{{ extra_packages_desktop }}"
+            state: present
+          when: enable_extra_packages_desktop | d(false) | bool
+        - name: Check if a reboot is required on Ubuntu
+          when: ansible_facts['os_family'] == 'Debian'
+          ansible.builtin.stat:
+            path: /var/run/reboot-required
+          register: ubuntu_reboot_required
+        - name: Reboot Debian/Ubuntu if required
+          when: ubuntu_reboot_required.stat.exists | default(false)
+          ansible.builtin.reboot:
+            reboot_timeout: 600
+
     - name: Install | flatpak as user
       tags: flatpak
       become_user: deploy
@@ -107,6 +127,7 @@
       when: flatpak | bool
       block:
         - name: Install flatpak as user
+          become_user: root
           become: true
           ansible.builtin.package:
             name: flatpak
@@ -145,36 +166,43 @@
             path: /usr/local/bin/starship
           register: stat_starship
         - name: Get starship install script
+          when: not stat_starship.stat.exists
           ansible.builtin.get_url:
             url: https://starship.rs/install.sh
             dest: /tmp/starship_install.sh
             mode: '0755'
-          when: not stat_starship.stat.exists
         - name: Install starship
+          when: not stat_starship.stat.exists
           ansible.builtin.shell:
             cmd: /tmp/starship_install.sh --yes
             executable: /bin/sh
           register: my_starship
           changed_when: my_starship.rc != 0
-          when: not stat_starship.stat.exists
 
     - name: Install | VisualStudio
       tags: vscode
       become: true
       when: visualstudio | bool
       block:
+        - name: Check that the visualstudio exists
+          ansible.builtin.stat:
+            path: /usr/share/code/bin/code
+          register: stat_visualstudio
         - name: Get VisualStudio install script
           ansible.builtin.command: 'sudo curl -L -o /tmp/code.deb https://go.microsoft.com/fwlink/?LinkID=760868'
           register: my_visualstudiocurl
           changed_when: my_visualstudiocurl.rc != 0
+          when: not stat_visualstudio.stat.exists
         - name: Chmod Install deb
           ansible.builtin.command: 'sudo chmod +x /tmp/code.deb'
           register: my_visualstudiodeb
           changed_when: my_visualstudiodeb.rc != 0
+          when: not stat_visualstudio.stat.exists
         - name: Install VisualStudio
           ansible.builtin.command: 'sudo dpkg -i /tmp/code.deb'
           register: my_visualstudio
           changed_when: my_visualstudio.rc != 0
+          when: not stat_visualstudio.stat.exists
 
     - name: Install | Git, ssh keys to use with git
       tags: dotfiles
@@ -211,7 +239,7 @@
 
     - name: Install | Tmux and tpm
       tags: tmux
-      become_user: deploy
+      become: true
       when: tmux | bool
       block:
         - name: Install tmux
@@ -226,6 +254,7 @@
             key_file: /home/deploy/.ssh/git_deploy
 
     - name: Install | VPN for Work
+      become: true
       tags: vpn
       when: vpn | bool
       ## https://www.citrix.com/downloads/workspace-app/linux/workspace-app-for-linux-latest.html
@@ -241,6 +270,8 @@
       when: fonts | bool
       block:
         - name: Install Fonts
+          become_user: root
+          become: true
           ansible.builtin.package:
             name:
               - ttf-mscorefonts-installer
@@ -277,12 +308,13 @@
             - not stat_cascadiacode.stat.exists
             - not stat_nerdfontssymbolsonly.stat.exists
         - name: Update the font cache
+          become: true
           ansible.builtin.command: fc-cache -f -v
           changed_when: false
 
     - name: Install | exa ls alternatives
       tags: eza
-      become_user: deploy
+      become: true
       when: eza | bool
       block:
         - name: Check that the eza exists
