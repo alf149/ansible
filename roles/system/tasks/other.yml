@@ -12,35 +12,26 @@
   ansible.builtin.package:
     name: "{{ extra_packages }}"
     state: present
-  when:
-    - enable_extra_packages is defined
-    - enable_extra_packages
+  when: enable_extra_packages | d(false) | bool
 
 # packages net-tools
 - name: Install extra packages net-tools
   ansible.builtin.package:
     name: "{{ extra_packages_nettools }}"
     state: present
-  when:
-    - enable_extra_packages_nettools is defined
-    - enable_extra_packages_nettools
+  when: enable_extra_packages_nettools | d(false) | bool
 
 # Cockpit
 - name: Install Cockpit
   ansible.builtin.package:
     name: cockpit
     state: present
-  when:
-    - enable_cockpit is defined
-    - enable_cockpit
-
+  when: enable_cockpit | d(false) | bool
 - name: Remove Cockpit
   ansible.builtin.package:
     name: cockpit
     state: absent
-  when:
-    - enable_cockpit is defined
-    - not enable_cockpit
+  when: not enable_cockpit | d(false) | bool
 
 # auditd
 - name: Install auditd
@@ -50,10 +41,7 @@
       - libauparse0
       - audispd-plugins
     state: present
-  when:
-    - enable_auditd is defined
-    - enable_auditd
-
+  when: enable_auditd | d(false) | bool
 - name: Remove auditd
   ansible.builtin.package:
     name:
@@ -61,9 +49,7 @@
       - libauparse0
       - audispd-plugins
     state: absent
-  when:
-    - enable_auditd is defined
-    - not enable_auditd
+  when: not enable_auditd | d(false) | bool
 
 # rkhunter
 - name: Install rkhunter
@@ -71,18 +57,13 @@
     name:
       - rkhunter
     state: present
-  when:
-    - enable_rkhunter is defined
-    - enable_rkhunter
-
+  when: enable_rkhunter | d(false) | bool
 - name: Remove rkhunter
   ansible.builtin.package:
     name:
       - rkhunter
     state: absent
-  when:
-    - enable_rkhunter is defined
-    - not enable_rkhunter
+  when: not enable_rkhunter | d(false) | bool
 
 # aide
 - name: Install aide
@@ -90,18 +71,13 @@
     name:
       - aide
     state: present
-  when:
-    - enable_aide is defined
-    - enable_aide
-
+  when: enable_aide | d(false) | bool
 - name: Remove aide
   ansible.builtin.package:
     name:
       - aide
     state: absent
-  when:
-    - enable_aide is defined
-    - not enable_aide
+  when: not enable_aide | d(false) | bool
 
 # Lynis
 - name: Install Lynis from GIT
@@ -109,14 +85,9 @@
     repo: "https://github.com/CISOfy/lynis.git"
     version: "3.0.8"
     dest: /opt/lynis
-  when:
-    - enable_lynis is defined
-    - enable_lynis
-
+  when: enable_lynis | d(false) | bool
 - name: Remove Lynis
   ansible.builtin.file:
     path: /opt/lynis
     state: absent
-  when:
-    - enable_lynis is defined
-    - not enable_lynis
+  when: not enable_lynis | d(false) | bool
