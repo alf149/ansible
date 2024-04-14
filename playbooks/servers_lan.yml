@@ -62,6 +62,47 @@
       tags: containers
 
 ###
+- name: Run on "docker01"
+  hosts: docker01.lan
+  gather_facts: true
+  become: true
+
+  vars_files: ../group_vars/secrets.yml
+
+  roles:
+    - role: geerlingguy.pip
+      tags: containers
+    - role: geerlingguy.docker
+      tags: containers
+    - role: ufw
+      tags: ufw
+    - role: nfsclient
+      tags: nfs
+    - role: ironicbadger.docker_compose_generator
+      tags: docker
+
+  tasks:
+    # - name: Docker | docker compose installed?
+    #   tags: docker
+    #   ansible.builtin.command: which docker
+    #   ignore_errors: true
+    #   register: dcp_installed
+    #   changed_when: dcp_installed.rc != 0
+    # - name: Docker | container update procedure
+    #   tags: docker
+    #   when: dcp_installed.rc == 0
+    #   block:
+    #     - name: Docker | pull containers
+    #       changed_when: false
+    #       ansible.builtin.command: docker compose pull
+    #     - name: Docker | start updated containers
+    #       changed_when: false
+    #       ansible.builtin.command: docker compose up -d
+    #     - name: Docker | cleanup old containers
+    #       changed_when: false
+    #       ansible.builtin.command: docker system prune --all -f
+
+###
 - name: Run on "pi1.lan and pi2.lan"
   hosts: pi1.lan, pi2.lan
   gather_facts: true
