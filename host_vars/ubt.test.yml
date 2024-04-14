@@ -1,7 +1,10 @@
 enable_os_update: true
 enable_extra_packages: true
+enable_extra_packages_tui: true
+enable_extra_packages_desktop: true
 enable_extra_packages_nettools: true
 
+desktop: true
 flatpak: true
 starship: true
 visualstudio: true
@@ -27,18 +30,23 @@ extra_packages:
   - python3-pip
   - apt-transport-https
   - ca-certificates
+
+extra_packages_tui: 
   - jq
   - htop
   - unzip
-  - gparted
   - plocate
-  - nautilus-admin
   - neovim
   - ripgrep
   - fd-find
   - fzf
   - glances
   - bat
+
+extra_packages_desktop: 
+  - ubuntu-desktop-minimal
+  - gparted
+  - nautilus-admin
   - filezilla
   - libreoffice
   - clamtk
