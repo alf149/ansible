@@ -104,5 +104,3 @@
       ansible.builtin.command: "/usr/local/bin/pihole restartdns reload"
       when: enable_pihole_update
       tags: piholeupdate
-
-###
