@@ -14,6 +14,13 @@
     state: present
   when: enable_extra_packages | d(false) | bool
 
+# extra packages tui
+- name: Install extra packages tui
+  ansible.builtin.package:
+    name: "{{ extra_packages_tui }}"
+    state: present
+  when: enable_extra_packages_tui | d(false) | bool
+
 # packages net-tools
 - name: Install extra packages net-tools
   ansible.builtin.package:
