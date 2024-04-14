@@ -2,6 +2,16 @@ enable_os_update: true
 enable_extra_packages: true
 enable_extra_packages_nettools: true
 
+flatpak: true
+starship: true
+visualstudio: true
+dotfiles: true
+tmux: true
+vpn: true
+fonts: true
+eza: true
+tldr: true
+
 ## Firewall 
 enable_ufw: true
 resetufw: true
