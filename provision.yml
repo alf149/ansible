@@ -37,16 +37,3 @@
     - name: Enable Firewall ufw
       community.general.ufw:
         state: enabled
-
-- name: Provision a new Desktop Server
-  hosts: ubt.test
-  gather_facts: true
-  become: true
-
-  tasks:
-    - name: Install Desktop
-      ansible.builtin.package:
-        name: ubuntu-desktop-minimal
-        state: present
-    - name: Reboot systems
-      ansible.builtin.reboot:
