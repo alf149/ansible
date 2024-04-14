@@ -5,11 +5,23 @@
       - nfs-common
     state: present
 
+- name: Check if nfs folder exits exists
+  ansible.builtin.stat:
+    path: "{{ nfsclient_local_folder }}"
+  register: stat_nfsfolder
+
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: "{{ nfsclient_local_folder }}"
+    state: directory
+    mode: '0755'
+  when: not stat_nfsfolder.stat.exists
+
 - name: Mount an NFS volume
   ansible.posix.mount:
     src: "{{ nfsclient_nfs_connect }}"
     path: "{{ nfsclient_local_folder }}"
-    opts: rw,sync
+    opts:
     boot: true
     state: mounted
     fstype: nfs
