@@ -103,6 +103,8 @@
     - name: Install | flatpak as user
       tags: flatpak
       become_user: deploy
+      become: true
+      when: flatpak | bool
       block:
         - name: Install flatpak as user
           become: true
@@ -115,51 +117,28 @@
             name: flathub
             state: present
             flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
-            method: system
+            method: user
         - name: Install multiple packages as user
           community.general.flatpak:
             name:
               - org.videolan.VLC          ## VLC
+              - org.remmina.Remmina       ## Remmina RDP client
+              - org.keepassxc.KeePassXC   ## KeePass for linux
+              - com.jgraph.drawio.desktop ## draw.io client
             state: present
+            method: user
         - name: Remove multiple packages as user
           community.general.flatpak:
             name:
               - im.riot.Riot              ## Element matrix client
             # - com.visualstudio.code     ## VisualStudio
             state: absent
-
-    - name: Install | flatpak as root
-      tags: flatpak
-      block:
-        - name: Install flatpak as root
-          become: true
-          ansible.builtin.package:
-            name: flatpak
-            state: present
-        - name: Add repository remote as root
-          become: true
-          community.general.flatpak_remote:
-            name: flathub
-            state: present
-            flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
-            method: system
-        - name: Install multiple packages as root
-          become: true
-          community.general.flatpak:
-            name:
-              - org.remmina.Remmina       ## Remmina RDP client
-              - org.keepassxc.KeePassXC   ## KeePass for linux
-              - com.jgraph.drawio.desktop ## draw.io client
-            state: present
-        - name: Remove multiple packages as root
-          community.general.flatpak:
-            name:
-              - im.riot.Riot              ## Element matrix client
-            state: absent
+            method: user
 
     - name: Install | starship
       tags: starship
       become: true
+      when: starship | bool
       block:
         - name: Check that the startship exists
           ansible.builtin.stat:
@@ -182,6 +161,7 @@
     - name: Install | VisualStudio
       tags: vscode
       become: true
+      when: visualstudio | bool
       block:
         - name: Get VisualStudio install script
           ansible.builtin.command: 'sudo curl -L -o /tmp/code.deb https://go.microsoft.com/fwlink/?LinkID=760868'
@@ -197,8 +177,9 @@
           changed_when: my_visualstudio.rc != 0
 
     - name: Install | Git, ssh keys to use with git
-      tags: git
+      tags: dotfiles
       become_user: deploy
+      when: dotfiles | bool
       block:
         - name: User | copy ssh key to use for Git to user.
           ansible.builtin.copy:
@@ -231,6 +212,7 @@
     - name: Install | Tmux and tpm
       tags: tmux
       become_user: deploy
+      when: tmux | bool
       block:
         - name: Install tmux
           ansible.builtin.package:
@@ -244,7 +226,8 @@
             key_file: /home/deploy/.ssh/git_deploy
 
     - name: Install | VPN for Work
-      tags: openconnect
+      tags: vpn
+      when: vpn | bool
       ## https://www.citrix.com/downloads/workspace-app/linux/workspace-app-for-linux-latest.html
       ansible.builtin.package:
         name:
@@ -255,6 +238,7 @@
     - name: Install | mscorefonts, NerdFontsSymbols, CascadiaCode
       tags: fonts
       become_user: deploy
+      when: fonts | bool
       block:
         - name: Install Fonts
           ansible.builtin.package:
@@ -296,36 +280,42 @@
           ansible.builtin.command: fc-cache -f -v
           changed_when: false
 
-    - name: Check that the eza exists
+    - name: Install | exa ls alternatives
       tags: eza
-      ansible.builtin.stat:
-        path: /usr/local/bin/eza
-      register: stat_eza
-    - name: Install | eza an ls/ll alternative
-      become: true
-      tags: eza
-      ansible.builtin.unarchive:
-        src: https://github.com/eza-community/eza/releases/latest/download/eza_x86_64-unknown-linux-gnu.tar.gz
-        dest: /usr/local/bin
-        remote_src: true
-        mode: '0755'
-        owner: root
-      when: not stat_eza.stat.exists
+      become_user: deploy
+      when: eza | bool
+      block:
+        - name: Check that the eza exists
+          ansible.builtin.stat:
+            path: /usr/local/bin/eza
+          register: stat_eza
+        - name: Install | eza an ls/ll alternative
+          become: true
+          ansible.builtin.unarchive:
+            src: https://github.com/eza-community/eza/releases/latest/download/eza_x86_64-unknown-linux-gnu.tar.gz
+            dest: /usr/local/bin
+            remote_src: true
+            mode: '0755'
+            owner: root
+          when: not stat_eza.stat.exists
 
-    - name: Check that the tldr exists
+    - name: Install | tldr to logn didn't read
       tags: tldr
       become_user: deploy
-      ansible.builtin.stat:
-        path: ~/.local/bin/tldr
-      register: stat_tldr
-    - name: Install | install tldr
-      tags: tldr
-      become_user: deploy
-      ansible.builtin.command: pip3 install tldr
-      register: my_tldr
-      when: not stat_tldr.stat.exists
-      changed_when: my_tldr.rc != 0
-      # To uninstall: pip3 uninstall tldr
+      when: tldr | bool
+      block:
+        - name: Check that the tldr exists
+          become_user: deploy
+          ansible.builtin.stat:
+            path: ~/.local/bin/tldr
+          register: stat_tldr
+        - name: Install | install tldr
+          become_user: deploy
+          ansible.builtin.command: pip3 install tldr
+          register: my_tldr
+          when: not stat_tldr.stat.exists
+          changed_when: my_tldr.rc != 0
+          # To uninstall: pip3 uninstall tldr
 
     # Config Stow another day
     # - name: Install stow
