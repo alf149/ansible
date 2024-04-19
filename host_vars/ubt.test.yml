@@ -45,7 +45,6 @@ extra_packages_tui:
 
 extra_packages_desktop: 
   - ubuntu-desktop-minimal
-  - gparted
   - nautilus-admin
   - filezilla
   - libreoffice
@@ -60,8 +59,9 @@ open_ports:
 
   - { src: 'any', dest: '', port: '22', proto: 'tcp', direction: in, comment: 'SSH # KVM / vagrant on localhost' }
 
-  - { src: '192.168.56.0/24', dest: '', port: '80', proto: 'tcp', direction: in, comment: 'http any' } #HTTP
-  - { src: '192.168.56.0/24', dest: '', port: '443', proto: 'tcp', direction: in, comment: 'https any' } #HTTPS
+  - { src: '192.168.56.0/24', dest: '', port: '80', proto: 'tcp', direction: in, comment: 'http' } #HTTP
+  - { src: '192.168.56.0/24', dest: '', port: '443', proto: 'tcp', direction: in, comment: 'https' } #HTTPS
+  - { src: '192.168.56.0/24', dest: '', port: '3389', proto: 'tcp', direction: in, comment: 'RDP' } #HTTPS
 
 users:
   - name: !vault |
