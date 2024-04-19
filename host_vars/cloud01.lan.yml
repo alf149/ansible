@@ -22,8 +22,8 @@ open_ports:
   - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: '', proto: 'any', direction: out, comment: 'Docker' } #Docker
   - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } #Docker
 
-  - { src: any, dest: '192.168.30.150', port: '3001', proto: 'tcp', direction: out, comment: 'CT to Uptime-kuma' }
-  - { src: any, dest: '192.168.30.150', port: '8008', proto: 'tcp', direction: out, comment: 'speed01 test' }
+  - { src: any, dest: '192.168.30.151', port: '3001', proto: 'tcp', direction: out, comment: 'CT to Uptime-kuma' }
+  - { src: any, dest: '192.168.30.151', port: '8008', proto: 'tcp', direction: out, comment: 'speed01 test' }
 
 users:
   - name: deploy
