@@ -15,12 +15,6 @@ fonts: true
 eza: true
 tldr: true
 
-## Firewall 
-enable_ufw: true
-resetufw: true
-enable_ufw_deny_out: true
-enable_ufw_fix_sessions: true
-
 extra_packages: 
   - curl
   - wget
@@ -50,10 +44,14 @@ extra_packages_desktop:
   - libreoffice
   - clamtk
 
+## Firewall 
+enable_ufw: true
+enable_ufw_deny_out: true
+
 open_ports:
   - { src: any, dest: any, port: '22', proto: 'tcp', direction: out, comment: 'SSH' }
   - { src: any, dest: any, port: '53', proto: any, direction: out, comment: 'DNS' }
-  - { src: any, dest: any, port: '123', proto: 'tcp', direction: out, comment: 'NTP' }
+  - { src: any, dest: any, port: '123', proto: 'udp', direction: out, comment: 'NTP' }
   - { src: any, dest: any, port: '80', proto: 'tcp', direction: out, comment: 'http' }
   - { src: any, dest: any, port: '443', proto: 'tcp', direction: out, comment: 'https' }
 
@@ -64,13 +62,7 @@ open_ports:
   - { src: '192.168.56.0/24', dest: '', port: '3389', proto: 'tcp', direction: in, comment: 'RDP' } #HTTPS
 
 users:
-  - name: !vault |
-          $ANSIBLE_VAULT;1.1;AES256
-          32306365653061653732623066353232363763363362663036303336313563663331393431356563
-          6162313465373734373862623236393636336331616665370a373662333138353236396437616430
-          39303832333330396234653333366331396366666164643761386262663934313866636364633238
-          6330363463306339380a353839656537373530653139303063363436303631313439653932353163
-          3034
+  - name: deploy
     comment: System Administration
     password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
@@ -87,10 +79,4 @@ users:
       - sudo
     ssh_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG5iPUMbwcXyBjEp3rJA/d7Qv4HRo83BXo5az0H74kzj
 
-sudoers: ['!vault |
-          $ANSIBLE_VAULT;1.1;AES256
-          32306365653061653732623066353232363763363362663036303336313563663331393431356563
-          6162313465373734373862623236393636336331616665370a373662333138353236396437616430
-          39303832333330396234653333366331396366666164643761386262663934313866636364633238
-          6330363463306339380a353839656537373530653139303063363436303631313439653932353163
-          3034']
+sudoers: ['deploy']

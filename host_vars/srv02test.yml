@@ -3,13 +3,12 @@ enable_extra_packages: true
 
 ## Firewall 
 enable_ufw: true
-resetufw: false
 enable_ufw_deny_out: true
 
 open_ports:
   - { src: any, dest: any, port: '22', proto: 'tcp', direction: out, comment: 'SSH' }
   - { src: any, dest: any, port: '53', proto: any, direction: out, comment: 'DNS' }
-  - { src: any, dest: any, port: '123', proto: 'tcp', direction: out, comment: 'NTP' }
+  - { src: any, dest: any, port: '123', proto: 'udp', direction: out, comment: 'NTP' }
   - { src: any, dest: any, port: '80', proto: 'tcp', direction: out, comment: 'http' }
   - { src: any, dest: any, port: '443', proto: 'tcp', direction: out, comment: 'https' }
 

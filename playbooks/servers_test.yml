@@ -22,7 +22,7 @@
         cache_valid_time: 600
       when: ansible_os_family == 'Debian'
       tags: forceupdate
-      
+
 ###
 - name: Run on "dev01.test"
   hosts: dev01.test
