@@ -13,7 +13,16 @@
       tags: security
     - role: geerlingguy.ntp
       tags: ntp
-
+  tasks:
+    - name: Essential-debian | Update apt packages cache (Debian and Ubuntu)
+      ansible.builtin.apt:
+        upgrade: true
+        autoremove: false
+        update_cache: true
+        cache_valid_time: 600
+      when: ansible_os_family == 'Debian'
+      tags: forceupdate
+      
 ###
 - name: Run on "dev01.test"
   hosts: dev01.test
@@ -146,13 +155,26 @@
               - org.remmina.Remmina       ## Remmina RDP client
               - org.keepassxc.KeePassXC   ## KeePass for linux
               - com.jgraph.drawio.desktop ## draw.io client
+              - com.jetbrains.IntelliJ-IDEA-Community
+              - org.eclipse.Java
+              # - com.visualstudio.code     ## VisualStudio
+              # Natural ONE til linux
+              # Workspace til Natural One.
+              # Power Bi
+              # DB
+              # Amazone Wokspace
+              # Connex configuation manger / Infonaut
+              # SoapUI
+              # Postmann
+              # SVU 3730
+              # Grafisk SCP
+              # LeapWork ???
             state: present
             method: user
         - name: Remove multiple packages as user
           community.general.flatpak:
             name:
               - im.riot.Riot              ## Element matrix client
-            # - com.visualstudio.code     ## VisualStudio
             state: absent
             method: user
 
