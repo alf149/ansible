@@ -186,3 +186,26 @@
       ansible.builtin.command: "/usr/local/bin/pihole restartdns reload"
       when: enable_pihole_update
       tags: piholeupdate
+
+###
+- name: Run on "dev01.lan"
+  hosts: dev01.lan
+  gather_facts: true
+  become: true
+
+  vars_files: ../group_vars/secrets.yml
+
+  roles:
+    - role: geerlingguy.pip
+      tags: containers
+    - role: geerlingguy.docker
+      tags: containers
+    - role: ufw
+      tags: ufw
+
+  tasks:
+    - name: Clone a tmux tpm from github # noqa: latest
+      when: tmux | d(false) | bool
+      ansible.builtin.git:
+        repo: https://github.com/tmux-plugins/tpm.git
+        dest: ~/.tmux/plugins/tpm
