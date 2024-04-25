@@ -40,12 +40,6 @@ extra_packages_nettools:
   - netcat
 
 enable_os_update: true
-# enable_extra_packages: false
-# enable_extra_packages_nettools: false
-# enable_cockpit: false
-# enable_auditd: false
-# enable_rkhunter: false
-# enable_lynis: false
 
 users:
   - name: !vault |
