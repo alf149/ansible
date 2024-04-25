@@ -1,5 +1,5 @@
 ---
-- name: Update apt packages (Debian and Ubuntu)
+- name: Update apt packages chache (Debian and Ubuntu)
   when: ansible_os_family | lower == "debian"
   ansible.builtin.apt:
     upgrade: false
@@ -7,26 +7,49 @@
     update_cache: true
     cache_valid_time: 3600
 
+- name: Essential-debian | Update apt packages cache (Debian and Ubuntu)
+  tags: forceupdate
+  ansible.builtin.apt:
+    upgrade: true
+    autoremove: false
+    update_cache: true
+    cache_valid_time: 3600
+  when:
+    - ansible_os_family == 'Debian'
+    - forceupdate | d(false) | bool
+
+- name: Check if a reboot is required on Ubuntu
+  ansible.builtin.stat:
+    path: /var/run/reboot-required
+  register: ubuntu_reboot_required
+- name: Reboot Debian/Ubuntu if required
+  when: ubuntu_reboot_required.stat.exists | default(false)
+  ansible.builtin.reboot:
+    reboot_timeout: 600
+
 # extra packages
 - name: Install extra packages
+  tags: extra_packages
+  when: enable_extra_packages | d(false) | bool
   ansible.builtin.package:
     name: "{{ extra_packages }}"
     state: present
-  when: enable_extra_packages | d(false) | bool
 
 # extra packages tui
 - name: Install extra packages tui
+  tags: extra_packages_tui
+  when: enable_extra_packages_tui | d(false) | bool
   ansible.builtin.package:
     name: "{{ extra_packages_tui }}"
     state: present
-  when: enable_extra_packages_tui | d(false) | bool
 
 # packages net-tools
 - name: Install extra packages net-tools
+  tags: extra_packages_nettools
+  when: enable_extra_packages_nettools | d(false) | bool
   ansible.builtin.package:
     name: "{{ extra_packages_nettools }}"
     state: present
-  when: enable_extra_packages_nettools | d(false) | bool
 
 # Cockpit
 - name: Install Cockpit
@@ -98,3 +121,115 @@
     path: /opt/lynis
     state: absent
   when: not enable_lynis | d(false) | bool
+
+# starship
+- name: Install | starship
+  tags: starship
+  when: starship | d(false) | bool
+  block:
+    - name: Check that the startship exists
+      ansible.builtin.stat:
+        path: /usr/local/bin/starship
+      register: stat_starship
+    - name: Get starship install script
+      when: not stat_starship.stat.exists
+      ansible.builtin.get_url:
+        url: https://starship.rs/install.sh
+        dest: /tmp/starship_install.sh
+        mode: '0755'
+    - name: Install starship
+      when: not stat_starship.stat.exists
+      ansible.builtin.shell:
+        cmd: /tmp/starship_install.sh --yes
+        executable: /bin/sh
+      register: my_starship
+      changed_when: my_starship.rc != 0
+
+# Tmux
+- name: Install tmux
+  tags: tmux
+  when: tmux | d(false) | bool
+  ansible.builtin.package:
+    name: tmux
+    state: present
+
+# Fonts
+- name: Install | mscorefonts, NerdFontsSymbols, CascadiaCode
+  tags: fonts
+  when: fonts | default('false') | bool
+  block:
+    - name: Install Fonts
+      become: true
+      ansible.builtin.package:
+        name:
+          - ttf-mscorefonts-installer
+          - fontconfig
+      tags: fonts
+    - name: Create a directory /usr/local/share/fonts
+      ansible.builtin.file:
+        path: /usr/local/share/fonts
+        state: directory
+        mode: '0755'
+    - name: Check that the SymbolsNerdFont exists
+      ansible.builtin.stat:
+        path: /usr/local/share/fonts/SymbolsNerdFont-Regular.ttf
+      register: stat_nerdfontssymbolsonly
+    - name: Download NerdFontsSymbolsOnly.zip Fonts
+      ansible.builtin.unarchive:
+        src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/NerdFontsSymbolsOnly.zip
+        dest: /usr/local/share/fonts
+        remote_src: true
+      when: not stat_nerdfontssymbolsonly.stat.exists
+    - name: Check that the CascadiaCode exists
+      ansible.builtin.stat:
+        path: /usr/local/share/fonts/CaskaydiaCoveNerdFont-Italic.ttf
+      register: stat_cascadiacode
+    - name: Download CascadiaCode.zip Fonts
+      ansible.builtin.unarchive:
+        src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/CascadiaCode.zip
+        dest: /usr/local/share/fonts
+        remote_src: true
+      when: not stat_cascadiacode.stat.exists
+    - name: Update the font cache local
+      ansible.builtin.command: fc-cache /usr/local/share/fonts
+      changed_when: false
+      when:
+        - not stat_cascadiacode.stat.exists
+        - not stat_nerdfontssymbolsonly.stat.exists
+    - name: Update the font cache
+      ansible.builtin.command: 'fc-cache -f -v'
+      changed_when: false
+
+# eza
+- name: Install | exa ls alternatives
+  tags: eza
+  when: eza | default('false') | bool
+  block:
+    - name: Check that the eza exists
+      ansible.builtin.stat:
+        path: /usr/local/bin/eza
+      register: stat_eza
+    - name: Install | eza an ls/ll alternative
+      ansible.builtin.unarchive:
+        src: https://github.com/eza-community/eza/releases/latest/download/eza_x86_64-unknown-linux-gnu.tar.gz
+        dest: /usr/local/bin
+        remote_src: true
+        mode: '0755'
+        owner: root
+      when: not stat_eza.stat.exists
+
+# tldr
+- name: Install | tldr to logn didn't read
+  tags: tldr
+  when: tldr | default('false') | bool
+  block:
+    - name: Check that the tldr exists
+      ansible.builtin.stat:
+        path: /usr/local/bin/tldr
+      register: stat_tldr
+    - name: Install | install tldr
+      ansible.builtin.command: pip3 install tldr
+      register: my_tldr
+      when: not stat_tldr.stat.exists
+      changed_when: my_tldr.rc != 0
+      # To uninstall: pip3 uninstall tldr

@@ -8,19 +8,3 @@
   when: ansible_os_family == 'Debian'
   tags:
     - update_cache
-
-# extra packages
-- name: essential-debian | Install extra packages
-  ansible.builtin.package:
-    name: "{{ extra_packages }}"
-    state: present
-  tags:
-    - extra_packages
-
-# packages net-tools
-- name: essential-debian | Install extra packages net-tools
-  ansible.builtin.package:
-    name: "{{ extra_packages_nettools }}"
-    state: present
-  tags:
-    - extra_packages_nettools
