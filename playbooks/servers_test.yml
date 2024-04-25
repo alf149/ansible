@@ -297,6 +297,7 @@
           ansible.builtin.package:
             name:
               - ttf-mscorefonts-installer
+              - fontconfig
           tags: fonts
         - name: Create a directory ~/.local/share/fonts
           ansible.builtin.file:
@@ -371,17 +372,17 @@
           changed_when: my_tldr.rc != 0
           # To uninstall: pip3 uninstall tldr
 
-    # Config Stow another day
-    # - name: Install stow
-    #   ansible.builtin.package:
-    #     name: stow
-    #     state: present
-    #   tags: stow
-    # - name: Setup Stow and Dotfiles from Git Part2
-    #   become_user: deploy
-    #   ansible.builtin.command:
-    #     chdir: ~/git/dotfiles
-    #     cmd: stow -t ~ -R */ --ignore='.*\.sh'
-    #   register: my_stow
-    #   changed_when: my_stow.rc != 0
-    #   tags: stow
+    - name: Install stow
+      become: true
+      tags: stow
+      ansible.builtin.package:
+        name: stow
+        state: present
+    - name: Setup Stow and Dotfiles from Git Part2
+      tags: stow
+      become_user: deploy
+      ansible.builtin.command:
+        chdir: ~/git/dotfiles
+        cmd: stow -t ~ -R */ --ignore='.*\.sh'
+      register: my_stow
+      changed_when: my_stow.rc != 0
