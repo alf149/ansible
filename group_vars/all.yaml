@@ -30,6 +30,7 @@ extra_packages:
   - curl
   - git
   - nano
+  - micro
   - python3
   - python3-pip
 
