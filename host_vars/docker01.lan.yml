@@ -146,3 +146,12 @@ containers:
     volumes:
       - "{{ appdata_path }}/homepage/config:/app/config" 
     restart: unless-stopped
+
+  - service_name: speedtest02
+    active: true
+    image: openspeedtest/latest
+    ports:
+      - 4000:3000
+    restart: unless-stopped
+
+
