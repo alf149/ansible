@@ -1,8 +1,10 @@
 ---
 
 - name: Run on all PROD Hardware Servers
-  hosts: pve.lan:pve1.lan, pbs.lan
+  hosts: pve.lan, pve1.lan, pbs.lan
   become: true
+  gather_facts: true
+
 
   pre_tasks:
     - name: Upgrade apt packages (Debian and Ubuntu)
@@ -18,8 +20,8 @@
 
 ###
 - name: Run on "ProxMox Servers"
-  hosts: pve.lan
-  gather_facts: false
+  hosts: pve.lan, pve1.lan
+  gather_facts: true
   become: true
 
   roles:
