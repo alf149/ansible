@@ -27,6 +27,10 @@ open_ports:
   - { src: '192.168.30.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # Secure Vlan' }
   - { src: '192.168.3.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # VPN Vlan' }
 
+  - { src: any, dest: any, port: '80', proto: 'tcp', direction: in, comment: 'npm' }
+  - { src: any, dest: any, port: '81', proto: 'tcp', direction: in, comment: 'npm' }
+  - { src: any, dest: any, port: '443', proto: 'tcp', direction: in, comment: 'npm' }
+
   - { src: any, dest: any, port: '8080', proto: 'tcp', direction: in, comment: 'nginx' }
   - { src: any, dest: any, port: '8008', proto: 'tcp', direction: in, comment: 'librespeed' }
   - { src: any, dest: any, port: '3001', proto: 'tcp', direction: in, comment: 'uptimekuma' }
@@ -34,6 +38,11 @@ open_ports:
 
   - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: '', proto: 'any', direction: out, comment: 'Docker' } #Docker
   - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } #Docker
+  - { src: '172.18.0.0/16', dest: '172.18.0.0/16', port: '', proto: 'any', direction: out, comment: 'Docker' } #Docker
+  - { src: '172.18.0.0/16', dest: '172.18.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } #Docker
+
+  - { src: '172.20.0.0/16', dest: '172.20.0.0/16', port: '', proto: 'any', direction: out, comment: 'Docker' } #Docker
+  - { src: '172.20.0.0/16', dest: '172.20.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } #Docker
 
   - { src: any, dest: any, port: '111', proto: any, direction: out, comment: 'NFS' } #NFS
   - { src: any, dest: any, port: '662', proto: any, direction: out, comment: 'NFS' } #NFS
@@ -154,4 +163,15 @@ containers:
       - 4000:3000
     restart: unless-stopped
 
-
+  # - service_name: npm
+  ##   nginx-proxy-manager
+  #   active: true
+  #   image: 'docker.io/jc21/nginx-proxy-manager:latest'
+  #   ports:
+  #     - '80:80'
+  #     - '81:81'
+  #     - '443:443'
+  #   volumes:
+  #     - "{{ nonfs_appdata_path }}/npm/data:/data"
+  #     - "{{ nonfs_appdata_path }}/npm/letsencrypt:/etc/letsencrypt"
+  #   restart: unless-stopped
