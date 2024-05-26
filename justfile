@@ -1,4 +1,4 @@
-recipe-name:
+@recipe-name:
   echo 'This is a recipe!'
 
 ## Vagrant stuff
@@ -19,8 +19,8 @@ v_boxupd:
 
 ## Ansible stuff
 # optionally use --force to force reinstall all requirements
-ansi_reqs *ARGS:
-  ansible-galaxy install -r requirements.yml {{ARGS}}
+ansi_reqs:
+  ansible-galaxy install -r requirements.yml --force 
 
 ansi_env:
   ansible-playbook playbooks/inventory_update.yml -K
@@ -34,9 +34,13 @@ ansi_prod HOST *TAGS:
 ansi_prod_upd HOST:
   ansible-playbook playbooks/servers_lan.yml  --limit {{HOST}} --tags os_update --extra-vars "enable_os_update=true"
 
-ansi_prod_piupdate HOST:
-  echo 'Ansible-Playbook on PROD VM's'
-  ansible-playbook playbooks/servers_lan.yml  --limit {{HOST}} --tags piholeupdate --extra-vars "enable_pihole_update=true"
+ansi_prod_upd_all:
+  @echo 'OS update Start'
+  ansible-playbook playbooks/servers_lan.yml --tags os_update --extra-vars "enable_os_update=true"
+  @echo 'OS update Done'
+  
+ansi_prod_piupdate:
+  ansible-playbook playbooks/servers_lan.yml --tags piholeupdate --extra-vars "enable_pihole_update=true"
 
 ansi_test HOST *TAGS:
   ansible-playbook playbooks/servers_test.yml  --limit {{HOST}} {{TAGS}}
