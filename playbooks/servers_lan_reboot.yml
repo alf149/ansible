@@ -18,7 +18,7 @@
 #       ansible.builtin.reboot:
 
 - name: Run on docker01.lan
-  hosts: cloud01.lan, docker01.lan, docker02.lan
+  hosts: cloud01.lan, cloud02.lan, docker01.lan, docker02.lan
   become: true
   gather_facts: false
   tasks:
