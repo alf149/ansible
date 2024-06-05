@@ -14,6 +14,8 @@ open_ports:
   - { src: any, dest: any, port: '443', proto: 'tcp', direction: out, comment: 'https' }
 
   - { src: '192.168.10.0/24', dest: any, port: '80', proto: 'tcp', direction: in, comment: 'HTTP # Secure Vlan' }
+  - { src: '192.168.31.0/24', dest: any, port: '80', proto: 'tcp', direction: in, comment: 'HTTP # Secure Vlan' }
+
   - { src: '192.168.10.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # Secure Vlan' }
 
   - { src: '192.168.30.102', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # pihole 2' }
