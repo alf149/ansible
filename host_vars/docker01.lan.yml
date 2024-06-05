@@ -27,12 +27,6 @@ open_ports:
   - { src: '192.168.30.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # Secure Vlan' }
   - { src: '192.168.3.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # VPN Vlan' }
 
-  - { src: any, dest: any, port: '80', proto: 'tcp', direction: in, comment: 'npm' }
-  - { src: any, dest: any, port: '81', proto: 'tcp', direction: in, comment: 'npm' }
-  - { src: any, dest: any, port: '443', proto: 'tcp', direction: in, comment: 'npm' }
-
-  - { src: any, dest: any, port: '8080', proto: 'tcp', direction: in, comment: 'nginx' }
-  - { src: any, dest: any, port: '8008', proto: 'tcp', direction: in, comment: 'librespeed' }
   - { src: any, dest: any, port: '3001', proto: 'tcp', direction: in, comment: 'uptimekuma' }
   - { src: any, dest: any, port: '3000', proto: 'tcp', direction: in, comment: 'homepage' }
 
@@ -113,26 +107,6 @@ global_env_vars:
 
 containers:
 
-  - service_name: nginx
-    active: true
-    image: nginx
-    ports:
-      - 8080:80
-    volumes:
-      - "{{ appdata_path }}/www/html:/usr/share/nginx/html" 
-    restart: unless-stopped
-  
-  - service_name: librespeed
-    active: true
-    image: lscr.io/linuxserver/librespeed
-    ports:
-      - 8008:80
-    environment:
-      - MODE=standalone
-      - TELEMETRY=true
-      - "PASSWORD={{ librespeed_password }}"
-    restart: unless-stopped
-
   - service_name: uptimekuma
     # path {{ nonfs_appdata_path }}/uptimekuma/datareated in ansible server_lan.yml manualy
     # path not on NAS sqlite does not vork on NAS. 
@@ -156,22 +130,9 @@ containers:
       - "{{ appdata_path }}/homepage/config:/app/config" 
     restart: unless-stopped
 
-  - service_name: speedtest02
+  - service_name: speedtest
     active: true
     image: openspeedtest/latest
     ports:
       - 4000:3000
     restart: unless-stopped
-
-  # - service_name: npm
-  ##   nginx-proxy-manager
-  #   active: true
-  #   image: 'docker.io/jc21/nginx-proxy-manager:latest'
-  #   ports:
-  #     - '80:80'
-  #     - '81:81'
-  #     - '443:443'
-  #   volumes:
-  #     - "{{ nonfs_appdata_path }}/npm/data:/data"
-  #     - "{{ nonfs_appdata_path }}/npm/letsencrypt:/etc/letsencrypt"
-  #   restart: unless-stopped
