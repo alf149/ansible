@@ -1,0 +1,55 @@
+---
+
+- name: Ensure Caddyfile logdir
+  ansible.builtin.file:
+    path: "/var/log/caddy"
+    state: directory
+    owner: caddy
+    group: caddy
+    mode: '0755'
+  tags: 
+    - caddy
+    - caddyfile
+
+- name: Install caddy service file
+  ansible.builtin.template:
+    src: templates/caddy.service.j2
+    dest: "/etc/systemd/system/caddy.service"
+    owner: root
+    group: root
+    mode: '0777'
+  tags: 
+    - caddy
+    - caddyfile
+
+- name: Ensure Caddyfile target dir exists
+  ansible.builtin.file:
+    path: "{{ caddy_linux_caddyfile_path }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  tags: 
+    - caddy
+    - caddyfile
+
+- name: Template and install Caddyfile
+  ansible.builtin.template:
+    src: templates/Caddyfile.j2
+    dest: "{{ caddy_linux_caddyfile_path }}/Caddyfile"
+    owner: root
+    group: root
+    mode: '0755'
+  tags: 
+    - caddy
+    - caddyfile
+
+- name: Enable caddy service
+  ansible.builtin.systemd:
+    name: caddy
+    enabled: true
+    state: reloaded
+    daemon_reload: true
+  tags: 
+    - caddy
+    - caddyfile

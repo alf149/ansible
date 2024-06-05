@@ -1,0 +1,34 @@
+---
+
+# Erro in downloding using file trnsfer from ansible master
+# - name: Download latest release
+#   ansible.builtin.get_url:
+#     url: "{{ caddy_amd64_linux_cloudflare_binary_url }}"
+#     dest: /usr/local/bin/caddy
+#     owner: root
+#     group: root
+#     mode: a+x
+
+- name: Add the caddy user
+  ansible.builtin.user:
+    name: caddy
+    system: true
+    createhome: true
+    shell: /bin/bash
+    comment: Webserver caddy
+    state: present
+
+- name: Make sudo without password for sudoers
+  ansible.builtin.copy:
+    dest: /etc/sudoers.d/caddy
+    content: "caddy ALL=(ALL) NOPASSWD:ALL"
+    mode: "0440"
+    validate: visudo -cf %s
+
+- name: Copy caddy install binary
+  ansible.builtin.copy:
+    src: files/caddy_linux_amd64_custom
+    dest: /usr/local/bin/caddy
+    owner: root
+    group: root
+    mode: a+x

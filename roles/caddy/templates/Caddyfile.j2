@@ -1,0 +1,90 @@
+## Caddyfile                                                                                                                                                                                                       
+                                                                                                                                                                                                                   
+(cloudflare) {                                                                                                                                                                                                     
+  tls {                                                                                                                                                                                                      
+    dns cloudflare dEatqeMQmA-7VqU3q3Ca9yztgkRAxKJjmqWd5JM2                                                                                                                                            
+  }                                                                                                                                                                                                          
+}                                                                                                                                                                                                                  
+                                                                                                                                                                                                                   
+{                                                                                                                                                                                                                  
+  log default {                                                                                                                                                                                              
+    output file /var/log/caddy/access.log {                                                                                                                                                            
+      roll_size 10mb                                                                                                                                                                             
+      roll_keep 20                                                                                                                                                                               
+      roll_keep_for 720h                                                                                                                                                                         
+    }                                                                                                                                                                                                  
+  }
+}                                                                                                                                                                                                                  
+
+(headers) {
+  header {
+    Permissions-Policy interest-cohort=()
+    Strict-Transport-Security "max-age=31536000; includeSubdomains"
+    X-XSS-Protection "1; mode=block"
+    X-Content-Type-Options "nosniff"
+    X-Robots-Tag noindex, nofollow
+    Referrer-Policy "same-origin"
+    Content-Security-Policy "frame-ancestors {{ domain }} *.{{ intra_domain }}"
+    -Server
+    Permissions-Policy "geolocation=(self {{ domain }} *.{{ intra_domain }}), microphone=()"
+  }
+}
+
+# intra_domain
+{{ intra_domain }} {
+  reverse_proxy http://docker01.lan:3000
+  import cloudflare
+} 
+
+# pihole dns
+dns.{{ intra_domain }} {
+  redir / /admin
+  reverse_proxy http://192.168.30.101
+  import cloudflare
+}
+
+# pihole pi1
+pi1.{{ intra_domain }} {
+  redir / /admin
+  reverse_proxy http://192.168.30.101
+  import cloudflare
+}
+
+# pihole pi2
+pi2.{{ intra_domain }} {
+  redir / /admin
+  reverse_proxy http://192.168.30.102
+  import cloudflare
+}
+
+# proxmox pve
+pve.{{ intra_domain }} {
+  reverse_proxy https://192.168.30.30:8006 {
+    transport http {
+      tls_insecure_skip_verify
+    }
+  }
+  import cloudflare
+}
+
+# UDR at lan
+udr.{{ intra_domain }} {
+  reverse_proxy https://192.168.1.1 {
+    transport http {
+      tls_insecure_skip_verify
+    }
+  }
+  import cloudflare
+}
+
+# UpTime-Kuma at lan
+uptime.{{ intra_domain }} {
+  reverse_proxy http://192.168.30.151:3001
+  import cloudflare
+}
+
+# SPEED at lan
+speed.{{ intra_domain }} {
+  reverse_proxy http://192.168.30.151:4000
+  import cloudflare
+}

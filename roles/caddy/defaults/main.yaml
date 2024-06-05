@@ -1,0 +1,4 @@
+caddy_amd64_linux_cloudflare_binary_url: "https://caddyserver.com/api/download?os=linux&arch=amd64&p=github.com%2Fcaddy-dns%2Fcloudflare&p=github.com%2FWeidiDeng%2Fcaddy-cloudflare-ip&p=github.com%2Fhslatman%2Fcaddy-crowdsec-bouncer"
+caddy_linux_caddyfile_path: /etc/caddy
+
+
