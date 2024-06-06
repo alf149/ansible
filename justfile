@@ -23,6 +23,7 @@ ansi_reqs:
   ansible-galaxy install -r requirements.yml --force 
 
 ansi_env:
+  echo 'Use localhost password\n '
   ansible-playbook playbooks/inventory_update.yml -K
 
 ansi_hw HOST *TAGS:
