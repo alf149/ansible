@@ -78,6 +78,18 @@
         - caddyfile
 
 ###
+- name: Run on "speed.lan"
+  hosts: speed.lan
+  gather_facts: true
+  become: true
+
+  vars_files: ../group_vars/secrets.yml
+
+  roles:
+    - role: ufw
+      tags: ufw
+
+###
 - name: Run on "docker01"
   hosts: docker01.lan
   gather_facts: true
