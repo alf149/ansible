@@ -32,8 +32,11 @@
 
 # intra_domain
 {{ intra_domain }} {
-  reverse_proxy http://docker01.lan:3000
+  reverse_proxy http://192.168.30.151:3000
   import cloudflare
+  log {
+		output file /var/log/caddy/intra_access.log
+	}
 } 
 
 # pihole dns
@@ -41,6 +44,9 @@ dns.{{ intra_domain }} {
   redir / /admin
   reverse_proxy http://192.168.30.101
   import cloudflare
+  log {
+		output file /var/log/caddy/dns_access.log
+	}
 }
 
 # pihole pi1
@@ -48,6 +54,9 @@ pi1.{{ intra_domain }} {
   redir / /admin
   reverse_proxy http://192.168.30.101
   import cloudflare
+  log {
+		output file /var/log/caddy/dns_access.log
+	}
 }
 
 # pihole pi2
@@ -55,6 +64,22 @@ pi2.{{ intra_domain }} {
   redir / /admin
   reverse_proxy http://192.168.30.102
   import cloudflare
+  log {
+		output file /var/log/caddy/dns_access.log
+	}
+}
+
+# NAS at lan
+nas.{{ intra_domain }} {
+  reverse_proxy https://192.168.30.80:5001 {
+    transport http {
+      tls_insecure_skip_verify
+    }
+  }
+  import cloudflare
+  log {
+		output file /var/log/caddy/nas_access.log
+	}
 }
 
 # proxmox pve
@@ -65,6 +90,22 @@ pve.{{ intra_domain }} {
     }
   }
   import cloudflare
+  log {
+		output file /var/log/caddy/pve_access.log
+	}
+}
+
+# PBS at lan
+PBS.{{ intra_domain }} {
+  reverse_proxy https://192.168.30.200:8007 {
+    transport http {
+      tls_insecure_skip_verify
+    }
+  }
+  import cloudflare
+  log {
+		output file /var/log/caddy/pbs_access.log
+	}
 }
 
 # UDR at lan
@@ -75,16 +116,25 @@ udr.{{ intra_domain }} {
     }
   }
   import cloudflare
+  log {
+		output file /var/log/caddy/udr_access.log
+	}
 }
 
 # UpTime-Kuma at lan
 uptime.{{ intra_domain }} {
   reverse_proxy http://192.168.30.151:3001
   import cloudflare
+  log {
+		output file /var/log/caddy/uptime_access.log
+	}
 }
 
 # SPEED at lan
 speed.{{ intra_domain }} {
   reverse_proxy http://192.168.30.151:4000
   import cloudflare
+  log {
+		output file /var/log/caddy/speed_access.log
+	}
 }
