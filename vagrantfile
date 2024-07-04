@@ -77,7 +77,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
-    
   # # win11
   # config.vm.define "win11.test", autostart: false do |win11|
   #   win11.vm.provider "libvirt" do |v|
