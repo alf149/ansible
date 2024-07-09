@@ -29,6 +29,7 @@ open_ports:
 
   - { src: any, dest: any, port: '3001', proto: 'tcp', direction: in, comment: 'uptimekuma' }
   - { src: any, dest: any, port: '3000', proto: 'tcp', direction: in, comment: 'homepage' }
+  - { src: any, dest: any, port: '8001', proto: 'tcp', direction: in, comment: 'Littlelink' } #Littlelink
 
   - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: '', proto: 'any', direction: out, comment: 'Docker' } #Docker
   - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } #Docker
@@ -135,4 +136,32 @@ containers:
     image: openspeedtest/latest
     ports:
       - 4000:3000
+    restart: unless-stopped
+
+  - service_name: littlelink
+    active: true
+    image: ghcr.io/techno-tim/littlelink-server:latest
+    ports:
+      - 8001:3000
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      - META_TITLE=Rolf Amfelt
+      - META_DESCRIPTION=Rolf Amfelt Link page
+      - META_AUTHOR=Rolf Amfelt
+      - META_KEYWORDS=HomeLab
+      - LANG=en
+      - META_INDEX_STATUS=noindex
+      - THEME=Dark
+      # - FAVICON_URL=''
+      # - AVATAR_URL=''
+      # - AVATAR_2X_URL=''
+      # - AVATAR_ALT=''
+      - NAME=Rolf Amfelt
+      - BIO=Homelab | Almost Nerd
+      - BUTTON_ORDER=MASTODON,LINKED_IN,TWITTER,GITHUB,TWITTER
+      - GITHUB=https://github.com/alf149
+      - LINKED_IN=https://dk.linkedin.com/in/rolf-amfelt-81a43
+      - MASTODON=https://norrebro.space/@alf194
+      - FOOTER=Rolf Amfelt © 2022
     restart: unless-stopped
