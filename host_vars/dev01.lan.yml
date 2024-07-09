@@ -60,6 +60,9 @@ open_ports:
   - { src: any, dest: any, port: '41641', proto: udp, direction: in, comment: 'tailscale' }
   - { src: any, dest: any, port: '3478', proto: udp, direction: in, comment: 'tailscale' }
 
+  - { src: '192.168.3.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'Allow from VPN' }
+
+
 users:
 
   - name: deploy
