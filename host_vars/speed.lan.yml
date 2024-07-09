@@ -15,6 +15,9 @@ open_ports:
   - { src: any, dest: any, port: '443', proto: 'tcp', direction: out, comment: 'https' }
   - { src: '192.168.10.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # Secure Vlan' }
   - { src: '192.168.10.0/24', dest: any, port: '5201', proto: 'tcp', direction: in, comment: 'Iperf3 server' }
+
+  - { src: '192.168.3.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'Allow from VPN' }
+
   
 users:
   - name: deploy
