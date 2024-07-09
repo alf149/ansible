@@ -95,6 +95,14 @@
       tags: ufw
 
 ###
+- name: Run on "open.test"
+  hosts: open.test
+  gather_facts: true
+  become: true
+
+  vars_files: ../group_vars/secrets.yml
+
+###
 - name: Run on "ubt.test"
   hosts: ubt.test
   gather_facts: true
