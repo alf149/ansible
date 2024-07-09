@@ -25,6 +25,9 @@ open_ports:
   - { src: any, dest: '192.168.30.151', port: '3001', proto: 'tcp', direction: out, comment: 'CT to Uptime-kuma' }
   - { src: any, dest: '192.168.30.151', port: '8008', proto: 'tcp', direction: out, comment: 'speed01 test' }
 
+  - { src: '192.168.3.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'Allow from VPN' }
+
+
 users:
   - name: deploy
     comment: System Administration
