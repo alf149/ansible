@@ -13,26 +13,26 @@ open_ports:
   - { src: any, dest: any, port: '123', proto: 'udp', direction: out, comment: 'NTP' }
   - { src: any, dest: any, port: '80', proto: 'tcp', direction: out, comment: 'http' }
   - { src: any, dest: any, port: '443', proto: 'tcp', direction: out, comment: 'https' }
-  - { src: any, dest: '192.168.30.0/24', port: '80', proto: 'tcp', direction: out, comment: 'Caddy to homlab' }
-  - { src: any, dest: '192.168.30.0/24', port: '443', proto: 'tcp', direction: out, comment: 'Caddy to homlab' }
-  - { src: any, dest: '192.168.30.0/24', port: '443', proto: 'udp', direction: out, comment: 'Caddy to homlab' }
-  - { src: any, dest: '192.168.30.0/24', port: '3000', proto: 'tcp', direction: out, comment: 'Caddy to homlab' }
-  - { src: any, dest: '192.168.30.0/24', port: '3001', proto: 'tcp', direction: out, comment: 'Caddy to homlab' }
-  - { src: any, dest: '192.168.30.0/24', port: '4000', proto: 'tcp', direction: out, comment: 'Caddy to homlab' }
-
-  - { src: any, dest: '192.168.30.0/24', port: '8006', proto: 'tcp', direction: out, comment: 'Caddy to homlab' }
 
   - { src: '192.168.10.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # Secure Vlan' }
-  - { src: '192.168.10.0/24', dest: any, port: '443', proto: 'tcp', direction: in, comment: 'HTTPS # Caddy' }
-  - { src: '192.168.10.0/24', dest: any, port: '443', proto: 'udp', direction: in, comment: 'HTTPS # Caddy' }
-  - { src: '192.168.31.0/24', dest: any, port: '443', proto: 'tcp', direction: in, comment: 'HTTPS # Caddy' }
-  - { src: '192.168.31.0/24', dest: any, port: '443', proto: 'udp', direction: in, comment: 'HTTPS # Caddy' }
-
   - { src: '192.168.3.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'Allow from VPN' }
-  - { src: '192.168.3.0/24', dest: any, port: '80', proto: 'tcp', direction: in, comment: 'Allow from VPN' }
-  - { src: '192.168.3.0/24', dest: any, port: '443', proto: 'tcp', direction: in, comment: 'Allow from VPN' }
-  - { src: '192.168.3.0/24', dest: any, port: '80', proto: 'udp', direction: in, comment: 'Allow from VPN' }
-  - { src: '192.168.3.0/24', dest: any, port: '443', proto: 'udp', direction: in, comment: 'Allow from VPN' }
+
+  - { src: '192.168.31.5', dest: '192.168.30.151', port: '3000', proto: 'tcp', direction: out, comment: 'Caddy to HomePage' }
+  - { src: '192.168.31.5', dest: '192.168.30.151', port: '3001', proto: 'tcp', direction: out, comment: 'Caddy to Uptime' }
+  - { src: '192.168.31.5', dest: '192.168.30.151', port: '4000', proto: 'tcp', direction: out, comment: 'Caddy to SpeedTest' }
+  - { src: '192.168.31.5', dest: '192.168.30.151', port: '8001', proto: 'tcp', direction: out, comment: 'Caddy to ww.amfelt.dk' }
+  - { src: '192.168.31.5', dest: '192.168.30.80', port: '5001', proto: 'tcp', direction: out, comment: 'Caddy to NAS' }
+  - { src: '192.168.31.5', dest: '192.168.30.30', port: '8006', proto: 'tcp', direction: out, comment: 'Caddy to PVE' }
+  - { src: '192.168.31.5', dest: '192.168.30.31', port: '8006', proto: 'tcp', direction: out, comment: 'Caddy to PVE1' }
+  - { src: '192.168.31.5', dest: '192.168.30.200', port: '8007', proto: 'tcp', direction: out, comment: 'Caddy to PBS' }
+
+  - { src: '192.168.10.0/24', dest: any, port: '443', proto: 'tcp', direction: in, comment: 'HTTPS # Caddy from secure' }
+  - { src: '192.168.10.0/24', dest: any, port: '443', proto: 'udp', direction: in, comment: 'HTTPS/3 # Caddy from secure' }
+  - { src: '192.168.31.0/24', dest: any, port: '443', proto: 'tcp', direction: in, comment: 'HTTPS # Caddy from dmz' }
+  - { src: '192.168.31.0/24', dest: any, port: '443', proto: 'udp', direction: in, comment: 'HTTPS/3 # Caddy from dmz' }
+
+  - { src: '192.168.3.0/24', dest: any, port: '443', proto: 'tcp', direction: in, comment: 'HTTPS # Caddy from VPN' }
+  - { src: '192.168.3.0/24', dest: any, port: '443', proto: 'udp', direction: in, comment: 'HTTPS/3 # Caddy from VPN' }
 
 users:
   - name: deploy

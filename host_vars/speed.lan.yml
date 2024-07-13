@@ -13,11 +13,15 @@ open_ports:
   - { src: any, dest: any, port: '123', proto: 'udp', direction: out, comment: 'NTP' }
   - { src: any, dest: any, port: '80', proto: 'tcp', direction: out, comment: 'http' }
   - { src: any, dest: any, port: '443', proto: 'tcp', direction: out, comment: 'https' }
+  
   - { src: '192.168.10.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # Secure Vlan' }
-  - { src: '192.168.10.0/24', dest: any, port: '5201', proto: 'tcp', direction: in, comment: 'Iperf3 server' }
-
   - { src: '192.168.3.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'Allow from VPN' }
 
+  - { src: '192.168.10.0/24', dest: any, port: '5201', proto: 'tcp', direction: in, comment: 'Iperf3 server from secure' }
+  # - { src: '192.168.20.0/24', dest: any, port: '5201', proto: 'tcp', direction: in, comment: 'Iperf3 server from mar' }
+  # - { src: '192.168.30.0/24', dest: any, port: '5201', proto: 'tcp', direction: in, comment: 'Iperf3 server from homelab' }
+  # - { src: '192.168.31.0/24', dest: any, port: '5201', proto: 'tcp', direction: in, comment: 'Iperf3 server from dmz' }
+  - { src: '192.168.3.0/24', dest: any, port: '5201', proto: 'tcp', direction: in, comment: 'Iperf3 server from VPN' }
   
 users:
   - name: deploy
