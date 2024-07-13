@@ -52,14 +52,10 @@
   vars_files: ../group_vars/secrets.yml
 
   roles:
-    - role: geerlingguy.pip
-      tags: containers
-    - role: geerlingguy.docker
-      tags: containers
     - role: ufw
       tags: ufw
-    - role: littlelink
-      tags: containers
+# manual installed tailscale
+# manual install Cloudflare tunnels
 
 ###
 - name: Run on "caddy01.lan"
