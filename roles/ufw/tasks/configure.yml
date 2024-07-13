@@ -42,3 +42,10 @@
   when:
     - enable_ufw is defined
     - enable_ufw
+
+# - name: configure | reset
+#   community.general.ufw:
+#     state: reset
+#   when: configuration is changed
+#   tags:
+#     - ufw-configure-reset
