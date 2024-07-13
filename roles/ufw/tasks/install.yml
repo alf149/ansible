@@ -10,3 +10,10 @@
   when:
     - enable_ufw is defined
     - enable_ufw
+
+- name: Ufw disable IPv6
+  replace:
+    path: "/etc/default/ufw"
+    regexp: 'IPV6=yes'
+    replace: 'IPV6=no'
+    backup: yes
