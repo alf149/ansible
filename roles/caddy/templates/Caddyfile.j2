@@ -23,10 +23,10 @@
     X-XSS-Protection "1; mode=block"
     X-Content-Type-Options "nosniff"
     X-Robots-Tag noindex, nofollow
+    X-Frame-Options "SAMEORIGIN"
     Referrer-Policy "same-origin"
-    Content-Security-Policy "frame-ancestors {{ domain }} *.{{ intra_domain }}"
-    -Server
-    Permissions-Policy "geolocation=(self {{ domain }} *.{{ intra_domain }}), microphone=()"
+    Content-Security-Policy "frame-ancestors "
+    Permissions-Policy "geolocation=(self 'https://amfelt.dk'), microphone=()"
   }
 }
 
@@ -38,6 +38,16 @@
 		output file /var/log/caddy/intra_access.log
 	}
 } 
+
+# www.intra.amfelt.dk 
+www.{{ intra_domain }} {
+  reverse_proxy http://192.168.30.151:8001
+  import cloudflare
+  import headers
+  log {
+		output file /var/log/caddy/www_access.log
+	}
+}
 
 # pihole dns
 dns.{{ intra_domain }} {
