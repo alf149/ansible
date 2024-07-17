@@ -2,7 +2,7 @@
                                                                                                                                                                                                                    
 (cloudflare) {                                                                                                                                                                                                     
   tls {                                                                                                                                                                                                      
-    dns cloudflare dEatqeMQmA-7VqU3q3Ca9yztgkRAxKJjmqWd5JM2                                                                                                                                            
+    dns cloudflare {{ cloudflare_api_token }}                                                                                                                                 
   }                                                                                                                                                                                                          
 }                                                                                                                                                                                                                  
                                                                                                                                                                                                                    
@@ -25,7 +25,7 @@
     X-Robots-Tag noindex, nofollow
     X-Frame-Options "SAMEORIGIN"
     Referrer-Policy "same-origin"
-    Content-Security-Policy "frame-ancestors "
+    Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https: android-webview-video-poster:; font-src 'self' data: https:; media-src 'self' data: https: blob:; "
     Permissions-Policy "geolocation=(self 'https://amfelt.dk'), microphone=()"
   }
 }
@@ -142,7 +142,11 @@ uptime.{{ intra_domain }} {
 
 # SPEED at lan
 speed.{{ intra_domain }} {
-  reverse_proxy http://192.168.30.151:4000
+  reverse_proxy http://192.168.30.151:4000 {
+             request_buffers 35MiB
+             response_buffers 35MiB
+             flush_interval -1
+        }
   import cloudflare
   log {
 		output file /var/log/caddy/speed_access.log
