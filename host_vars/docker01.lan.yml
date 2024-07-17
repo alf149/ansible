@@ -27,9 +27,12 @@ open_ports:
   - { src: '192.168.30.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # Secure Vlan' }
   - { src: '192.168.3.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # VPN Vlan' }
 
-  - { src: any, dest: any, port: '3001', proto: 'tcp', direction: in, comment: 'uptimekuma' }
-  - { src: any, dest: any, port: '3000', proto: 'tcp', direction: in, comment: 'homepage' }
-  - { src: any, dest: any, port: '8001', proto: 'tcp', direction: in, comment: 'Littlelink' } #Littlelink
+  - { src: '192.168.31.5', dest: any, port: '3001', proto: 'tcp', direction: in, comment: 'uptimekuma' }
+  - { src: '192.168.31.5', dest: any, port: '3000', proto: 'tcp', direction: in, comment: 'homepage' }
+  - { src: '192.168.31.5', dest: any, port: '4000', proto: 'tcp', direction: in, comment: 'speedtest' }
+  - { src: '192.168.31.5', dest: any, port: '8001', proto: 'tcp', direction: in, comment: 'Littlelink' } #Littlelink
+
+  - { src: '192.168.10.0/24', dest: any, port: '4000', proto: 'tcp', direction: in, comment: 'speedtest' }
 
   - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: '', proto: 'any', direction: out, comment: 'Docker' } #Docker
   - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } #Docker
@@ -39,22 +42,17 @@ open_ports:
   - { src: '172.20.0.0/16', dest: '172.20.0.0/16', port: '', proto: 'any', direction: out, comment: 'Docker' } #Docker
   - { src: '172.20.0.0/16', dest: '172.20.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } #Docker
 
-  - { src: any, dest: any, port: '111', proto: any, direction: out, comment: 'NFS' } #NFS
-  - { src: any, dest: any, port: '662', proto: any, direction: out, comment: 'NFS' } #NFS
-  - { src: any, dest: any, port: '892', proto: any, direction: out, comment: 'NFS' } #NFS
-  - { src: any, dest: any, port: '2049', proto: any, direction: out, comment: 'NFS' } #NFS
-  - { src: any, dest: any, port: '4045', proto: any, direction: out, comment: 'NFS' } #NFS
+  - { src: any, dest: '192.168.30.80', port: '111', proto: any, direction: out, comment: 'NFS' } #NFS
+  - { src: any, dest: '192.168.30.80', port: '662', proto: any, direction: out, comment: 'NFS' } #NFS
+  - { src: any, dest: '192.168.30.80', port: '892', proto: any, direction: out, comment: 'NFS' } #NFS
+  - { src: any, dest: '192.168.30.80', port: '2049', proto: any, direction: out, comment: 'NFS' } #NFS
+  - { src: any, dest: '192.168.30.80', port: '4045', proto: any, direction: out, comment: 'NFS' } #NFS
   
   - { src: '192.168.30.80', dest: '', port: '111', proto: any, direction: in, comment: 'NFS' } #NFS
   - { src: '192.168.30.80', dest: '', port: '662', proto: any, direction: in, comment: 'NFS' } #NFS
   - { src: '192.168.30.80', dest: '', port: '892', proto: any, direction: in, comment: 'NFS' } #NFS
   - { src: '192.168.30.80', dest: '', port: '2049', proto: any, direction: in, comment: 'NFS' } #NFS
   - { src: '192.168.30.80', dest: '', port: '4045', proto: any, direction: in, comment: 'NFS' } #NFS
-
-  - { src: any, dest: any, port: '41641', proto: udp, direction: out, comment: 'tailscale' } #https://tailscale.com/kb/1130/lxc-unprivileged
-  - { src: any, dest: any, port: '3478', proto: udp, direction: out, comment: 'tailscale' }
-  - { src: any, dest: any, port: '41641', proto: udp, direction: in, comment: 'tailscale' }
-  - { src: any, dest: any, port: '3478', proto: udp, direction: in, comment: 'tailscale' }
 
 users:
   - name: deploy
@@ -165,3 +163,14 @@ containers:
       - MASTODON=https://norrebro.space/@alf194
       - FOOTER=Rolf Amfelt © 2022
     restart: unless-stopped
+
+
+  # - service_name: mailrise
+  #   # path {{ appdata_path }}/homepage/config:/created in ansible server_lan.yml manualy
+  #   active: true
+  #   image: yoryan/mailrise:latest
+  #   ports:
+  #     - 8025:8025
+  #   volumes:
+  #     - "{{ appdata_path }}/mailrise/mailrise.conf:/etc/mailrise.conf" 
+  #   restart: unless-stopped
