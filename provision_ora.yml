@@ -1,0 +1,162 @@
+---
+- name: Provision a new server on test og lab
+  hosts: all
+  gather_facts: true
+  become: true
+
+  vars_files:
+    - group_vars/secrets.yml
+
+  tasks:
+    - name: Add users
+      ansible.builtin.user:
+        name: "{{ item.name }}"
+        comment: "{{ item.comment }}"
+        password: "{{ item.password }}"
+        groups: "wheel"
+        append: true
+        shell: /bin/bash
+        update_password: always
+        create_home: true
+        state: present
+      loop: "{{ users }}"
+      tags: users
+
+    - name: Add ssh authorized_keys to users
+      ansible.posix.authorized_key:
+        user: "{{ item.name }}"
+        key: "{{ item.ssh_key }}"
+        exclusive: false
+      loop: "{{ users }}"
+
+    - name: User | Suppress login messages for users
+      ansible.builtin.file:
+        name: /home/{{ item.name }}/.hushlogin
+        mode: '644'
+        state: touch
+        modification_time: preserve
+        access_time: preserve
+      loop: "{{ users }}"
+      tags: users
+
+    - name: User | copy '.bash_aliases' file. to users
+      ansible.builtin.copy:
+        src: roles/system/files/dot_files/.bash_aliases
+        dest: /home/{{ item.name }}/.bash_aliases
+        owner: "{{ item.name }}"
+        mode: '644'
+      loop: "{{ users }}"
+      tags: users
+
+    - name: User | copy '.bash_aliases' file to root user.
+      ansible.builtin.copy:
+        src: roles/system/files/dot_files/.bash_aliases
+        dest: /root/.bash_aliases
+        owner: root
+        mode: '644'
+      tags: users
+
+    - name: Make sudo without password for sudoers
+      ansible.builtin.copy:
+        dest: /etc/sudoers.d/{{ item }}
+        content: "{{ item }} ALL=(ALL) NOPASSWD:ALL"
+        mode: "0440"
+        validate: visudo -cf %s
+      loop: "{{ sudoers }}"
+
+    # extra packages
+    - name: Install extra packages
+      tags: extra_packages
+      when: enable_extra_packages | d(false) | bool
+      ansible.builtin.package:
+        name: "{{ extra_packages }}"
+        state: present
+
+    - name: Alias on RHEL/Oracle to .bashrc
+      ansible.legacy.shell: cat /home/deploy/.bash_aliases >> /home/deploy/.bashrc
+
+
+
+    # # Testrail
+    # - name: Import remi GPG key.
+    #   ansible.builtin.rpm_key:
+    #     key: https://rpms.remirepo.net/enterprise/8/RPM-GPG-KEY-remi
+    #     state: present
+
+    # - name: Install remi repo
+    #   ansible.builtin.dnf:
+    #     name: http://rpms.famillecollet.com/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm
+    #     state: present
+
+    # - name: Enable php 8.0 remi repo
+    #   ansible.legacy.shell: dnf module enable php:remi-8.0 -y
+
+    # - name: Update dnf
+    #   ansible.builtin.dnf:
+    #     name: '*'
+    #     state: latest
+
+    # - name: Install testrail packages
+    #   ansible.builtin.dnf:
+    #     name:
+    #       - mariadb-server
+    #       - mariadb
+    #       - httpd
+    #       - yum-utils
+    #       - php
+    #       - php-opcache
+    #       - php-mysqlnd
+    #       - php-pdo
+    #       - php-gd
+    #       - php-ldap
+    #       - php-odbc
+    #       - php-pear
+    #       - php-xml
+    #       - php-xmlrpc
+    #       - php-mbstring
+    #       - php-soap
+    #       - curl
+    #       - curl-devel
+    #       # - phpMyAdmin
+    #     state: present
+
+    # - name: Install testrail packages
+    #   ansible.builtin.dnf:
+    #     enablerepo: testing
+    #     name:
+    #       - phpMyAdmin
+    #     state: present
+
+# ###
+# https://www.howtoforge.com/tutorial/centos-lamp-server-apache-mysql-php/
+
+# yum -y install mariadb-server mariadb
+# systemctl start mariadb.service
+# systemctl enable mariadb.service
+
+
+# yum -y install httpd
+# systemctl start httpd.service
+# systemctl enable httpd.service
+
+
+
+# firewall-cmd --permanent --zone=public --add-service=http 
+# firewall-cmd --permanent --zone=public --add-service=https
+# firewall-cmd --reload
+
+
+# rpm -Uvh http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+# yum -y install yum-utils
+# yum update
+
+# yum-config-manager --enable remi-php73
+# yum -y install php php-opcache
+
+# systemctl restart httpd.service
+
+# yum -y install php-mysqlnd php-pdo
+# yum -y install php-gd php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-soap curl curl-devel
+# systemctl restart httpd.service
+
+# yum -y install phpMyAdmin
