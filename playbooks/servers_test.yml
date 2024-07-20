@@ -71,8 +71,6 @@
       tags: containers
     - role: ufw
       tags: ufw
-    - role: dockge
-      tags: dockge
     - role: littlelink
       tags:
         - containers
