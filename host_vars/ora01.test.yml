@@ -1,5 +1,5 @@
 enable_os_update: true
-
+enable_extra_packages: true
 extra_packages: 
   - curl
   - wget
@@ -7,12 +7,7 @@ extra_packages:
   - nano
   - python3
   - python3-pip
-  - apt-transport-https
   - ca-certificates
-
-## Firewall 
-enable_ufw: true
-enable_ufw_deny_out: true
 
 users:
   - name: deploy
@@ -33,4 +28,5 @@ users:
     ssh_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG5iPUMbwcXyBjEp3rJA/d7Qv4HRo83BXo5az0H74kzj
 
 sudoers: ['deploy']
+docker_users: ['deploy']
 
