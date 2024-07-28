@@ -16,13 +16,6 @@
   loop: "{{ users }}"
   tags: users
 
-# - name: Add ssh authorized_keys to users
-#   ansible.posix.authorized_key:
-#     user: "{{ item.name }}"
-#     key: "{{ item.ssh_keys | join('\n') }}"
-#     exclusive: true
-#   loop: "{{ users }}"
-
 - name: Add ssh authorized_keys to users
   ansible.posix.authorized_key:
     user: "{{ item.name }}"
