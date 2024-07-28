@@ -32,10 +32,37 @@
   vars_files: ../group_vars/secrets.yml
 
   roles:
-    - role: geerlingguy.pip
-      tags: containers
     - role: geerlingguy.docker
       tags: containers
+    - role: ufw
+      tags: ufw
+
+  tasks:
+    - name: Essential-debian | Install extra packages
+      ansible.builtin.package:
+        name: "{{ extra_packages }}"
+        state: present
+
+    - name: Check if a reboot is required on Ubuntu
+      when: ansible_facts['os_family'] == 'Debian'
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+      register: ubuntu_reboot_required
+
+    - name: Reboot Debian/Ubuntu if required
+      when: ubuntu_reboot_required.stat.exists | default(false)
+      ansible.builtin.reboot:
+        reboot_timeout: 600
+
+### mail.test
+- name: Run on "mail.test"
+  hosts: mail.test
+  gather_facts: true
+  become: true
+
+  vars_files: ../group_vars/secrets.yml
+
+  roles:
     - role: ufw
       tags: ufw
 

@@ -26,6 +26,23 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
   
+  # mail
+  config.vm.define "mail.test", autostart: false do |mail|
+    mail.vm.provider "libvirt" do |v|
+      v.memory = 4096
+      v.cpus = 4
+    end
+    mail.vm.box = "generic/ubuntu2204"
+    mail.vm.box_check_update = false
+    mail.vm.hostname = "mail.test"
+    mail.vm.network :private_network, ip: "192.168.56.21", hostname: true
+    mail.vm.provision "ansible" do |ansible|
+      ansible.compatibility_mode = "2.0"
+      ansible.config_file = "ansible.cfg"
+      ansible.playbook = "provision.yml"
+    end
+  end
+
   # srv01
   config.vm.define "srv01.test", autostart: false do |srv01|
     srv01.vm.provider "libvirt" do |v|
