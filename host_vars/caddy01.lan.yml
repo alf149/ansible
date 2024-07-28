@@ -67,3 +67,10 @@ cloudflare_api_token: !vault |
           3931353436356235380a613239643836373734323137353630633062383431343864376261393531
           62373337386263363465373463366435633862313365356139613163313861626439643731316232
           6136396263653733373965313639333765376465333962633363
+
+## to rad logs. 
+## https://www.yellowduck.be/posts/using-jq-to-inspect-caddy-logfiles
+## sudo cat /var/log/caddy/access.log | jq -r '[.ts, .request.uri, .status] | @csv'
+
+
+## cat /var/log/caddy/access.log | jq '.ts |= (todateiso8601)'
