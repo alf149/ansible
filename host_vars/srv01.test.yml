@@ -30,19 +30,19 @@ open_ports:
   - { src: any, dest: any, port: '3000', proto: 'tcp', direction: in, comment: 'homepage' }
 
 
-  - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: '', proto: 'any', direction: out, comment: 'Docker' } #Docker
-  - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } #Docker
+  - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: any, proto: 'any', direction: out, comment: 'Docker' } #Docker
+  - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: any, proto: 'any', direction: in, comment: 'Docker' } #Docker
 
   - { src: any, dest: any, port: '111', proto: any, direction: out, comment: 'NFS' } #NFS
   - { src: any, dest: any, port: '662', proto: any, direction: out, comment: 'NFS' } #NFS
   - { src: any, dest: any, port: '892', proto: any, direction: out, comment: 'NFS' } #NFS
   - { src: any, dest: any, port: '2049', proto: any, direction: out, comment: 'NFS' } #NFS
   - { src: any, dest: any, port: '4045', proto: any, direction: out, comment: 'NFS' } #NFS
-  - { src: '192.168.30.80/24', dest: '', port: '111', proto: any, direction: in, comment: 'NFS' } #NFS
-  - { src: '192.168.30.80/24', dest: '', port: '662', proto: any, direction: in, comment: 'NFS' } #NFS
-  - { src: '192.168.30.80/24', dest: '', port: '892', proto: any, direction: in, comment: 'NFS' } #NFS
-  - { src: '192.168.30.80/24', dest: '', port: '2049', proto: any, direction: in, comment: 'NFS' } #NFS
-  - { src: '192.168.30.80/24', dest: '', port: '4045', proto: any, direction: in, comment: 'NFS' } #NFS
+  - { src: '192.168.30.80/24', dest: any, port: '111', proto: any, direction: in, comment: 'NFS' } #NFS
+  - { src: '192.168.30.80/24', dest: any, port: '662', proto: any, direction: in, comment: 'NFS' } #NFS
+  - { src: '192.168.30.80/24', dest: any, port: '892', proto: any, direction: in, comment: 'NFS' } #NFS
+  - { src: '192.168.30.80/24', dest: any, port: '2049', proto: any, direction: in, comment: 'NFS' } #NFS
+  - { src: '192.168.30.80/24', dest: any, port: '4045', proto: any, direction: in, comment: 'NFS' } #NFS
 
 users:
   - name: deploy
