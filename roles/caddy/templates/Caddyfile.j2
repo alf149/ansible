@@ -152,3 +152,21 @@ speed.{{ intra_domain }} {
 		output file /var/log/caddy/speed_access.log
 	}
 }
+
+# PDF-Tools at lan
+pdf.{{ intra_domain }} {
+  reverse_proxy http://192.168.30.151:3100
+  import cloudflare
+  log {
+		output file /var/log/caddy/pdf_access.log
+	}
+}
+
+# IT-Tools at lan
+ittools.{{ intra_domain }} {
+  reverse_proxy http://192.168.30.151:3200
+  import cloudflare
+  log {
+		output file /var/log/caddy/ittools_access.log
+	}
+}
