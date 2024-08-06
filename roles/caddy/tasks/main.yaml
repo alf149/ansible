@@ -6,6 +6,6 @@
 
 - name: Configure caddy rules
   ansible.builtin.include_tasks: configure.yaml
-  tags: 
+  tags:
     - caddy
     - caddyfile

@@ -1,0 +1,11 @@
+---
+- name: Check postfix
+  when: postfix_check
+  ansible.builtin.command: postfix check
+  listen: check restart postfix
+
+- name: Restart postfix
+  ansible.builtin.service:
+    name: postfix
+    state: restarted
+  listen: check restart postfix

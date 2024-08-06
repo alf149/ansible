@@ -1,0 +1,68 @@
+---
+- name: Install Postfix
+  ansible.builtin.package:
+    name:
+      - postfix
+      - mailutils
+      - libsasl2-modules
+
+- name: Enable Postfix
+  ansible.builtin.service:
+    name: postfix
+    state: started
+    enabled: 'yes'
+
+# - name: Configure Postfix
+#   ansible.builtin.command: "postconf -e \"{{ item.key }}={{ item.value }}\""
+#   ignore_errors: true
+#   notify: check restart postfix
+#   with_dict: "{{ postfix_conf }}"
+
+- name: Configure Postfix main from vars
+  ansible.builtin.copy:
+    dest: "/etc/postfix/main.cf"
+    owner: root
+    mode: '0600'
+    content: |
+        {{ postfix_main }}
+
+- name: Generate postfix main check
+  ansible.builtin.command: 'postfix check'
+
+- name: Configure Postfix aliases from vars
+  ansible.builtin.copy:
+    dest: "/etc/aliases"
+    owner: root
+    mode: '0600'
+    content: |
+        {{ postfix_aliases }}
+
+- name: Generate new alises
+  ansible.builtin.command: newaliases
+
+- name: Configure Postfix generic from vars
+  ansible.builtin.copy:
+    dest: "/etc/postfix/generic"
+    owner: root
+    mode: '0600'
+    content: |
+        {{ postfix_generic }}
+
+- name: Generate generic DB
+  ansible.builtin.command: 'sudo postmap /etc/postfix/generic'
+
+- name: Configure Postfix sasl password from vars
+  ansible.builtin.copy:
+    dest: "/etc/postfix/sasl/sasl_passwd"
+    owner: root
+    mode: '0600'
+    content: |
+        {{ postfix_sasl_passwd }}
+
+- name: Generate generic DB
+  ansible.builtin.command: 'sudo postmap /etc/postfix/sasl/sasl_passwd'
+
+- name: Restart Postfix service
+  ansible.builtin.service:
+    name: postfix
+    state: restarted

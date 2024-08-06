@@ -12,9 +12,7 @@ extra_packages:
 
 ## Firewall 
 enable_ufw: true
-resetufw: false
 enable_ufw_deny_out: true
-enable_ufw_fix_sessions: true
 
 open_ports:
   - { src: any, dest: any, port: '22', proto: 'tcp', direction: out, comment: 'SSH' }
@@ -27,25 +25,9 @@ open_ports:
   - { src: '192.168.30.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # Secure Vlan' }
   - { src: '192.168.3.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # VPN Vlan' }
 
-  - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: '', proto: 'any', direction: out, comment: 'Docker' } #Docker
-  - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } #Docker
-  - { src: '172.18.0.0/16', dest: '172.18.0.0/16', port: '', proto: 'any', direction: out, comment: 'Docker' } #Docker
-  - { src: '172.18.0.0/16', dest: '172.18.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } #Docker
-
-  - { src: '172.20.0.0/16', dest: '172.20.0.0/16', port: '', proto: 'any', direction: out, comment: 'Docker' } #Docker
-  - { src: '172.20.0.0/16', dest: '172.20.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } #Docker
-
-  - { src: any, dest: '192.168.30.80', port: '111', proto: any, direction: out, comment: 'NFS' } #NFS
-  - { src: any, dest: '192.168.30.80', port: '662', proto: any, direction: out, comment: 'NFS' } #NFS
-  - { src: any, dest: '192.168.30.80', port: '892', proto: any, direction: out, comment: 'NFS' } #NFS
-  - { src: any, dest: '192.168.30.80', port: '2049', proto: any, direction: out, comment: 'NFS' } #NFS
-  - { src: any, dest: '192.168.30.80', port: '4045', proto: any, direction: out, comment: 'NFS' } #NFS
-  
-  - { src: '192.168.30.80', dest: '', port: '111', proto: any, direction: in, comment: 'NFS' } #NFS
-  - { src: '192.168.30.80', dest: '', port: '662', proto: any, direction: in, comment: 'NFS' } #NFS
-  - { src: '192.168.30.80', dest: '', port: '892', proto: any, direction: in, comment: 'NFS' } #NFS
-  - { src: '192.168.30.80', dest: '', port: '2049', proto: any, direction: in, comment: 'NFS' } #NFS
-  - { src: '192.168.30.80', dest: '', port: '4045', proto: any, direction: in, comment: 'NFS' } #NFS
+  - { src: any, dest: any, port: '25', proto: 'tcp', direction: in, comment: 'MAIL' }
+  - { src: any, dest: any, port: '465', proto: 'tcp', direction: out, comment: 'MAIL SMTP SSL' }
+  - { src: any, dest: any, port: '587', proto: 'tcp', direction: out, comment: 'MAIL SMTP TLS' }
 
 users:
   - name: deploy
@@ -67,28 +49,60 @@ users:
 
 sudoers: ['deploy']
 
-#NFS
-nfsclient_local_folder: "/opt/docker"
-nfsclient_nfs_connect: "nas.lan:/volume1/docker_nas" 
-# sudo mount nas.lan:/volume1/docker_nas /opt/docker
-# showmount -e 192.168.30.80
+postfix_conf:
+  compatibility_level: '3.6'
+  inet_protocols: 'ipv4'
+  myhostname: 'mail.lan'
+  myorigin: '/etc/mailname'
+  mydestination:
+  mynetworks: '127.0.0.0/8 192.168.1.0/24'
+  smtp_generic_maps: 'hash:/etc/postfix/generic'
+  relayhost: '[smtp.gmail.com]:465'
+  smtp_sasl_auth_enable:  'yes'
+  smtp_sasl_security_options: 'noanonymous'
+  smtp_sasl_password_maps: 'hash:/etc/postfix/sasl/sasl_passwd'
+  smtp_use_tls: 'yes'
+  smtp_tls_security_level: 'encrypt'
+  smtp_tls_wrappermode: 'yes'
+  smtp_tls_CAfile: '/etc/ssl/certs/ca-certificates.crt'
+  smtp_tls_session_cache_database: 'btree:${data_directory}/smtp_scache'
 
-# Docker Compose
-docker_dir: "{{ nfsclient_local_folder }}/docker_prod"
-nonfs_appdata_path: /opt/docker_static   ## to use for eg. sqllitedb and other stuff that does not run on nfs
-docker_compose_generator_output_path: "/home/deploy"
-docker_compose_generator_uid: "1000"
-docker_compose_generator_gid: "1000"
-appdata_path: "{{ docker_dir }}"
+postfix_main: |
+  compatibility_level = 3.6
+  smtp_tls_CApath=/etc/ssl/certs
+  smtp_tls_security_level = encrypt
+  smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+  myhostname = mail.lan
+  alias_maps = hash:/etc/aliases
+  alias_database = hash:/etc/aliases
+  myorigin = /etc/mailname
+  mydestination =
+  relayhost = [smtp.gmail.com]:465
+  mynetworks = 127.0.0.0/8 192.168.10.0/24 192.168.30.0/24 192.168.31.0/24
+  mailbox_size_limit = 0
+  inet_interfaces = all
+  inet_protocols = ipv4
+  smtp_generic_maps = hash:/etc/postfix/generic
+  smtp_sasl_auth_enable = yes
+  smtp_sasl_security_options = noanonymous
+  smtp_sasl_password_maps = hash:/etc/postfix/sasl/sasl_passwd
+  smtp_use_tls = yes
+  smtp_tls_wrappermode = yes
+  smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt
 
-librespeed_password: !vault |
+postfix_aliases: |
+  root@mail.test rolf+root@amfelt.dk
+  deploy@mail.test rolf+deploy@amfelt.dk
+
+postfix_generic: |
+  root@mail.lan rolf+root@amfelt.dk
+
+postfix_sasl_passwd: !vault |
           $ANSIBLE_VAULT;1.1;AES256
-          66653831353765333338303931613132613863653231396365346234616462643365373665356230
-          3461626266616538646161653631346235646633616232650a316161663933653865323538383861
-          39616532623566353738343933353232346466333861323737313336626666393233646338643265
-          3535643362626530640a336261323637613437306561366362366131373530356431643136666466
-          39626136663135333231393731313065353638343764663336366131363630346663393461663863
-          37386636336562323236636134323030613432623736626236386638326237353164363963396132
-          64643562313666633864323635636332376233303563643462303166626331366534636639666132
-          66336333623062373633343765663865646661313362653264353563653763633533626437333830
-          35373665613436646161373038623733626530366561313262383662643566656563
+          37363834323530393034643834313933613034343864363139333635333439323662396637393036
+          3166343366303964653966336461363963396430393361380a656238383938393033303630336635
+          65313066336266623036323132663135346639656230613139353031376235626337396333373230
+          6535333164363833650a633162343563313561616263363430643335333533343066336636393133
+          65306166333064303034656631653232663237616531353062616430343833376635313035383063
+          32336263633166393463646636656437383264653161306131616233626132393938343062666235
+          313432336230373032313964666332666232

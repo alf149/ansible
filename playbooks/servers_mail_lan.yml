@@ -1,0 +1,19 @@
+---
+#
+# Tasks and roles for all hosts
+#
+
+
+###
+- name: Run on "mail"
+  hosts: mail.lan
+  gather_facts: true
+  become: true
+
+  vars_files: ../group_vars/secrets.yml
+
+  roles:
+    - role: ufw
+      tags: ufw
+    - role: postfix
+      tags: postfix
