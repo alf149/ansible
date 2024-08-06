@@ -24,8 +24,8 @@ open_ports:
   - { src: 'any', dest: 'any', port: '22', proto: 'tcp', direction: in, comment: 'SSH # KVM / vagrant on localhost' }
 
   - { src: 'any', dest: 'any', port: '25', proto: 'tcp', direction: in, comment: 'MAIL' }
-  - { src: 'any', dest: 'any', port: '465', proto: 'tcp', direction: out, comment: 'SMTP SSL' }
-  - { src: 'any', dest: 'any', port: '587', proto: 'tcp', direction: out, comment: 'SMTP TLS' }
+  - { src: 'any', dest: 'any', port: '465', proto: 'tcp', direction: out, comment: 'MAIL SMTP SSL' }
+  - { src: 'any', dest: 'any', port: '587', proto: 'tcp', direction: out, comment: 'MAIL SMTP TLS' }
 
 users:
 
