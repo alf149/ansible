@@ -1,6 +1,6 @@
-@recipe-name:
-  echo '##############################################'
-  echo 'cat justfile to see whats happening'
+## Just file
+@help:
+  cat justfile
 
 ## Ansible stuff
 # optionally use --force to force reinstall all requirements
@@ -8,7 +8,7 @@ ansi_reqs:
   ansible-galaxy install -r requirements.yml --force 
 
 ansi_env:
-  echo 'Use localhost password\n '
+  echo 'Use localhost password'
   ansible-playbook playbooks/inventory_update.yml -K
 
 ansi_hw HOST *TAGS:
