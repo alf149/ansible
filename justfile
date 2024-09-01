@@ -1,21 +1,6 @@
 @recipe-name:
-  echo 'This is a recipe!'
-
-## Vagrant stuff
-v_up HOST *ARGS:
-  vagrant up {{HOST}} {{ARGS}}
-
-v_stop HOST:
-  vagrant halt {{HOST}}
-
-v_del HOST:
-  vagrant destroy {{HOST}}
-
-v_status:
-  vagrant status
-
-v_boxupd:
-  vagrant box update
+  echo '##############################################'
+  echo 'cat justfile to see whats happening'
 
 ## Ansible stuff
 # optionally use --force to force reinstall all requirements
@@ -46,3 +31,18 @@ ansi_prod_piupdate:
 ansi_test HOST *TAGS:
   ansible-playbook playbooks/servers_test.yml  --limit {{HOST}} {{TAGS}}
 
+## Vagrant stuff
+v_up HOST *ARGS:
+  vagrant up {{HOST}} {{ARGS}}
+
+v_stop HOST:
+  vagrant halt {{HOST}}
+
+v_del HOST:
+  vagrant destroy {{HOST}}
+
+v_status:
+  vagrant status
+
+v_boxupd:
+  vagrant box update
