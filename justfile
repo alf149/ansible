@@ -28,8 +28,11 @@ ansi_prod_upd_all:
 ansi_prod_piupdate:
   ansible-playbook playbooks/servers_lan.yml --tags piholeupdate --extra-vars "enable_pihole_update=true"
 
+ansi_prod_reboot:
+  ansible-playbook playbooks/servers_lan_reboot.yml
+
 ansi_test HOST *TAGS:
-  ansible-playbook playbooks/servers_test.yml  --limit {{HOST}} {{TAGS}}
+  ansible-playbook playbooks/servers_test.yml 
 
 ## Vagrant stuff
 v_up HOST *ARGS:
