@@ -91,11 +91,14 @@ postfix_main: |
   smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt
 
 postfix_aliases: |
-  root@mail.test rolf+root@amfelt.dk
-  deploy@mail.test rolf+deploy@amfelt.dk
+  root@mail.lan rolf+root@amfelt.dk
+  pve@mail.lan rolf+pve@amfelt.dk
+  pbs@mail.lan rolf+pbs@amfelt.dk
 
 postfix_generic: |
   root@mail.lan rolf+root@amfelt.dk
+  pve@mail.lan rolf+pve@amfelt.dk
+  pbs@mail.lan rolf+pbs@amfelt.dk
 
 postfix_sasl_passwd: !vault |
           $ANSIBLE_VAULT;1.1;AES256
