@@ -57,6 +57,9 @@
       tags: ufw
 # manual installed tailscale
 # manual install Cloudflare tunnels
+# curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb && sudo dpkg -i cloudflared.deb
+# sudo systemctl restart cloudflared.service
+
 
 ###
 - name: Run on "caddy01.lan"
