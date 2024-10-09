@@ -170,3 +170,12 @@ ittools.{{ intra_domain }} {
 		output file /var/log/caddy/ittools_access.log
 	}
 }
+
+# webcheck
+webcheck.{{ intra_domain }} {
+  reverse_proxy http://192.168.30.151:3300
+  import cloudflare
+  log {
+		output file /var/log/caddy/webcheck_access.log
+	}
+}
