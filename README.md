@@ -57,7 +57,18 @@ Just a playground for me, but is public.
 * reboot a host `ansible srv01.test -m shell -a 'sudo reboot -h now'`
 * get host uptime `ansible srv01.test -m shell -a 'uptime'`
 
+## extent Disk 
+Use Gui to extent disk in proxmox. 
+Run : sudo growpart -v /dev/sda 1
+run: sudo resize2fs /dev/sda 1
+df -h to show free
 
+## new docker service
+Ad local cname dns in pi-hole (wait for sync til pi2 eg. 5 min)
+Ad ufw roule allow from caddy to docker on port
+ad ufw roule allow from caddy to docker on port
+ad service to docker, ansible vars docker host
+ad service to caddyfile in role. 
 
 
 
