@@ -127,18 +127,36 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "open.test", autostart: false do |open|
     open.vm.provider "libvirt" do |v|
       v.memory = 16384
-      v.cpus = 4
+      v.cpus = 6
     end
     open.vm.box = "generic/ubuntu2204"
     open.vm.box_check_update = false
     open.vm.hostname = "open.test"
-    open.vm.network :private_network, ip: "192.168.56.40", hostname: true
-    open.vm.provision "ansible" do |ansible|
-      ansible.compatibility_mode = "2.0"
-      ansible.config_file = "ansible.cfg"
-      ansible.playbook = "provision.yml"
-    end
+    #open.vm.network :private_network, ip: "192.168.56.40", hostname: true
+    # open.vm.provision "ansible" do |ansible|
+    #   ansible.compatibility_mode = "2.0"
+    #   ansible.config_file = "ansible.cfg"
+    #   ansible.playbook = "provision.yml"
+    # end
   end
+
+  # Ubuntu desktop
+  config.vm.define "ubuntu.test", autostart: false do |ubuntu|
+    ubuntu.vm.provider "libvirt" do |v|
+      v.memory = 16384
+      v.cpus = 6
+    end
+    ubuntu.vm.box = "bento/ubuntu-24.04"
+    ubuntu.vm.box_check_update = false
+    ubuntu.vm.hostname = "ubuntu.test"
+    ubuntu.vm.network :private_network, ip: "192.168.56.50", hostname: true
+    # ubuntu.vm.provision "ansible" do |ansible|
+    #   ansible.compatibility_mode = "2.0"
+    #   ansible.config_file = "ansible.cfg"
+    #   ansible.playbook = "provision.yml"
+    # end
+  end
+  
 
   # # win11
   # config.vm.define "win11.test", autostart: false do |win11|
