@@ -3,7 +3,7 @@
 # Tasks and roles for all hosts
 #
 # ansible-vault encrypt_string 'TEKST' --name 'VAR'
-# 
+#
 - name: Run on all PROD_SERVERS
   hosts: prod_servers
   gather_facts: true
@@ -60,34 +60,9 @@
 # curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb && sudo dpkg -i cloudflared.deb
 # sudo systemctl restart cloudflared.service
 
-
 ###
-- name: Run on "caddy01.lan"
-  hosts: caddy01.lan
-  gather_facts: true
-  become: true
-
-  vars_files: ../group_vars/secrets.yml
-
-  roles:
-    - role: ufw
-      tags: ufw
-    - role: caddy
-      tags:
-        - caddy
-        - caddyfile
-
-###
-- name: Run on "speed.lan"
-  hosts: speed.lan
-  gather_facts: true
-  become: true
-
-  vars_files: ../group_vars/secrets.yml
-
-  roles:
-    - role: ufw
-      tags: ufw
+- name: Include Caddy server setup
+  ansible.builtin.import_playbook: servers_caddy_lan.yml
 
 ###
 - name: Run on "docker01"
@@ -219,15 +194,3 @@
 - name: Include Mail server setup
   ansible.builtin.import_playbook: servers_mail_lan.yml
 
-# - name: Run on "mail"
-#   hosts: mail.lan
-#   gather_facts: true
-#   become: true
-
-#   vars_files: ../group_vars/secrets.yml
-
-#   roles:
-#     - role: ufw
-#       tags: ufw
-#     - role: postfix
-#       tags: postfix
