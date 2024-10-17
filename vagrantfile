@@ -95,16 +95,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
   
   # ubt
-  config.vm.define "ubt.test", autostart: false do |ubt|
-    ubt.vm.provider "libvirt" do |v|
-      v.memory = 4096
+  config.vm.define "ubt01.test", autostart: false do |ubt01|
+    ubt01.vm.provider "libvirt" do |v|
+      v.memory = 8192
       v.cpus = 4
     end
-    ubt.vm.box = "generic/ubuntu2204"
-    ubt.vm.box_check_update = false
-    ubt.vm.hostname = "ubt.test"
-    ubt.vm.network :private_network, ip: "192.168.56.30", hostname: true
-    ubt.vm.provision "ansible" do |ansible|
+    ubt01.vm.box = "alvistack/ubuntu-24.04"
+    ubt01.vm.box_check_update = false
+    ubt01.vm.hostname = "ubt01.test"
+    ubt01.vm.network :private_network, ip: "192.168.56.30", hostname: true
+    ubt01.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.config_file = "ansible.cfg"
       ansible.playbook = "provision.yml"
@@ -150,11 +150,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ubuntu.vm.box_check_update = false
     ubuntu.vm.hostname = "ubuntu.test"
     ubuntu.vm.network :private_network, ip: "192.168.56.50", hostname: true
-    # ubuntu.vm.provision "ansible" do |ansible|
-    #   ansible.compatibility_mode = "2.0"
-    #   ansible.config_file = "ansible.cfg"
-    #   ansible.playbook = "provision.yml"
-    # end
+    ubuntu.vm.provision "ansible" do |ansible|
+      ansible.compatibility_mode = "2.0"
+      ansible.config_file = "ansible.cfg"
+      ansible.playbook = "provision.yml"
+    end
   end
   
 

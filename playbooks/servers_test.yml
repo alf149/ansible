@@ -126,8 +126,8 @@
   vars_files: ../group_vars/secrets.yml
 
 ###
-- name: Run on "ubt.test"
-  hosts: ubt.test
+- name: Run on "ubt01.test"
+  hosts: ubt01.test
   gather_facts: true
   become: true
 
@@ -257,38 +257,38 @@
           changed_when: my_visualstudio.rc != 0
           when: not stat_visualstudio.stat.exists
 
-    - name: Install | Git, ssh keys to use with git
-      tags: dotfiles
-      become_user: deploy
-      when: dotfiles | bool
-      block:
-        - name: User | copy ssh key to use for Git to user.
-          ansible.builtin.copy:
-            src: ~/.ssh/git_deploy
-            dest: ~/.ssh/git_deploy
-            owner: deploy
-            mode: '600'
-        - name: User | copy ssh key to use for Git to user.
-          become_user: deploy
-          ansible.builtin.copy:
-            src: ~/.ssh/git_deploy.pub
-            dest: ~/.ssh/git_deploy.pub
-            owner: deploy
-            mode: '644'
-        - name: Clone a dotfiles repo with separate git directory # noqa: latest
-          become: false
-          ansible.builtin.git:
-            repo: git@github.com:alf149/dotfiles.git
-            dest: ~/git/dotfiles
-            accept_hostkey: true
-            clone: true
-            update: true
-            remote: main
-            force: true
-            key_file: /home/deploy/.ssh/git_deploy
-          tags:
-            - dotfiles
-            - git
+    # - name: Install | Git, ssh keys to use with git
+    #   tags: dotfiles
+    #   become_user: deploy
+    #   when: dotfiles | bool
+    #   block:
+    #     - name: User | copy ssh key to use for Git to user.
+    #       ansible.builtin.copy:
+    #         src: ~/.ssh/git_deploy
+    #         dest: ~/.ssh/git_deploy
+    #         owner: deploy
+    #         mode: '600'
+    #     - name: User | copy ssh key to use for Git to user.
+    #       become_user: deploy
+    #       ansible.builtin.copy:
+    #         src: ~/.ssh/git_deploy.pub
+    #         dest: ~/.ssh/git_deploy.pub
+    #         owner: deploy
+    #         mode: '644'
+    #     - name: Clone a dotfiles repo with separate git directory # noqa: latest
+    #       become: false
+    #       ansible.builtin.git:
+    #         repo: git@github.com:alf149/dotfiles.git
+    #         dest: ~/git/dotfiles
+    #         accept_hostkey: true
+    #         clone: true
+    #         update: true
+    #         remote: main
+    #         force: true
+    #         key_file: /home/deploy/.ssh/git_deploy
+    #       tags:
+    #         - dotfiles
+    #         - git
 
     - name: Install | Tmux and tpm
       tags: tmux
@@ -310,7 +310,7 @@
       become: true
       tags: vpn
       when: vpn | bool
-      ## https://www.citrix.com/downloads/workspace-app/linux/workspace-app-for-linux-latest.html
+      ## https://its.gmu.edu/wp-content/uploads/cisco-secure-client-linux64-5.1.3.62-predeploy-k9.tar.gz
       ansible.builtin.package:
         name:
           - openconnect
@@ -409,11 +409,11 @@
       ansible.builtin.package:
         name: stow
         state: present
-    - name: Setup Stow and Dotfiles from Git Part2
-      tags: stow
-      become_user: deploy
-      ansible.builtin.command:
-        chdir: ~/git/dotfiles
-        cmd: stow -t ~ -R */ --ignore='.*\.sh'
-      register: my_stow
-      changed_when: my_stow.rc != 0
+    # - name: Setup Stow and Dotfiles from Git Part2
+    #   tags: stow
+    #   become_user: deploy
+    #   ansible.builtin.command:
+    #     chdir: ~/git/dotfiles
+    #     cmd: stow -t ~ -R */ --ignore='.*\.sh'
+    #   register: my_stow
+    #   changed_when: my_stow.rc != 0
