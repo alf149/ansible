@@ -52,3 +52,11 @@ v_status:
 
 v_boxupd:
   vagrant box update
+
+## Other
+
+hosts:
+  batcat /etc/hosts
+
+sshconf:
+  batcat ~/.ssh/config
