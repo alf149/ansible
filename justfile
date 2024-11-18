@@ -56,7 +56,7 @@ v_boxupd:
 ## Other
 
 hosts:
-  batcat /etc/hosts
+  batcat /etc/hosts | grep lan
 
 sshconf:
   batcat ~/.ssh/config
