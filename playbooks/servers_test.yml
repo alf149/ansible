@@ -11,8 +11,7 @@
       tags: system
     - role: geerlingguy.security
       tags: security
-    - role: geerlingguy.ntp
-      tags: ntp
+
   tasks:
     - name: Essential-debian | Update apt packages cache (Debian and Ubuntu)
       ansible.builtin.apt:
@@ -417,3 +416,47 @@
     #     cmd: stow -t ~ -R */ --ignore='.*\.sh'
     #   register: my_stow
     #   changed_when: my_stow.rc != 0
+
+###
+- name: Run on "ubuntu.test"
+  hosts: ubuntu.test
+  gather_facts: true
+  become: true
+
+  vars_files: ../group_vars/secrets.yml
+
+  roles:
+    - role: ufw
+      tags: ufw
+
+  tasks:
+    - name: Install | Ubuntu Desktop
+      tags: desktop
+      become: true
+      when: desktop | bool
+      block:
+        - name: Install extra packages desktop
+          ansible.builtin.package:
+            name: "{{ extra_packages_desktop }}"
+            state: present
+          when: enable_extra_packages_desktop | d(false) | bool
+        - name: Check if a reboot is required on Ubuntu
+          when: ansible_facts['os_family'] == 'Debian'
+          ansible.builtin.stat:
+            path: /var/run/reboot-required
+          register: ubuntu_reboot_required
+        - name: Reboot Debian/Ubuntu if required
+          when: ubuntu_reboot_required.stat.exists | default(false)
+          ansible.builtin.reboot:
+            reboot_timeout: 600
+
+    - name: Install | VPN for Work
+      become: true
+      tags: vpn
+      when: vpn | bool
+      ## https://its.gmu.edu/wp-content/uploads/cisco-secure-client-linux64-5.1.3.62-predeploy-k9.tar.gz
+      ansible.builtin.package:
+        name:
+          - openconnect
+          - network-manager-openconnect
+          - network-manager-openconnect-gnome
