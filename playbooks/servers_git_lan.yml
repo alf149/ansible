@@ -1,0 +1,23 @@
+---
+#
+# Tasks and roles for all hosts
+#
+
+
+###
+- name: Run on "git.lan"
+  hosts: git.lan
+  gather_facts: true
+  become: true
+
+  vars_files: ../group_vars/secrets.yml
+
+  roles:
+    - role: ufw
+      tags: ufw
+    - role: geerlingguy.pip
+      tags: containers
+    - role: geerlingguy.docker
+      tags: containers
+    - role: ironicbadger.docker_compose_generator
+      tags: docker

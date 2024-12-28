@@ -17,6 +17,9 @@ ansi_hw HOST *TAGS:
 ansi_prod HOST *TAGS:
   ansible-playbook playbooks/servers_lan.yml  --limit {{HOST}} {{TAGS}}
 
+ansi_prod_first HOST:
+  ansible-playbook playbooks/servers_lan.yml  --limit {{HOST}} -i hosts_first.ini -t system
+
 ansi_prod_upd HOST:
   ansible-playbook playbooks/servers_lan.yml  --limit {{HOST}} --tags os_update --extra-vars "enable_os_update=true"
 

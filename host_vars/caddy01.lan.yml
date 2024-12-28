@@ -29,6 +29,8 @@ open_ports:
   - { src: '192.168.31.5', dest: '192.168.30.30', port: '8006', proto: 'tcp', direction: out, comment: 'Caddy to PVE' }
   - { src: '192.168.31.5', dest: '192.168.30.31', port: '8006', proto: 'tcp', direction: out, comment: 'Caddy to PVE1' }
   - { src: '192.168.31.5', dest: '192.168.30.200', port: '8007', proto: 'tcp', direction: out, comment: 'Caddy to PBS' }
+  - { src: '192.168.31.5', dest: '192.168.30.104', port: '3000', proto: 'tcp', direction: out, comment: 'Caddy to GIT/forgejo' }
+  - { src: '192.168.31.5', dest: '192.168.30.104', port: '2222', proto: 'tcp', direction: out, comment: 'Caddy to GIT/forgejo' }
 
   - { src: '192.168.10.0/24', dest: any, port: '443', proto: 'tcp', direction: in, comment: 'HTTPS # Caddy from secure' }
   - { src: '192.168.10.0/24', dest: any, port: '443', proto: 'udp', direction: in, comment: 'HTTPS/3 # Caddy from secure' }

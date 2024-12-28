@@ -1,181 +1,193 @@
-## Caddyfile                                                                                                                                                                                                       
-                                                                                                                                                                                                                   
-(cloudflare) {                                                                                                                                                                                                     
-  tls {                                                                                                                                                                                                      
-    dns cloudflare {{ cloudflare_api_token }}                                                                                                                                 
-  }                                                                                                                                                                                                          
-}                                                                                                                                                                                                                  
-                                                                                                                                                                                                                   
-{                                                                                                                                                                                                                  
-  log default {                                                                                                                                                                                              
-    output file /var/log/caddy/access.log {                                                                                                                                                            
-      roll_size 10mb                                                                                                                                                                             
-      roll_keep 20                                                                                                                                                                               
-      roll_keep_for 720h                                                                                                                                                                         
-    }                                                                                                                                                                                                  
-  }
-}                                                                                                                                                                                                                  
+## Caddyfile
+
+
+# Config
+
+(cloudflare) {
+        tls {
+                dns cloudflare BNLeumLM8vwjq1CyEpMV9vSPiRIBYVLy0PgtkoTh
+        }
+}
+
+(log) {
+        output file /var/log/caddy/error.log
+        format console
+        level ERROR
+}
 
 (headers) {
-  header {
-    Permissions-Policy interest-cohort=()
-    Strict-Transport-Security "max-age=31536000; includeSubdomains"
-    X-XSS-Protection "1; mode=block"
-    X-Content-Type-Options "nosniff"
-    X-Robots-Tag noindex, nofollow
-    X-Frame-Options "SAMEORIGIN"
-    Referrer-Policy "same-origin"
-    Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https: android-webview-video-poster:; font-src 'self' data: https:; media-src 'self' data: https: blob:; "
-    Permissions-Policy "geolocation=(self 'https://amfelt.dk'), microphone=()"
-  }
-}
-
-# intra_domain
-{{ intra_domain }} {
-  reverse_proxy http://192.168.30.151:3000
-  import cloudflare
-  log {
-		output file /var/log/caddy/intra_access.log
-	}
-} 
-
-# www.intra.amfelt.dk 
-www.{{ intra_domain }} {
-  reverse_proxy http://192.168.30.151:8001
-  import cloudflare
-  import headers
-  log {
-		output file /var/log/caddy/www_access.log
-	}
-}
-
-# pihole dns
-dns.{{ intra_domain }} {
-  redir / /admin
-  reverse_proxy http://192.168.30.101
-  import cloudflare
-  log {
-		output file /var/log/caddy/dns_access.log
-	}
-}
-
-# pihole pi1
-pi1.{{ intra_domain }} {
-  redir / /admin
-  reverse_proxy http://192.168.30.101
-  import cloudflare
-  log {
-		output file /var/log/caddy/dns_access.log
-	}
-}
-
-# pihole pi2
-pi2.{{ intra_domain }} {
-  redir / /admin
-  reverse_proxy http://192.168.30.102
-  import cloudflare
-  log {
-		output file /var/log/caddy/dns_access.log
-	}
-}
-
-# NAS at lan
-nas.{{ intra_domain }} {
-  reverse_proxy https://192.168.30.80:5001 {
-    transport http {
-      tls_insecure_skip_verify
-    }
-  }
-  import cloudflare
-  log {
-		output file /var/log/caddy/nas_access.log
-	}
-}
-
-# proxmox pve
-pve.{{ intra_domain }} {
-  reverse_proxy https://192.168.30.30:8006 {
-    transport http {
-      tls_insecure_skip_verify
-    }
-  }
-  import cloudflare
-  log {
-		output file /var/log/caddy/pve_access.log
-	}
-}
-
-# PBS at lan
-PBS.{{ intra_domain }} {
-  reverse_proxy https://192.168.30.200:8007 {
-    transport http {
-      tls_insecure_skip_verify
-    }
-  }
-  import cloudflare
-  log {
-		output file /var/log/caddy/pbs_access.log
-	}
-}
-
-# UDR at lan
-udr.{{ intra_domain }} {
-  reverse_proxy https://192.168.1.1 {
-    transport http {
-      tls_insecure_skip_verify
-    }
-  }
-  import cloudflare
-  log {
-		output file /var/log/caddy/udr_access.log
-	}
-}
-
-# UpTime-Kuma at lan
-uptime.{{ intra_domain }} {
-  reverse_proxy http://192.168.30.151:3001
-  import cloudflare
-  log {
-		output file /var/log/caddy/uptime_access.log
-	}
-}
-
-# SPEED at lan
-speed.{{ intra_domain }} {
-  reverse_proxy http://192.168.30.151:4000 {
-             request_buffers 35MiB
-             response_buffers 35MiB
-             flush_interval -1
+        header {
+                Permissions-Policy interest-cohort=()
+                Strict-Transport-Security "max-age=31536000; includeSubdomains"
+                X-XSS-Protection "1; mode=block"
+                X-Content-Type-Options "nosniff"
+                X-Robots-Tag noindex, nofollow
+                X-Frame-Options "SAMEORIGIN"
+                Referrer-Policy "same-origin"
+                Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https: android-webview-video-poster:; font-src 'self' data: https:; media-src 'self' data: https: blob:; "
+                Permissions-Policy "geolocation=(self 'https://amfelt.dk'), microphone=()"
         }
-  import cloudflare
-  log {
-		output file /var/log/caddy/speed_access.log
-	}
 }
 
-# PDF-Tools at lan
-pdf.{{ intra_domain }} {
-  reverse_proxy http://192.168.30.151:3100
-  import cloudflare
-  log {
-		output file /var/log/caddy/pdf_access.log
-	}
+# Site Block
+
+## intra_domain
+intra.amfelt.dk {
+        reverse_proxy http://192.168.30.151:3000
+        import cloudflare
+        log {
+                output file /var/log/caddy/intra_access.log
+        }
 }
 
-# IT-Tools at lan
-ittools.{{ intra_domain }} {
-  reverse_proxy http://192.168.30.151:3200
-  import cloudflare
-  log {
-		output file /var/log/caddy/ittools_access.log
-	}
+## www.intra.amfelt.dk
+www.intra.amfelt.dk {
+        reverse_proxy http://192.168.30.151:8001
+        import cloudflare
+        import headers
+        log {
+                output file /var/log/caddy/www_access.log
+        }
 }
 
-# webcheck
-webcheck.{{ intra_domain }} {
-  reverse_proxy http://192.168.30.151:3300
-  import cloudflare
-  log {
-		output file /var/log/caddy/webcheck_access.log
-	}
+## pihole dns
+dns.intra.amfelt.dk {
+        redir / /admin
+        reverse_proxy http://192.168.30.101
+        import cloudflare
+        log {
+                output file /var/log/caddy/dns_access.log
+        }
+}
+
+## pihole pi1
+pi1.intra.amfelt.dk {
+        redir / /admin
+        reverse_proxy http://192.168.30.101
+        import cloudflare
+        log {
+                output file /var/log/caddy/dns_access.log
+        }
+}
+
+## pihole pi2
+pi2.intra.amfelt.dk {
+        redir / /admin
+        reverse_proxy http://192.168.30.102
+        import cloudflare
+        log {
+                output file /var/log/caddy/dns_access.log
+        }
+}
+
+## NAS at lan
+nas.intra.amfelt.dk {
+        reverse_proxy https://192.168.30.80:5001 {
+                transport http {
+                        tls_insecure_skip_verify
+                }
+        }
+        import cloudflare
+        log {
+                output file /var/log/caddy/nas_access.log
+        }
+}
+
+## proxmox pve
+pve.intra.amfelt.dk {
+        reverse_proxy https://192.168.30.30:8006 {
+                transport http {
+                        tls_insecure_skip_verify
+                }
+        }
+        import cloudflare
+        log {
+                output file /var/log/caddy/pve_access.log
+        }
+}
+
+## PBS at lan
+PBS.intra.amfelt.dk {
+        reverse_proxy https://192.168.30.200:8007 {
+                transport http {
+                        tls_insecure_skip_verify
+                }
+        }
+        import cloudflare
+        log {
+                output file /var/log/caddy/pbs_access.log
+        }
+}
+
+## UDR at lan
+udr.intra.amfelt.dk {
+        reverse_proxy https://192.168.1.1 {
+                transport http {
+                        tls_insecure_skip_verify
+                }
+        }
+        import cloudflare
+        log {
+                output file /var/log/caddy/udr_access.log
+        }
+}
+
+## Uptime-Kuma at lan
+uptime.intra.amfelt.dk {
+        reverse_proxy http://192.168.30.151:3001
+        import cloudflare
+        log {
+                output file /var/log/caddy/uptime_access.log
+        }
+}
+
+## SPEED at lan
+speed.intra.amfelt.dk {
+        reverse_proxy http://192.168.30.151:4000 {
+                request_buffers 35MiB
+                response_buffers 35MiB
+                flush_interval -1
+        }
+        import cloudflare
+        log {
+                output file /var/log/caddy/speed_access.log
+        }
+}
+
+## PDF-Tools at lan
+pdf.intra.amfelt.dk {
+        reverse_proxy http://192.168.30.151:3100
+        import cloudflare
+        log {
+                output file /var/log/caddy/pdf_access.log
+        }
+}
+
+## IT-Tools at lan
+ittools.intra.amfelt.dk {
+        reverse_proxy http://192.168.30.151:3200
+        import cloudflare
+        log {
+                output file /var/log/caddy/ittools_access.log
+        }
+}
+
+## webcheck
+webcheck.intra.amfelt.dk {
+        reverse_proxy http://192.168.30.151:3300
+        import cloudflare
+        log {
+                output file /var/log/caddy/webcheck_access.log
+        }
+}
+
+## GIT
+## lock at top to se how ssh is handled
+
+git.intra.amfelt.dk {
+        reverse_proxy http://192.168.30.104:3000
+        import cloudflare
+        log {
+                output file /var/log/caddy/git_access.log
+        }
 }

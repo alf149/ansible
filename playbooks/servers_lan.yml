@@ -16,10 +16,15 @@
       tags: system
     - role: geerlingguy.security
       tags: security
-    - role: geerlingguy.ntp
-      tags: ntp
+    # - role: geerlingguy.ntp
+    #   tags: ntp
 
   tasks:
+    - name: Set timezone to Europe/Copenhagen
+      become: true
+      community.general.timezone:
+        name: Europe/Copenhagen
+
     - name: Upgrade apt packages (Debian and Ubuntu)
       when: enable_os_update
       tags: os_update
@@ -60,7 +65,15 @@
 # curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb && sudo dpkg -i cloudflared.deb
 # sudo systemctl restart cloudflared.service
 
-###
+### MAIL
+- name: Include Mail server setup
+  ansible.builtin.import_playbook: servers_mail_lan.yml
+
+### GIT
+- name: Include Git server setup
+  ansible.builtin.import_playbook: servers_git_lan.yml
+
+### CADDY
 - name: Include Caddy server setup
   ansible.builtin.import_playbook: servers_caddy_lan.yml
 
@@ -189,8 +202,3 @@
       ansible.builtin.command: "/usr/local/bin/pihole restartdns reload"
       when: enable_pihole_update
       tags: piholeupdate
-
-###
-- name: Include Mail server setup
-  ansible.builtin.import_playbook: servers_mail_lan.yml
-
