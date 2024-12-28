@@ -3,12 +3,13 @@
 ## Missing SSH 
 # Eks https://caddy.community/t/l4-module-ssh-reverse-proxy-example/18371/2
 # https://caddy.community/t/difference-between-caddy-l4-and-sslh/25382/4
+# https://github.com/mholt/caddy-l4/pull/217
 
 # Config
 
 (cloudflare) {
         tls {
-                dns cloudflare BNLeumLM8vwjq1CyEpMV9vSPiRIBYVLy0PgtkoTh
+                dns cloudflare {{ cloudflare_api_token }}  
         }
 }
 
