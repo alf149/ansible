@@ -12,6 +12,9 @@
 - name: Configure
   ansible.builtin.import_tasks: configure.yml
 
+- name: Fix dropped ssh sessions
+  ansible.builtin.import_tasks: fix-dropped-ssh-sessions.yml
+
 - name: Set logging
   community.general.ufw:
     logging: 'on'
