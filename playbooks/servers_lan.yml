@@ -1,9 +1,5 @@
 ---
-#
-# Tasks and roles for all hosts
-#
-# ansible-vault encrypt_string 'TEKST' --name 'VAR'
-#
+### 
 - name: Run on all PROD_SERVERS
   hosts: prod_servers
   gather_facts: true
@@ -16,8 +12,6 @@
       tags: system
     - role: geerlingguy.security
       tags: security
-    # - role: geerlingguy.ntp
-    #   tags: ntp
 
   tasks:
     - name: Set timezone to Europe/Copenhagen
@@ -49,21 +43,9 @@
             msg: "Reboot initiated by Ansible for kernel updates"
           when: reboot_required_file.stat.exists
 
-###
-- name: Run on "cloud01.lan"
-  hosts: cloud01.lan
-  gather_facts: true
-  become: true
-
-  vars_files: ../group_vars/secrets.yml
-
-  roles:
-    - role: ufw
-      tags: ufw
-# manual installed tailscale
-# manual install Cloudflare tunnels
-# curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb && sudo dpkg -i cloudflared.deb
-# sudo systemctl restart cloudflared.service
+### Cloud01
+- name: Include Mail server setup
+  ansible.builtin.import_playbook: servers_cloud01.lan.yml
 
 ### MAIL
 - name: Include Mail server setup
@@ -77,87 +59,9 @@
 - name: Include Caddy server setup
   ansible.builtin.import_playbook: servers_caddy_lan.yml
 
-###
-- name: Run on "docker01"
-  hosts: docker01.lan
-  gather_facts: true
-  become: true
-
-  vars_files: ../group_vars/secrets.yml
-
-  roles:
-    - role: geerlingguy.pip
-      tags: containers
-    - role: geerlingguy.docker
-      tags: containers
-    - role: ufw
-      tags: ufw
-    - role: nfsclient
-      tags: nfs
-    - role: ironicbadger.docker_compose_generator
-      tags: docker
-
-  tasks:
-    - name: Check if nonfs folder exits exists
-      tags: docker
-      ansible.builtin.stat:
-        path: "{{ nonfs_appdata_path }}"
-      register: stat_nonfs
-    - name: Create a directory if it does not exist
-      tags: docker
-      ansible.builtin.file:
-        path: "{{ nonfs_appdata_path }}"
-        state: directory
-        mode: '0755'
-      when: not stat_nonfs.stat.exists
-
-    - name: Check if  nfs/appdata_path/homepage/config folder exits exists
-      tags: docker
-      ansible.builtin.stat:
-        path: "{{ appdata_path }}/homepage/config"
-      register: stat_homepage
-
-    - name: Create a directory if it does not exist
-      tags: docker
-      ansible.builtin.file:
-        path: "{{ appdata_path }}/homepage/config"
-        state: directory
-        mode: '0755'
-      when: not stat_homepage.stat.exists
-
-    - name: Docker | backup uptime-kuma
-      become_user: deploy
-      changed_when: false
-      tags: uptimebackup
-      ansible.builtin.command: 'rsync -rvz /opt/docker_static/uptimekuma /opt/docker/'
-      # rsync -rvz /opt/docker_static/uptimekuma /opt/docker/
-      # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/cron_module.html#examples
-
-    # - name: Synchronize two directories on one remote host.
-    #   ansible.posix.synchronize:
-    #     src: "{{ nonfs_appdata_path }}/uptimekuma"
-    #     dest: "{{ nfsclient_local_folder }}/uptimekuma"
-    #   delegate_to: "{{ docker01.lan }}"
-
-    - name: Docker | docker compose installed?
-      tags: docker
-      ansible.builtin.command: which docker
-      ignore_errors: true
-      register: dcp_installed
-      changed_when: dcp_installed.rc != 0
-    - name: Docker | container update procedure
-      tags: docker
-      when: dcp_installed.rc == 0
-      block:
-        - name: Docker | pull containers
-          changed_when: false
-          ansible.builtin.command: docker compose pull
-        - name: Docker | start updated containers
-          changed_when: false
-          ansible.builtin.command: docker compose up -d
-        - name: Docker | cleanup old containers
-          changed_when: false
-          ansible.builtin.command: docker system prune --all -f
+### CADDY
+- name: Include docker01 server setup
+  ansible.builtin.import_playbook: servers_docker01_lan.yml
 
 ###
 - name: Run on "pi1.lan and pi2.lan"
