@@ -1,9 +1,4 @@
 ---
-#
-# Tasks and roles for all hosts
-#
-
-
 ###
 - name: Run on "caddy01.lan"
   hosts: caddy01.lan

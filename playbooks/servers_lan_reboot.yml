@@ -1,66 +1,49 @@
 ---
-#
-# Tasks and roles for all hosts
-#
+###
+- name: Run on prod_servers but not HW servers
+  hosts: prod_servers
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Check if a reboot is required on Ubuntu
+      when: ansible_facts['os_family'] == 'Debian'
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+      register: ubuntu_reboot_required
 
-# - name: Run on all PROD_SERVERS
-#   hosts: pve1.lan:!pve.lan
+    - name: Reboot Debian/Ubuntu if required
+      when: ubuntu_reboot_required.stat.exists | default(false)
+      ansible.builtin.reboot:
+        reboot_timeout: 600
+
+# - name: Run on pi1.lan
+#   hosts: pi1.lan
 #   become: true
+#   gather_facts: false
 #   tasks:
-#     - name: Reboot systems
-#       ansible.builtin.reboot:
+#     - name: Check if a reboot is required on Ubuntu
+#       when: ansible_facts['os_family'] == 'Debian'
+#       ansible.builtin.stat:
+#         path: /var/run/reboot-required
+#       register: ubuntu_reboot_required
 
-# - name: Run on all PROD_SERVERS
-#   hosts: pve.lan:!pve1.lan
+#     - name: Reboot Debian/Ubuntu if required
+#       when: ubuntu_reboot_required.stat.exists | default(false)
+#       ansible.builtin.reboot:
+#         reboot_timeout: 600
+
+# - name: Run on pi2.lan
+#   hosts: pi2.lan
 #   become: true
+#   gather_facts: false
 #   tasks:
-#     - name: Reboot systems
+#     - name: Check if a reboot is required on Ubuntu
+#       when: ansible_facts['os_family'] == 'Debian'
+#       ansible.builtin.stat:
+#         path: /var/run/reboot-required
+#       register: ubuntu_reboot_required
+
+#     - name: Reboot Debian/Ubuntu if required
+#       when: ubuntu_reboot_required.stat.exists | default(false)
 #       ansible.builtin.reboot:
-
-- name: Run on docker01.lan
-  hosts: cloud01.lan, cloud02.lan, docker01.lan, docker02.lan
-  become: true
-  gather_facts: false
-  tasks:
-    - name: Check if a reboot is required on Ubuntu
-      when: ansible_facts['os_family'] == 'Debian'
-      ansible.builtin.stat:
-        path: /var/run/reboot-required
-      register: ubuntu_reboot_required
-
-    - name: Reboot Debian/Ubuntu if required
-      when: ubuntu_reboot_required.stat.exists | default(false)
-      ansible.builtin.reboot:
-        reboot_timeout: 600
-
-- name: Run on pi1.lan
-  hosts: pi1.lan
-  become: true
-  gather_facts: false
-  tasks:
-    - name: Check if a reboot is required on Ubuntu
-      when: ansible_facts['os_family'] == 'Debian'
-      ansible.builtin.stat:
-        path: /var/run/reboot-required
-      register: ubuntu_reboot_required
-
-    - name: Reboot Debian/Ubuntu if required
-      when: ubuntu_reboot_required.stat.exists | default(false)
-      ansible.builtin.reboot:
-        reboot_timeout: 600
-
-- name: Run on pi2.lan
-  hosts: pi2.lan
-  become: true
-  gather_facts: false
-  tasks:
-    - name: Check if a reboot is required on Ubuntu
-      when: ansible_facts['os_family'] == 'Debian'
-      ansible.builtin.stat:
-        path: /var/run/reboot-required
-      register: ubuntu_reboot_required
-
-    - name: Reboot Debian/Ubuntu if required
-      when: ubuntu_reboot_required.stat.exists | default(false)
-      ansible.builtin.reboot:
-        reboot_timeout: 600
+#         reboot_timeout: 600

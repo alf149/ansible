@@ -1,10 +1,10 @@
 ---
 roles:
   - src: geerlingguy.security
-  - src: geerlingguy.ntp
+#  - src: geerlingguy.ntp
   - src: geerlingguy.pip
   - src: geerlingguy.docker
-  - src: geerlingguy.clamav
-  - src: geerlingguy.postfix
+#  - src: geerlingguy.clamav
+#  - src: geerlingguy.postfix
   - src: ironicbadger.docker_compose_generator 
-  - src: ironicbadger.proxmox_nag_removal
+#  - src: ironicbadger.proxmox_nag_removal

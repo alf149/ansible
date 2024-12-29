@@ -1,9 +1,4 @@
 ---
-#
-# Tasks and roles for all hosts
-#
-
-
 ###
 - name: Run on "mail"
   hosts: mail.lan
