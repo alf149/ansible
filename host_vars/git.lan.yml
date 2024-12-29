@@ -1,5 +1,6 @@
 enable_os_update: true
 enable_extra_packages: true
+extra_packages_nettools: false
 
 ## Firewall 
 enable_ufw: true

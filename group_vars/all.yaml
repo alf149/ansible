@@ -27,14 +27,14 @@ docker_users: [ 'deploy' ]
 
 extra_packages: 
   - curl
+  - wget
   - git
   - nano
-  - micro
-  - apt-transport-https
-  - ca-certificates
   - python3
   - python3-pip
-
+  - apt-transport-https
+  - ca-certificates
+  
 extra_packages_nettools: 
   - dnsutils
   - net-tools

@@ -1,18 +1,9 @@
 enable_os_update: true
-
-extra_packages: 
-  - curl
-  - wget
-  - git
-  - nano
-  - python3
-  - python3-pip
-  - apt-transport-https
-  - ca-certificates
+enable_extra_packages: true
+extra_packages_nettools: false
 
 ## Firewall 
 enable_ufw: true
-resetufw: true
 enable_ufw_deny_out: true
 
 open_ports:

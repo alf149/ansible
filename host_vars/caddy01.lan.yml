@@ -1,7 +1,5 @@
 enable_os_update: true
 enable_extra_packages: true
-enable_auditd: true
-enable_rkhunter: true
 
 ## Firewall 
 enable_ufw: true
