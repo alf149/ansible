@@ -1,0 +1,40 @@
+---
+- name: Ansible Variable Example Playbook
+  hosts: all
+  gather_facts: true
+
+  tasks:
+
+    - name: Display the variable data type
+      ansible.builtin.debug:
+        msg:
+          - " ##################### CPU INFO on HOST ########################### "
+          - " CPU processor cores: {{ ansible_processor_cores }} "
+          - " CPU processor count: {{ ansible_processor_count }} "
+          - " CPU processor threads per core: {{ ansible_processor_threads_per_core }} "
+          - " CPU processor vcpus: {{ ansible_processor_vcpus }} "
+          - " "
+          - " ##################### MEMORY INFO on HOST ######################## "
+          - " Total memory: {{ ansible_memtotal_mb }} "
+          - " Total free memory: {{ ansible_memfree_mb }} "
+          - " "
+          - " ##################### IP INFO on HOST ######################## "
+          - " IPV4 IP adr.: {{ ansible_all_ipv4_addresses }} "
+          - " IPV& IP adr.: {{ ansible_all_ipv6_addresses }} "
+
+    # - name: Testing when clause
+    #   ansible.builtin.debug:
+    #     msg:
+    #       - " TEST OK "
+    #   when:
+    #     - ansible_processor_vcpus >= 2
+    #     - ansible_memtotal_mb > 900
+
+    # - name: Accessing the Second Element of the list
+    #   ansible.builtin.debug:
+    #     msg: "{{ ansible_all_ipv4_addresses[1] }}"
+
+    # - name: Show running services
+    #   ansible.builtin.debug:
+    #     msg: "{{ ansible_facts.services | dict2items
+    #       | selectattr('value.state', '==', 'running') | map(attribute='key') }}"

@@ -1,0 +1,86 @@
+---
+
+- name: Network Getting Started First Playbook
+  gather_facts: true
+  become: true
+  hosts: all
+
+  # vars_files:
+  #   - secrets.yml
+  vars:
+
+    users:
+    - name: deploy
+      comment: System Administration
+      password: !vault |
+              $ANSIBLE_VAULT;1.1;AES256
+              66663364353336613839376565636464393637636434636437333631623163363632623131393063
+              3031376561303431663834366337373833313935383466620a663463366436353564343866353031
+              64333631323735313438356635353966373063303863623237626265336565393661343566333635
+              3531643131306531340a613762333239313636366432653436373566666363656231383334643836
+              3163
+
+  tasks:
+    - name: "Set variables"
+      ansible.builtin.set_fact:
+        user_name: "admin"
+        user_password: !vault |
+              $ANSIBLE_VAULT;1.1;AES256
+              66663364353336613839376565636464393637636434636437333631623163363632623131393063
+              3031376561303431663834366337373833313935383466620a663463366436353564343866353031
+              64333631323735313438356635353966373063303863623237626265336565393661343566333635
+              3531643131306531340a613762333239313636366432653436373566666363656231383334643836
+              3163
+
+    - name: Output
+      ansible.builtin.debug:
+        msg: "The user '{{ user_name }}' has a password '{{ user_password }}'"
+
+
+
+  # - name: Get services facts
+    #   ansible.builtin.service_facts:
+
+    # - name: Loop over all services and print name
+    #   ansible.builtin.debug:
+    #     msg: "{{ item }}"
+    #   with_items: "{{ ansible_facts.services }}"
+    #   when:
+    #     - ansible_facts.services[item].state == 'running'
+
+    # - name: Gather facts on listening ports
+    #   community.general.listen_ports_facts:
+
+    # - name: List all TCP ports
+    #   ansible.builtin.debug:
+    #     msg: "{{ ansible_facts.tcp_listen }}"
+
+    # - name: List all UDP ports
+    #   ansible.builtin.debug:
+    #     msg: "{{ ansible_facts.udp_listen }}"
+    # - debug: var=inventory_hostname
+    # - debug: var=ansible_hostname
+    # - debug: var=ansible_distribution
+    # - debug: var=ansible_distribution_file_variety
+    # - debug: var=ansible_os_family
+    # - debug: var=ansible_distribution_major_version
+    # # - debug: var=ansible_dns
+    # - debug: var=ansible_domain
+    # - debug: var=ansible_eth0
+    # - debug: var=ansible_all_ipv4_addresses
+    # - debug: var=ansible_default_ipv4
+    # - debug: var=ansible_fqdn
+    # - debug: var=ansible_selinux
+    # - debug: var=ansible_ssh_host_key_ecdsa_public
+    # - debug: var=ansible_ssh_host_key_ed25519_public
+    # - debug: var=ansible_ssh_host_key_rsa_public
+    # - debug: var=ansible_date_time
+    # - debug: var=ansible_date_time.iso8601
+    # - debug: var=ansible_distribution
+    # - debug: var=ansible_distribution_release
+    # - debug: var=ansible_distribution_version
+    # - debug: var=docker_container_info
+    # - debug: var=ansible_processor_cores
+
+    # - debug: var=hostvars
+    # - debug: var=users
