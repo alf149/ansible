@@ -8,5 +8,3 @@
 - name: Disable_ipv6
   ansible.builtin.include_tasks: disable_ipv6.yml
 
-- name: Other
-  ansible.builtin.include_tasks: other.yml
