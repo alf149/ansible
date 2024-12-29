@@ -187,11 +187,19 @@ webcheck.intra.amfelt.dk {
 
 ## GIT
 ## lock at top to se how ssh is handled
-
 git.intra.amfelt.dk {
         reverse_proxy http://192.168.30.104:3000
         import cloudflare
         log {
                 output file /var/log/caddy/git_access.log
+        }
+}
+
+## SEMAPHORE
+semaphore.intra.amfelt.dk {
+        reverse_proxy http://192.168.30.105:3000
+        import cloudflare
+        log {
+                output file /var/log/caddy/semaphore_access.log
         }
 }
