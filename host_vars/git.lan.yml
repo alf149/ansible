@@ -14,6 +14,7 @@ open_ports:
   - { src: any, dest: any, port: '443', proto: 'tcp', direction: out, comment: 'https' }
 
   - { src: '192.168.10.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # Secure Vlan' }
+  - { src: '192.168.30.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # homelab Vlan' }
   - { src: '192.168.3.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'Allow from VPN' }
 
   - { src: '192.168.10.0/24', dest: any, port: '3000', proto: 'tcp', direction: in, comment: 'HTTP# GIT/forgejo from secure Vlan' }
