@@ -8,11 +8,5 @@ backup/
 out/
 cmdb_tpl/
 facts/
-collections/
 galaxy_roles/
-roles/alf149.**
-roles/geerlingguy.**
-roles/gantsign.**
 collections/**
-
-
