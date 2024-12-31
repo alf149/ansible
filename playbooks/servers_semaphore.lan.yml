@@ -24,6 +24,7 @@
         service_path: "{{ appdata_path }}"
         service_dirs:
           - semaphore
+          - semaphore/.ssh
           - semaphore/lib
           - semaphore/etc
           - semaphore/tmp

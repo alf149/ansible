@@ -48,9 +48,10 @@ containers:
       - "{{ appdata_path }}/semaphore/lib:/var/lib/semaphore" 
       - "{{ appdata_path }}/semaphore/etc:/etc/semaphore" 
       - "{{ appdata_path }}/semaphore/tmp:/tmp/semaphore" 
-      - "{{ appdata_path }}/semaphore/inventory:/inventory:ro"
-      - "{{ appdata_path }}/semaphore/authorized-keys:/authorized-keys:ro"
+      - "{{ appdata_path }}/semaphore/inventory:/inventory:rw"
+      - "{{ appdata_path }}/semaphore/authorized-keys:/authorized-keys:rw"
       - "{{ appdata_path }}/semaphore/config:/etc/semaphore:rw"
+      - "{{ appdata_path }}/semaphore/.ssh/:/home/semaphore/.ssh:rw"
     environment:
       - SEMAPHORE_DB_DIALECT=bolt
       - SEMAPHORE_ADMIN=deploy
