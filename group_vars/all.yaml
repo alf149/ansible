@@ -34,6 +34,8 @@ extra_packages:
   - python3-pip
   - apt-transport-https
   - ca-certificates
+  - qemu-guest-agent
+  - bash-completion
   
 extra_packages_nettools: 
   - dnsutils

@@ -32,50 +32,35 @@ docker_compose_generator_uid: "1000"
 docker_compose_generator_gid: "1000"
 appdata_path: "{{ docker_dir }}"
 
+## special in Semaphore. volumes needs to be userid 1001
 global_env_vars:
-  - "PUID=1000"
-  - "PGID=1000"
+  - "PUID=1001"
+  - "PGID=1001"
 
 containers:
+
   - service_name: semaphore
     active: true
-    image: semaphoreui/semaphore:v2.11.2
+    image: semaphoreui/semaphore:latest
     ports:
       - '3000:3000'
     volumes:
       - "{{ appdata_path }}/semaphore/lib:/var/lib/semaphore" 
       - "{{ appdata_path }}/semaphore/etc:/etc/semaphore" 
       - "{{ appdata_path }}/semaphore/tmp:/tmp/semaphore" 
+      - "{{ appdata_path }}/semaphore/inventory:/inventory:ro"
+      - "{{ appdata_path }}/semaphore/authorized-keys:/authorized-keys:ro"
+      - "{{ appdata_path }}/semaphore/config:/etc/semaphore:rw"
     environment:
-      SEMAPHORE_DB_DIALECT: bolt
-      SEMAPHORE_ADMIN: deploy
-      SEMAPHORE_ADMIN_PASSWORD: PveAnnerice12!
-      SEMAPHORE_ADMIN_NAME: deploy
-      SEMAPHORE_ADMIN_EMAIL: rolf@amfelt.dk
-      SEMAPHORE_EMAIL_ALERT: True
-      SEMAPHORE_EMAIL_SENDER: rolf+semaphore
-      SEMAPHORE_EMAIL_HOST: mail.lan
-      SEMAPHORE_EMAIL_PORT: 25
-      ANSIBLE_HOST_KEY_CHECKING: False
+      - SEMAPHORE_DB_DIALECT=bolt
+      - SEMAPHORE_ADMIN=deploy
+      - "SEMAPHORE_ADMIN_PASSWORD={{ semaphore_admin }}"
+      - SEMAPHORE_ADMIN_NAME=deploy
+      - SEMAPHORE_ADMIN_EMAIL=rolf@amfelt.dk
+      - SEMAPHORE_EMAIL_ALERT=true
+      - SEMAPHORE_EMAIL_SENDER=rolf+semaphore@amfelt.dk
+      - SEMAPHORE_EMAIL_HOST=mail.lan
+      - SEMAPHORE_EMAIL_PORT=25
+      - ANSIBLE_HOST_KEY_CHECKING=false
     include_global_env_vars: true
     restart: unless-stopped
-
-users:
-  - name: deploy
-    comment: System Administration
-    password: !vault |
-          $ANSIBLE_VAULT;1.1;AES256
-          66653831353765333338303931613132613863653231396365346234616462643365373665356230
-          3461626266616538646161653631346235646633616232650a316161663933653865323538383861
-          39616532623566353738343933353232346466333861323737313336626666393233646338643265
-          3535643362626530640a336261323637613437306561366362366131373530356431643136666466
-          39626136663135333231393731313065353638343764663336366131363630346663393461663863
-          37386636336562323236636134323030613432623736626236386638326237353164363963396132
-          64643562313666633864323635636332376233303563643462303166626331366534636639666132
-          66336333623062373633343765663865646661313362653264353563653763633533626437333830
-          35373665613436646161373038623733626530366561313262383662643566656563
-    groups:
-      - sudo
-    ssh_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG5iPUMbwcXyBjEp3rJA/d7Qv4HRo83BXo5az0H74kzj
-
-sudoers: ['deploy']

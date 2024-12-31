@@ -18,6 +18,47 @@
       tags: docker
 
   tasks:
+    - name: Setting facts dirs
+      tags: docker
+      ansible.builtin.set_fact:
+        service_path: "{{ appdata_path }}"
+        service_dirs:
+          - semaphore
+          - semaphore/lib
+          - semaphore/etc
+          - semaphore/tmp
+          - semaphore/inventory
+          - semaphore/authorized-keys
+          - semaphore/config
+
+    - name: Check if directories exist
+      tags: docker
+      ansible.builtin.stat:
+        path: "{{ service_path }}/{{ item }}/"
+      register: new_dirs
+      loop: "{{ service_dirs }}"
+
+    - name: Print Varaibles debug dirs
+      tags: docker
+      ansible.builtin.debug:
+        msg: "{{ item }}"
+      loop: "{{ new_dirs.results | map(attribute='item') | list }}"
+
+    - name: Create related directories
+      tags: docker
+      ansible.builtin.file:
+        path: "{{ item.invocation.module_args.path }}"
+        state: directory
+        owner: rolf
+        group: rolf
+        mode: "0755"
+        access_time: preserve
+        modification_time: preserve
+      loop: "{{ new_dirs.results }}"
+      loop_control:
+        label: "{{ item.invocation.module_args.path }}"
+      when: not item.stat.exists
+
     - name: Docker | docker compose installed?
       tags: docker
       ansible.builtin.command: which docker
