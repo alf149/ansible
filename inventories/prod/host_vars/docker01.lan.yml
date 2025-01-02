@@ -1,0 +1,168 @@
+enable_os_update: true
+enable_extra_packages: true
+extra_packages_nettools: false
+
+## Firewall 
+enable_ufw: true
+enable_ufw_deny_out: true
+
+open_ports:
+  - { src: any, dest: any, port: '22', proto: 'tcp', direction: out, comment: 'SSH' }
+  - { src: any, dest: any, port: '53', proto: any, direction: out, comment: 'DNS' }
+  - { src: any, dest: any, port: '123', proto: 'udp', direction: out, comment: 'NTP' }
+  - { src: any, dest: any, port: '80', proto: 'tcp', direction: out, comment: 'http' }
+  - { src: any, dest: any, port: '443', proto: 'tcp', direction: out, comment: 'https' }
+  - { src: any, dest: '192.168.30.103', port: '25', proto: 'tcp', direction: out, comment: 'MAIL' }
+
+  - { src: '192.168.10.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # Secure Vlan' }
+  - { src: '192.168.30.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # Secure Vlan' }
+  - { src: '192.168.3.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # VPN Vlan' }
+
+  - { src: '192.168.31.5', dest: any, port: '3001', proto: 'tcp', direction: in, comment: 'uptimekuma' }
+  - { src: '192.168.31.5', dest: any, port: '3000', proto: 'tcp', direction: in, comment: 'homepage' }
+  - { src: '192.168.31.5', dest: any, port: '4000', proto: 'tcp', direction: in, comment: 'speedtest' }
+  - { src: '192.168.31.5', dest: any, port: '8001', proto: 'tcp', direction: in, comment: 'Littlelink' }
+  - { src: '192.168.31.5', dest: any, port: '3100', proto: 'tcp', direction: in, comment: 'stirling-pdf' }
+  - { src: '192.168.31.5', dest: any, port: '3200', proto: 'tcp', direction: in, comment: 'it-tools' }
+  - { src: '192.168.31.5', dest: any, port: '3300', proto: 'tcp', direction: in, comment: 'webcheck' }
+
+  - { src: '192.168.10.0/24', dest: any, port: '4000', proto: 'tcp', direction: in, comment: 'speedtest' }
+
+  - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: '', proto: 'any', direction: out, comment: 'Docker' } #Docker
+  - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } #Docker
+  - { src: '172.18.0.0/16', dest: '172.18.0.0/16', port: '', proto: 'any', direction: out, comment: 'Docker' } #Docker
+  - { src: '172.18.0.0/16', dest: '172.18.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } #Docker
+
+  - { src: '172.20.0.0/16', dest: '172.20.0.0/16', port: '', proto: 'any', direction: out, comment: 'Docker' } #Docker
+  - { src: '172.20.0.0/16', dest: '172.20.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } #Docker
+
+  - { src: any, dest: '192.168.30.80', port: '111', proto: any, direction: out, comment: 'NFS' } #NFS
+  - { src: any, dest: '192.168.30.80', port: '662', proto: any, direction: out, comment: 'NFS' } #NFS
+  - { src: any, dest: '192.168.30.80', port: '892', proto: any, direction: out, comment: 'NFS' } #NFS
+  - { src: any, dest: '192.168.30.80', port: '2049', proto: any, direction: out, comment: 'NFS' } #NFS
+  - { src: any, dest: '192.168.30.80', port: '4045', proto: any, direction: out, comment: 'NFS' } #NFS
+  
+  - { src: '192.168.30.80', dest: '', port: '111', proto: any, direction: in, comment: 'NFS' } #NFS
+  - { src: '192.168.30.80', dest: '', port: '662', proto: any, direction: in, comment: 'NFS' } #NFS
+  - { src: '192.168.30.80', dest: '', port: '892', proto: any, direction: in, comment: 'NFS' } #NFS
+  - { src: '192.168.30.80', dest: '', port: '2049', proto: any, direction: in, comment: 'NFS' } #NFS
+  - { src: '192.168.30.80', dest: '', port: '4045', proto: any, direction: in, comment: 'NFS' } #NFS
+
+#NFS
+nfsclient_local_folder: "/opt/docker"
+nfsclient_nfs_connect: "nas.lan:/volume1/docker_nas" 
+# sudo mount nas.lan:/volume1/docker_nas /opt/docker
+# showmount -e 192.168.30.80
+
+# Docker Compose
+docker_dir: "{{ nfsclient_local_folder }}/docker_prod"
+nonfs_appdata_path: /opt/docker_static   ## to use for eg. sqllitedb and other stuff that does not run on nfs
+docker_compose_generator_output_path: "/home/deploy"
+docker_compose_generator_uid: "1000"
+docker_compose_generator_gid: "1000"
+appdata_path: "{{ docker_dir }}"
+
+librespeed_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          66653831353765333338303931613132613863653231396365346234616462643365373665356230
+          3461626266616538646161653631346235646633616232650a316161663933653865323538383861
+          39616532623566353738343933353232346466333861323737313336626666393233646338643265
+          3535643362626530640a336261323637613437306561366362366131373530356431643136666466
+          39626136663135333231393731313065353638343764663336366131363630346663393461663863
+          37386636336562323236636134323030613432623736626236386638326237353164363963396132
+          64643562313666633864323635636332376233303563643462303166626331366534636639666132
+          66336333623062373633343765663865646661313362653264353563653763633533626437333830
+          35373665613436646161373038623733626530366561313262383662643566656563
+
+global_env_vars:
+  - "PUID=1000"
+  - "PGID=1000"
+
+containers:
+
+  - service_name: uptimekuma
+    # path {{ nonfs_appdata_path }}/uptimekuma/datareated in ansible server_lan.yml manualy
+    # path not on NAS sqlite does not vork on NAS. 
+    # there is a rsync script or a cron job
+    active: true
+    image: louislam/uptime-kuma:1
+    ports:
+      - 3001:3001
+    volumes:
+      - "{{ nonfs_appdata_path }}/uptimekuma/data:/app/data" 
+    include_global_env_vars: true
+    restart: unless-stopped
+
+  - service_name: homepage
+    # path {{ appdata_path }}/homepage/config:/created in ansible server_lan.yml manualy
+    active: true
+    image: ghcr.io/gethomepage/homepage:latest
+    ports:
+      - 3000:3000
+    volumes:
+      - "{{ appdata_path }}/homepage/config:/app/config" 
+    restart: unless-stopped
+
+  - service_name: speedtest
+    active: true
+    image: openspeedtest/latest
+    ports:
+      - 4000:3000
+    restart: unless-stopped
+
+  - service_name: littlelink
+    active: true
+    image: ghcr.io/techno-tim/littlelink-server:latest
+    ports:
+      - 8001:3000
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      - META_TITLE=Rolf Amfelt
+      - META_DESCRIPTION=Rolf Amfelt Link page
+      - META_AUTHOR=Rolf Amfelt
+      - META_KEYWORDS=HomeLab
+      - LANG=en
+      - META_INDEX_STATUS=noindex
+      - THEME=Dark
+      - NAME=Rolf Amfelt
+      - BIO=Homelab | Almost Nerd
+      - BUTTON_ORDER=MASTODON,LINKED_IN,TWITTER,GITHUB,TWITTER
+      - GITHUB=https://github.com/alf149
+      - LINKED_IN=https://dk.linkedin.com/in/rolf-amfelt-81a43
+      - MASTODON=https://norrebro.space/@alf194
+      - FOOTER=Rolf Amfelt © 2022
+    restart: unless-stopped
+
+  - service_name: stirlingpdf
+    # https://github.com/Stirling-Tools/Stirling-PDF
+    active: true
+    image: frooodle/s-pdf:latest
+    ports:
+      - '3100:8080'
+    volumes:
+      - "{{ nonfs_appdata_path }}/stirlingpdf/trainingData:/usr/share/tessdata"
+      - "{{ nonfs_appdata_path }}/stirlingpdf/extraConfigs:/configs"
+      - "{{ nonfs_appdata_path }}/stirlingpdf/customFiles:/customFiles/"
+      - "{{ nonfs_appdata_path }}/stirlingpdf/logs:/logs/"
+    environment:
+      - DOCKER_ENABLE_SECURITY=false
+      - INSTALL_BOOK_AND_ADVANCED_HTML_OPS=false
+      - LANGS=en_GB
+    restart: unless-stopped
+
+  - service_name: ittools 
+    # https://github.com/CorentinTh/it-tools?tab=readme-ov-file
+    active: true
+    image: corentinth/it-tools:latest
+    ports:
+      - '3200:80'
+    restart: unless-stopped
+
+  - service_name: webcheck 
+    # https://github.com/Lissy93/web-check/blob/master/docker-compose.yml
+    active: true
+    image: lissy93/web-check:latest
+    ports:
+      - '3300:3000'
+    restart: unless-stopped

@@ -18,24 +18,24 @@ ansi_prod HOST *TAGS:
   ansible-playbook playbooks/servers_lan.yml --vault-password-file ~/.vault_pass --limit {{HOST}} {{TAGS}} 
 
 ansi_prod_first HOST:
-  ansible-playbook playbooks/servers_lan.yml --vault_password_file ~/.vault_pass --limit {{HOST}} -i hosts_first.ini -t system 
+  ansible-playbook playbooks/servers_lan.yml --vault-password-file ~/.vault_pass --limit {{HOST}} -i hosts_first.ini -t system 
 
 ansi_prod_upd HOST:
-  ansible-playbook playbooks/servers_lan.yml --vault_password_file ~/.vault_pass --limit {{HOST}} --tags os_update  --extra-vars "enable_os_update=true" 
+  ansible-playbook playbooks/servers_lan.yml --vault-password-file ~/.vault_pass --tags os_update --extra-vars "enable_os_update=true" --limit {{HOST}} 
 
 ansi_prod_upd_all:
   @echo 'OS update Start'
-  ansible-playbook playbooks/servers_lan.yml --tags os_update --extra-vars "enable_os_update=true" 
+  ansible-playbook playbooks/servers_lan.yml --vault-password-file ~/.vault_pass --tags os_update --extra-vars "enable_os_update=true" 
   @echo 'OS update Done'
   
 ansi_prod_piupdate:
-  ansible-playbook playbooks/servers_lan.yml --tags piholeupdate --extra-vars "enable_pihole_update=true" 
+  ansible-playbook playbooks/servers_lan.yml --vault-password-file ~/.vault_pass --tags=piholeupdate --extra-vars="enable_pihole_update=true"  --limit="pi1.lan,pi2.lan"
 
 ansi_prod_reboot:
-  ansible-playbook playbooks/servers_lan_reboot.yml 
+  ansible-playbook playbooks/servers_lan_reboot.yml --vault-password-file ~/.vault_pass
 
 ansi_test HOST *TAGS:
-  ansible-playbook playbooks/servers_test.yml 
+  ansible-playbook playbooks/servers_test.yml --vault-password-file ~/.vault_pass
 
 ## Docker 
 

@@ -1,0 +1,40 @@
+enable_os_update: true
+enable_extra_packages: true
+
+## Firewall 
+enable_ufw: true
+enable_ufw_deny_out: true
+
+open_ports:
+  - { src: any, dest: any, port: '22', proto: 'tcp', direction: out, comment: 'SSH' }
+  - { src: any, dest: any, port: '53', proto: any, direction: out, comment: 'DNS' }
+  - { src: any, dest: any, port: '123', proto: 'udp', direction: out, comment: 'NTP' }
+  - { src: any, dest: any, port: '80', proto: 'tcp', direction: out, comment: 'http' }
+  - { src: any, dest: any, port: '443', proto: 'tcp', direction: out, comment: 'https' }
+
+  - { src: '192.168.10.0/24', dest: '', port: '22', proto: 'tcp', direction: in, comment: 'SSH # Secure Vlan' }
+  - { src: '192.168.30.0/24', dest: '', port: '22', proto: 'tcp', direction: in, comment: 'SSH # Homelab Vlan' }
+  - { src: '192.168.31.0/24', dest: '', port: '22', proto: 'tcp', direction: in, comment: 'SSH # HomeLab DMZ' }
+  - { src: '192.168.56.0/24', dest: '', port: '22', proto: 'tcp', direction: in, comment: 'SSH # KVM / vagrant on localhost' }
+  - { src: '192.168.121.0/24', dest: '', port: '22', proto: 'tcp', direction: in, comment: 'SSH # KVM / vagrant on localhost' }
+
+  - { src: '192.168.56.0/24', dest: '', port: '80', proto: 'tcp', direction: in, comment: 'http any' } #HTTP
+  - { src: '192.168.56.0/24', dest: '', port: '443', proto: 'tcp', direction: in, comment: 'https any' } #HTTPS
+  - { src: '192.168.56.0/24', dest: '', port: '9000', proto: 'tcp', direction: in, comment: 'Portainer' } #Portainer
+  - { src: '192.168.56.0/24', dest: '', port: '9090', proto: 'tcp', direction: in, comment: 'Cockpit' } #Cockpit
+  - { src: '192.168.56.0/24', dest: '', port: '6060', proto: 'tcp', direction: in, comment: 'Crowdsec' } #Crowdsec
+  - { src: '192.168.56.0/24', dest: '', port: '6080', proto: 'tcp', direction: in, comment: 'Crowdsec' } #Crowdsec
+  - { src: '192.168.56.0/24', dest: '', port: '8080', proto: 'tcp', direction: in, comment: 'Crowdsec' } #Crowdsec
+  - { src: '192.168.56.0/24', dest: '', port: '8001', proto: 'tcp', direction: in, comment: 'Littlelink' } #Littlelink
+  - { src: '192.168.56.0/24', dest: '', port: '3001', proto: 'tcp', direction: in, comment: 'Uptime-Kuma' } #Uptime-Kuma
+  - { src: '192.168.56.0/24', dest: '', port: '5001', proto: 'tcp', direction: in, comment: 'Dockge' } #Dockge
+
+  - { src: any, dest: any, port: '111', proto: any, direction: out, comment: 'NFS' } #NFS
+  - { src: any, dest: any, port: '2049', proto: any, direction: out, comment: 'NFS' } #NFS
+  - { src: any, dest: any, port: '4045', proto: any, direction: out, comment: 'NFS' } #NFS
+  - { src: '192.168.56.0/24', dest: '', port: '111', proto: any, direction: in, comment: 'NFS' } #NFS
+  - { src: '192.168.56.0/24', dest: '', port: '2049', proto: any, direction: in, comment: 'NFS' } #NFS
+  - { src: '192.168.56.0/24', dest: '', port: '4045', proto: any, direction: in, comment: 'NFS' } #NFS
+
+  - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: , proto: 'any', direction: out, comment: 'Docker' } #Docker
+  - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: , proto: 'any', direction: in, comment: 'Docker' } #Docker
