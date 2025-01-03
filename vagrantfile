@@ -10,7 +10,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #### Home lab
   
   # dev01
-  config.vm.define "dev01.test", autostart: false do |dev01|
+  config.vm.define "dev01.dev", autostart: false do |dev01|
     dev01.vm.provider "libvirt" do |v|
       v.memory = 4096
       v.cpus = 4
@@ -25,18 +25,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       ansible.playbook = "provision.yml"
     end
   end
-  
-  # mail
-  config.vm.define "mail.test", autostart: false do |mail|
-    mail.vm.provider "libvirt" do |v|
+
+  # dev02
+  config.vm.define "dev02.dev", autostart: false do |dev02|
+    dev02.vm.provider "libvirt" do |v|
       v.memory = 4096
       v.cpus = 4
     end
-    mail.vm.box = "generic/ubuntu2204"
-    mail.vm.box_check_update = false
-    mail.vm.hostname = "mail.test"
-    mail.vm.network :private_network, ip: "192.168.56.21", hostname: true
-    mail.vm.provision "ansible" do |ansible|
+    dev02.vm.box = "generic/ubuntu2204"
+    dev02.vm.box_check_update = false
+    dev02.vm.hostname = "dev02.test"
+    dev02.vm.network :private_network, ip: "192.168.56.21", hostname: true
+    dev02.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.config_file = "ansible.cfg"
       ansible.playbook = "provision.yml"
@@ -52,7 +52,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     srv01.vm.box = "generic/ubuntu2204"
     srv01.vm.box_check_update = false
     srv01.vm.hostname = "srv01.test"
-    srv01.vm.network :private_network, ip: "192.168.56.21", hostname: true
+    srv01.vm.network :private_network, ip: "192.168.56.31", hostname: true
     srv01.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.config_file = "ansible.cfg"
@@ -69,103 +69,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     srv02.vm.box = "generic/ubuntu2204"
     srv02.vm.box_check_update = false
     srv02.vm.hostname = "srv02.test"
-    srv02.vm.network :private_network, ip: "192.168.56.22", hostname: true
+    srv02.vm.network :private_network, ip: "192.168.56.32", hostname: true
     srv02.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.config_file = "ansible.cfg"
       ansible.playbook = "provision.yml"
     end
   end
-
-  # ora01
-  config.vm.define "ora01.test", autostart: false do |ora01|
-    ora01.vm.provider "libvirt" do |v|
-      v.memory = 4096
-      v.cpus = 2
-    end
-    ora01.vm.box = "generic/oracle8"
-    ora01.vm.box_check_update = false
-    ora01.vm.hostname = "ora01.test"
-    ora01.vm.network :private_network, ip: "192.168.56.31", hostname: true
-    ora01.vm.provision "ansible" do |ansible|
-      ansible.compatibility_mode = "2.0"
-      ansible.config_file = "ansible.cfg"
-      ansible.playbook = "provision_ora.yml"
-    end
-  end
-  
-  # ubt
-  config.vm.define "ubt01.test", autostart: false do |ubt01|
-    ubt01.vm.provider "libvirt" do |v|
-      v.memory = 8192
-      v.cpus = 4
-    end
-    ubt01.vm.box = "alvistack/ubuntu-24.04"
-    ubt01.vm.box_check_update = false
-    ubt01.vm.hostname = "ubt01.test"
-    ubt01.vm.network :private_network, ip: "192.168.56.30", hostname: true
-    ubt01.vm.provision "ansible" do |ansible|
-      ansible.compatibility_mode = "2.0"
-      ansible.config_file = "ansible.cfg"
-      ansible.playbook = "provision.yml"
-    end
-  end
-
-  # Freebsd
-  # config.vm.define "bsd01.test", autostart: false do |bsd01|
-  #   bsd01.vm.provider "libvirt" do |v|
-  #     v.memory = 2048
-  #     v.cpus = 2
-  #   end
-  #   bsd01.vm.box = "generic/freebsd14"
-  #   bsd01.vm.box_check_update = false
-  #   bsd01.vm.hostname = "bsd01.test"
-  #   bsd01.vm.network :private_network, ip: "192.168.56.41", hostname: true
-  # end
-
-  # Openstack
-  config.vm.define "open.test", autostart: false do |open|
-    open.vm.provider "libvirt" do |v|
-      v.memory = 16384
-      v.cpus = 6
-    end
-    open.vm.box = "generic/ubuntu2204"
-    open.vm.box_check_update = false
-    open.vm.hostname = "open.test"
-    #open.vm.network :private_network, ip: "192.168.56.40", hostname: true
-    # open.vm.provision "ansible" do |ansible|
-    #   ansible.compatibility_mode = "2.0"
-    #   ansible.config_file = "ansible.cfg"
-    #   ansible.playbook = "provision.yml"
-    # end
-  end
-
-  # Ubuntu desktop
-  config.vm.define "ubuntu.test", autostart: false do |ubuntu|
-    ubuntu.vm.provider "libvirt" do |v|
-      v.memory = 16384
-      v.cpus = 6
-    end
-    ubuntu.vm.box = "bento/ubuntu-24.04"
-    ubuntu.vm.box_check_update = false
-    ubuntu.vm.hostname = "ubuntu.test"
-    ubuntu.vm.network :private_network, ip: "192.168.56.50", hostname: true
-    ubuntu.vm.provision "ansible" do |ansible|
-      ansible.compatibility_mode = "2.0"
-      ansible.config_file = "ansible.cfg"
-      ansible.playbook = "provision.yml"
-    end
-  end
-  
-
-  # # win11
-  # config.vm.define "win11.test", autostart: false do |win11|
-  #   win11.vm.provider "libvirt" do |v|
-  #     v.memory = 8192
-  #     v.cpus = 4
-  #   end
-  #   win11.vm.box = "valengus/windows11-22h2-x64"
-  # end
 end
-
-
