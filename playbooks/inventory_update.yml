@@ -16,7 +16,7 @@
           {% for host in groups['test_servers'] %}
           {{ hostvars[host].ansible_host }}   {{ host }}
           {% endfor %}
-          {% for host in groups['pve_hw'] %}
+          {% for host in groups['proxmox'] %}
           {{ hostvars[host].ansible_host }}   {{ host }}
           {% endfor %}
 
@@ -25,7 +25,7 @@
       ansible.builtin.blockinfile:
         path: /home/rolf/.ssh/config
         block: |
-            {% for host in groups['pve_hw'] %}
+            {% for host in groups['proxmox'] %}
             host {{ host }}
                 HostName {{ hostvars[host].ansible_host }}
                 User {{ hostvars[host].ansible_user }}

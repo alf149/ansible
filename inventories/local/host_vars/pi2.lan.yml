@@ -1,0 +1,32 @@
+enable_os_update: false
+enable_extra_packages: true
+extra_packages_nettools: false
+enable_pihole_update: false
+
+## Firewall 
+enable_ufw: true
+enable_ufw_deny_out: true
+
+open_ports:
+  - { src: any, dest: any, port: '22', proto: 'tcp', direction: out, comment: 'SSH' }
+  - { src: any, dest: any, port: '53', proto: any, direction: out, comment: 'DNS' }
+  - { src: any, dest: any, port: '123', proto: 'udp', direction: out, comment: 'NTP' }
+  - { src: any, dest: any, port: '80', proto: 'tcp', direction: out, comment: 'http' }
+  - { src: any, dest: any, port: '443', proto: 'tcp', direction: out, comment: 'https' }
+
+  - { src: '192.168.10.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # Secure Vlan' }
+  - { src: '192.168.30.101', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # pihole 1' }
+  - { src: '192.168.30.102', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # pihole 2' }
+  - { src: '192.168.30.105', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # from semaphore' }
+  - { src: '192.168.3.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'Allow from VPN' }
+
+  - { src: '192.168.31.0/24', dest: any, port: '80', proto: 'tcp', direction: in, comment: 'HTTP # Secure Vlan' }
+
+  - { src: '192.168.3.0/24', dest: any, port: '53', proto: any, direction: in, comment: 'DNS # VPN VLAN' }
+  - { src: '192.168.10.0/24', dest: any, port: '53', proto: any, direction: in, comment: 'DNS # Secure Vlan' }
+  - { src: '192.168.20.0/24', dest: any, port: '53', proto: any, direction: in, comment: 'DNS # Mart Vlan' }
+  - { src: '192.168.30.0/24', dest: any, port: '53', proto: any, direction: in, comment: 'DNS # HomeLab Vlan' }
+  - { src: '192.168.31.0/24', dest: any, port: '53', proto: any, direction: in, comment: 'DNS # HomeLab DMZ Vlan' }
+  - { src: '192.168.99.0/24', dest: any, port: '53', proto: any, direction: in, comment: 'DNS # Insecure Vlan' }
+
+pi_sync_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCyhRuBOH2A3HsJKLoT0uQc1l6jhsoDCKkAEsUoSSPPNDaG9ltsH0w/R3hOHj00FshsvMDINEYxv93kxsdd9Knzzb27WFnmyMthowfNzvEeA25Bh40Mq/vSp7j2YCCxvjwc9Yyx/JRHuVVTwoqJWh9uNI2xdTZPtZAcLpBM6AYuikWzFaeQCuF8FGuh1pfQKZOxIClO0JOkGfzxzVM0EHaKIlHGPd2UmtBHyfHQGTaQkIDftsGSuYLFlLkvRTadUKkT1QQE6udhoF5orMfeDSOATKvXL2nPZx5GJf9vNY55cIHjn9Uw8bif64dPTXLx+kYYPhS3OZg0sVE6DPwwL26PUf46HaUzU/KrU2lkMckAVylhDO6YkrCtn8S2UXO6+eZ5/fIjZbuO30hEQxzrpN00ua/DPc/Lv0+zbE0tbyXeDyXSNdrooMsiPoiAvc8bAqtKrism6VbwHJ+uNsp8h0NV7Tc0J++eN026BI1oeyec7uBYc/mo/RbIJ1xeJdv7pqs= deploy@pi1

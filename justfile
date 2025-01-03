@@ -11,6 +11,10 @@ ansi_env:
   echo 'Use localhost password'
   ansible-playbook playbooks/inventory_update.yml -K
 
+ansi_inv *VARS:
+  echo 'Show Ansible inventory'
+  ansible-inventory --vault-password-file ~/.vault_pass {{VARS}}
+
 ansi_hw HOST *TAGS:
   ansible-playbook playbooks/servers_lan_hw.yml --vault-password-file ~/.vault_pass  --limit {{HOST}} {{TAGS}} 
 
