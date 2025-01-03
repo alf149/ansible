@@ -5,7 +5,7 @@
   gather_facts: true
   become: true
 
-  vars_files: ../group_vars/secrets.yml
+  vars_files: group_vars/secrets.yml
 
   roles:
     - role: system

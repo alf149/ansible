@@ -42,5 +42,3 @@ extra_packages_nettools:
   - net-tools
   - nmap
   - netcat
-
-enable_os_update: true
