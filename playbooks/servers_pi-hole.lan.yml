@@ -1,7 +1,7 @@
 ---
 ###
-- name: Run on "pi1.lan and pi2.lan"
-  hosts: pi1.lan, pi2.lan
+- name: Run on "prod_pihole_servers"
+  hosts: prod_pihole_servers
   gather_facts: true
   become: true
 

@@ -1,7 +1,48 @@
 ---
-### 
-### ansible vault vault_passwrod_file in ansible.cfg
-### ansible-vault encrypt_string 'password' --name 'semaphore_admin'
+# Used in Geerlingguy.ntp
+ntp_servers:
+  - 0.dk.pool.ntp.org
+  - 1.dk.pool.ntp.org
+  - 2.dk.pool.ntp.org
+  - 3.dk.pool.ntp.org
+
+timezone: Europe/Copenhagen
+ntp_tinker_panic: true
+ntp_manage_config: true
+ntp_timezone: "{{ timezone }}"
+
+# Used in geerlingguy.security
+security_sudoers_passwordless: [ 'deploy' ]
+security_fail2ban_enabled: false
+
+# Used in geerlingguy.pip
+pip_package: python3-pip
+pip_executable: "{{ 'pip3' if pip_package.startswith('python3') else 'pip' }}"
+pip_install_packages:
+      - name: docker
+
+# Used in geerlingguy.docker
+docker_daemon_options: {"iptables": true}
+docker_users: [ 'deploy' ]
+
+extra_packages: 
+  - curl
+  - wget
+  - git
+  - nano
+  - python3
+  - python3-pip
+  - apt-transport-https
+  - ca-certificates
+  - qemu-guest-agent
+  - bash-completion
+  
+extra_packages_nettools: 
+  - dnsutils
+  - net-tools
+  - nmap
+  - netcat
+
 users:
 
   - name: !vault |
@@ -47,11 +88,3 @@ users:
 sudoers: 
  - deploy
  - rolf
-
-semaphore_admin: !vault |
-          $ANSIBLE_VAULT;1.1;AES256
-          65366534663138363066663832336565633135396338343566346537313038663936303934653536
-          3861626364666236323839336162646138383662316564650a396439326131313530353762343737
-          30326634643366663066316235316439386636663432313464396562303735663636326634303234
-          3837653162303935360a646236643666336366306235336361636330663639333865386465343933
-          6534
