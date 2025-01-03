@@ -130,7 +130,8 @@ containers:
       - BUTTON_ORDER=MASTODON,LINKED_IN,TWITTER,GITHUB,TWITTER
       - GITHUB=https://github.com/alf149
       - LINKED_IN=https://dk.linkedin.com/in/rolf-amfelt-81a43
-      - MASTODON=https://norrebro.space/@alf194
+      - MASTODON=https://social.data.coop/@alf149
+      - BLUESKY=https://bsky.app/profile/amfelt.dk
       - FOOTER=Rolf Amfelt © 2022
     restart: unless-stopped
 
