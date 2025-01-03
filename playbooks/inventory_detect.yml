@@ -1,0 +1,34 @@
+- name: Demonstrate multi-environment playbook
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Print HARDWARE environment
+      ansible.builtin.debug:
+        msg: "This {{ ansible_host }} belongs to the HARDWARE environment"
+      when: group_names | select('regex', '^.*(hardware)$') | list | count > 0
+
+    - name: Print PROD environment
+      ansible.builtin.debug:
+        msg: "This {{ ansible_host }} belongs to the PROD environment"
+      when: group_names | select('regex', '^.*(prod)$') | list | count > 0
+
+    - name: Print DEV environment
+      ansible.builtin.debug:
+        msg: "This {{ ansible_host }} belongs to the DEV environment"
+      when: group_names | select('regex', '^.*(dev)$') | list | count > 0
+
+    - name: Print TEST environment
+      ansible.builtin.debug:
+        msg: "This {{ ansible_host }} belongs to the TEST environment"
+      when: group_names | select('regex', '^.*(test)$') | list | count > 0
+
+    - name: Print BOOT environment
+      ansible.builtin.debug:
+        msg: "This {{ ansible_host }} belongs to the BOOT environment"
+      when: group_names | select('regex', '^.*(boot)$') | list | count > 0
+
+    - name: Print LOCAL environment
+      ansible.builtin.debug:
+        msg: "This {{ ansible_host }} belongs to the LOCAL environment"
+      when: group_names | select('regex', '^.*(local)$') | list | count > 0

@@ -12,13 +12,13 @@
         append_newline: true
         path: /etc/hosts
         block: |
-          {% for host in groups['prod_servers'] %}
+          {% for host in groups['prod'] %}
           {{ hostvars[host].ansible_host }}   {{ host }}
           {% endfor %}
-          {% for host in groups['prod_proxmox_servers'] %}
+          {% for host in groups['hardware'] %}
           {{ hostvars[host].ansible_host }}   {{ host }}
           {% endfor %}
-
+  
     - name: Add Ansible inventory mappings to ~/.ssh/config
       become: false
       ansible.builtin.blockinfile:
@@ -26,7 +26,7 @@
         append_newline: true
         path: /home/rolf/.ssh/config
         block: |
-            {% for host in groups['prod_servers'] %}
+            {% for host in groups['prod'] %}
             host {{ host }}
                 HostName {{ hostvars[host].ansible_host }}
                 User deploy
@@ -36,7 +36,7 @@
                 UserKnownHostsFile /dev/null
 
             {% endfor %}
-            {% for host in groups['prod_proxmox_servers'] %}
+            {% for host in groups['hardware'] %}
             host {{ host }}
                 HostName {{ hostvars[host].ansible_host }}
                 User root

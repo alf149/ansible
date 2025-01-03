@@ -1,49 +1,54 @@
 ---
 - name: Localhost playbooks inventory to hostfile ans ~/.ssh/config
-  hosts: localhost
-  gather_facts: false
+  hosts: all
+  gather_facts: true
   become: true
 
   tasks:
-    - name: Add Ansible inventory mappings to /etc/hosts
-      become: true
-      ansible.builtin.blockinfile:
-        marker: "### -- PROD -- ANSIBLE MANAGED BLOCK {mark}###"
-        append_newline: true
-        path: /etc/hosts
-        block: |
-          {% for host in groups['prod_servers'] %}
-          {{ hostvars[host].ansible_host }}   {{ host }}
-          {% endfor %}
-          {% for host in groups['prod_proxmox_servers'] %}
-          {{ hostvars[host].ansible_host }}   {{ host }}
-          {% endfor %}
+    - name: Verify that ansible_host is set
+      ansible.builtin.assert:
+        that:
+          - ansible_host is defined
+        fail_msg: "Error: Host {{ inventory_hostname }} is missing the ansible_host variable"
+        success_msg: "OK: Host {{ inventory_hostname }} has the ansible_host variable"
 
-    - name: Add Ansible inventory mappings to ~/.ssh/config
-      become: false
-      ansible.builtin.blockinfile:
-        marker: "### -- PROD -- ANSIBLE MANAGED BLOCK {mark}###"
-        append_newline: true
-        path: /home/rolf/.ssh/config
-        block: |
-            {% for host in groups['prod_servers'] %}
-            host {{ host }}
-                HostName {{ hostvars[host].ansible_host }}
-                User deploy
-                Port 22
-                IdentityFile ~/.ssh/deploy
-                StrictHostKeyChecking no
-                UserKnownHostsFile /dev/null
 
-            {% endfor %}
-            {% for host in groups['prod_proxmox_servers'] %}
-            host {{ host }}
-                HostName {{ hostvars[host].ansible_host }}
-                User root
-                Port 22
-                IdentityFile ~/.ssh/deploy_hw
-                StrictHostKeyChecking no
-                UserKnownHostsFile /dev/null
+    # - name: Add Ansible inventory mappings to /etc/hosts
+    #   become: true
+    #   ansible.builtin.blockinfile:
+    #     marker: "### -- PROD -- ANSIBLE MANAGED BLOCK {mark}###"
+    #     append_newline: true
+    #     path: /etc/hosts
+    #     block: |
+    #       {% for host in groups['prod'] %}
+    #       {{ hostvars[host].ansible_host }}   {{ host }}
+    #       {% endfor %}
 
-            {% endfor %}
+    # - name: Add Ansible inventory mappings to ~/.ssh/config
+    #   become: false
+    #   ansible.builtin.blockinfile:
+    #     marker: "### -- PROD -- ANSIBLE MANAGED BLOCK {mark}###"
+    #     append_newline: true
+    #     path: /home/rolf/.ssh/config
+    #     block: |
+    #         {% for host in groups['prod'] %}
+    #         host {{ host }}
+    #             HostName {{ hostvars[host].ansible_host }}
+    #             User deploy
+    #             Port 22
+    #             IdentityFile ~/.ssh/deploy
+    #             StrictHostKeyChecking no
+    #             UserKnownHostsFile /dev/null
+
+    #         {% endfor %}
+    #         {% for host in groups['prod_proxmox_servers'] %}
+    #         host {{ host }}
+    #             HostName {{ hostvars[host].ansible_host }}
+    #             User root
+    #             Port 22
+    #             IdentityFile ~/.ssh/deploy_hw
+    #             StrictHostKeyChecking no
+    #             UserKnownHostsFile /dev/null
+
+    #         {% endfor %}
 
