@@ -9,20 +9,20 @@ ansi_reqs:
 
 ansi_env:
   echo 'Use localhost password'
-  ansible-playbook playbooks/inventory_update.yml -K -i inventories/prod.ini -i inventories/test.ini -i inventories/dev.ini --vault-password-file ~/.vault_pass
+  ansible-playbook playbooks/inventory_update.yml -K -i inventories/prod.ini -i inventories/test.ini -i inventories/dev.ini -i inventory/hardware.ini --vault-password-file ~/.vault_pass
 
 ansi_inv *VARS:
   echo 'Show Ansible inventory'
   ansible-inventory --vault-password-file ~/.vault_pass --graph {{VARS}}
 
-ansi_hw HOST *TAGS:
-  ansible-playbook playbooks/servers_lan_hw.yml -i inventories/prod.ini --vault-password-file ~/.vault_pass  --limit {{HOST}} {{TAGS}} 
+ansi_hardware HOST *TAGS:
+  ansible-playbook playbooks/servers_lan_hw.yml -i inventories/hardware.ini --vault-password-file ~/.vault_pass  --limit {{HOST}} {{TAGS}} 
 
 ansi_prod HOST *TAGS:
   ansible-playbook playbooks/servers_lan.yml -i inventories/prod.ini --vault-password-file ~/.vault_pass --limit {{HOST}} {{TAGS}} 
 
 ansi_prod_first HOST:
-  ansible-playbook playbooks/servers_lan.yml -i inventories/bootstrap.ini --vault-password-file ~/.vault_pass --limit {{HOST}} -t system 
+  ansible-playbook playbooks/servers_lan.yml -i inventories/bootstrap.ini --vault-password-file ~/.vault_pass -t system --limit {{HOST}}  
 
 ansi_prod_upd HOST:
   ansible-playbook playbooks/servers_lan.yml -i inventories/prod.ini --vault-password-file ~/.vault_pass --tags os_update --extra-vars "enable_os_update=true" --limit {{HOST}} 
@@ -33,14 +33,16 @@ ansi_prod_upd_all:
   @echo 'OS update Done'
   
 ansi_prod_piupdate:
-  ansible-playbook playbooks/servers_lan.yml -i inventories/prod.ini --vault-password-file ~/.vault_pass --tags=piholeupdate --extra-vars="enable_pihole_update=true"  --limit="prod_pihole_servers"
+  ansible-playbook playbooks/servers_pi-hole.lan.yml -i inventories/prod.ini --vault-password-file ~/.vault_pass --tags=piholeupdate --extra-vars="enable_pihole_update=true"  --limit="prod_pihole_servers"
 
-ansi_prod_reboot:
-  ansible-playbook playbooks/servers_lan_reboot.yml --vault-password-file ~/.vault_pass
+ansi_prod_reboot *TAGS:
+  ansible-playbook playbooks/servers_lan_reboot.yml --vault-password-file ~/.vault_pass {{TAGS}} 
 
 ansi_test HOST *TAGS:
-  ansible-playbook playbooks/servers_test.yml --vault-password-file ~/.vault_pass
+  ansible-playbook playbooks/servers_test.yml -i inventories/test.ini --vault-password-file ~/.vault_pass {{TAGS}} 
 
+ansi_dev HOST *TAGS:
+  ansible-playbook playbooks/servers_dev.yml -i inventories/dev.ini --vault-password-file ~/.vault_pass {{TAGS}} 
 ## Docker 
 
 
