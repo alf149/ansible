@@ -1,19 +1,25 @@
 ---
-###
-- name: Run on "git.lan"
-  hosts: git.lan
+
+- name: Run on "prod_docker_servers"
+  hosts: prod_docker_servers
   gather_facts: true
   become: true
 
-  vars_files: ../group_vars/secrets.yml
-
   roles:
-    - role: ufw
-      tags: ufw
+    - role: system
+      tags: system
+    - role: geerlingguy.security
+      tags: security
+    - role: geerlingguy.ntp
+      tags: ntp
     - role: geerlingguy.pip
       tags: containers
     - role: geerlingguy.docker
       tags: containers
+    - role: ufw
+      tags: ufw
+    - role: nfsclient
+      tags: nfs
     - role: ironicbadger.docker_compose_generator
       tags: docker
 
@@ -30,6 +36,34 @@
         state: directory
         mode: '0755'
       when: not stat_nonfs.stat.exists
+
+    - name: Check if  nfs/appdata_path/homepage/config folder exits exists
+      tags: docker
+      ansible.builtin.stat:
+        path: "{{ appdata_path }}/homepage/config"
+      register: stat_homepage
+
+    - name: Create a directory if it does not exist
+      tags: docker
+      ansible.builtin.file:
+        path: "{{ appdata_path }}/homepage/config"
+        state: directory
+        mode: '0755'
+      when: not stat_homepage.stat.exists
+
+    - name: Docker | backup uptime-kuma
+      become_user: deploy
+      changed_when: false
+      tags: uptimebackup
+      ansible.builtin.command: 'rsync -rvz /opt/docker_static/uptimekuma /opt/docker/'
+      # rsync -rvz /opt/docker_static/uptimekuma /opt/docker/
+      # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/cron_module.html#examples
+
+    # - name: Synchronize two directories on one remote host.
+    #   ansible.posix.synchronize:
+    #     src: "{{ nonfs_appdata_path }}/uptimekuma"
+    #     dest: "{{ nfsclient_local_folder }}/uptimekuma"
+    #   delegate_to: "{{ docker01.lan }}"
 
     - name: Docker | docker compose installed?
       tags: docker

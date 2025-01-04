@@ -13,6 +13,41 @@
         msg: "This {{ ansible_host }} belongs to the PROD environment"
       when: group_names | select('regex', '^.*(prod)$') | list | count > 0
 
+    - name: Print MAIL environment
+      ansible.builtin.debug:
+        msg: "This {{ ansible_host }} belongs to the MAIL environment"
+      when: group_names | select('regex', '^.*(prod_mail_servers)$') | list | count > 0
+
+    - name: Print DOCKER environment
+      ansible.builtin.debug:
+        msg: "This {{ ansible_host }} belongs to the DOCKER environment"
+      when: group_names | select('regex', '^.*(prod_docker_servers)$') | list | count > 0
+
+    - name: Print AUTO environment
+      ansible.builtin.debug:
+        msg: "This {{ ansible_host }} belongs to the AUTO environment"
+      when: group_names | select('regex', '^.*(prod_auto_servers)$') | list | count > 0
+
+    - name: Print SOURCE environment
+      ansible.builtin.debug:
+        msg: "This {{ ansible_host }} belongs to the SOURCE environment"
+      when: group_names | select('regex', '^.*(prod_source_servers)$') | list | count > 0
+
+    - name: Print PROXY environment
+      ansible.builtin.debug:
+        msg: "This {{ ansible_host }} belongs to the PROXY environment"
+      when: group_names | select('regex', '^.*(prod_proxy_servers)$') | list | count > 0
+
+    - name: Print DMZ environment
+      ansible.builtin.debug:
+        msg: "This {{ ansible_host }} belongs to the DMZ environment"
+      when: group_names | select('regex', '^.*(prod_dmz_servers)$') | list | count > 0
+
+    - name: Print DNS environment
+      ansible.builtin.debug:
+        msg: "This {{ ansible_host }} belongs to the DNSenvironment"
+      when: group_names | select('regex', '^.*(prod_dns_servers)$') | list | count > 0
+
     - name: Print DEV environment
       ansible.builtin.debug:
         msg: "This {{ ansible_host }} belongs to the DEV environment"

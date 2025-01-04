@@ -1,0 +1,73 @@
+---
+
+- name: Run on all PROD_SERVERS
+  hosts: prod_servers
+  gather_facts: true
+  become: true
+
+  roles:
+    - role: system
+      tags: system
+    - role: geerlingguy.ntp
+      tags: ntp
+    - role: geerlingguy.security
+      tags: security
+
+  tasks:
+    - name: Set timezone to Europe/Copenhagen
+      become: true
+      community.general.timezone:
+        name: {{ ntp_timezone }}
+
+    - name: Upgrade apt packages (Debian and Ubuntu)
+      when: enable_os_update
+      tags: os_update
+      block:
+        - name: Upgrade apt packages (Debian and Ubuntu)
+          ansible.builtin.apt:
+            force_apt_get: true
+            upgrade: true
+            autoremove: true
+            update_cache: true
+            cache_valid_time: 3600
+          when:
+            - ansible_os_family | lower == "debian"
+            - enable_os_update
+          changed_when: false
+        - name: Check if a reboot is needed on all servers
+          register: reboot_required_file
+          ansible.builtin.stat:
+            path: /var/run/reboot-required
+        - name: Reboot the box if kernel updated
+          ansible.builtin.reboot:
+            msg: "Reboot initiated by Ansible for kernel updates"
+          when: reboot_required_file.stat.exists
+
+- name: Include dns servers setup/configuration
+  ansible.builtin.import_playbook: prod_dns_servers.yml
+  when: group_names | select('regex', '^.*(prod_dns_servers)$') | list | count > 0
+
+- name: Include DMZ / external servers setup/configuration
+  ansible.builtin.import_playbook: prod_dmz_servers.yml
+  when: group_names | select('regex', '^.*(prod_dmz_servers)$') | list | count > 0
+
+- name: Include Mail servers and relays setup/configuration
+  ansible.builtin.import_playbook: prod_mail_servers.yml
+  when: group_names | select('regex', '^.*(prod_mail_servers)$') | list | count > 0
+
+- name: Include proxy servers servers setup/configuration
+  ansible.builtin.import_playbook: prod_proxy_servers.yml
+  when: group_names | select('regex', '^.*(prod_proxy_servers)$') | list | count > 0
+
+- name: Include Source controle/git servers setup/configuration
+  ansible.builtin.import_playbook: prod_source_servers.yml
+  when: group_names | select('regex', '^.*(prod_source_servers)$') | list | count > 0
+
+- name: Include docker servers setup/configuration
+  ansible.builtin.import_playbook: prod_docker_servers.yml
+  when: group_names | select('regex', '^.*(prod_docker_servers)$') | list | count > 0
+
+- name: Include automation servers setup/configuration
+  ansible.builtin.import_playbook: prod_auto_servers.yml
+  when: group_names | select('regex', '^.*(prod_auto_servers)$') | list | count > 0
+

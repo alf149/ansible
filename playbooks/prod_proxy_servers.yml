@@ -1,0 +1,20 @@
+---
+
+- name: Run on "prod_proxy_servers"
+  hosts: prod_proxy_servers
+  gather_facts: true
+  become: true
+
+  roles:
+    - role: system
+      tags: system
+    - role: geerlingguy.security
+      tags: security
+    - role: geerlingguy.ntp
+      tags: ntp
+    - role: ufw
+      tags: ufw
+    - role: caddy
+      tags:
+        - caddy
+        - caddyfile

@@ -1,11 +1,9 @@
 ---
-###
-- name: Run on "semaphore.lan"
-  hosts: semaphore.lan
+
+- name: Run on "prod_source_servers"
+  hosts: prod_source_servers
   gather_facts: true
   become: true
-
-  vars_files: ../group_vars/secrets.yml
 
   roles:
     - role: ufw

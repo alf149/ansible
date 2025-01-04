@@ -1,23 +1,21 @@
 ---
-###
-- name: Run on "prod_pihole_servers"
-  hosts: prod_pihole_servers
+
+- name: Run on "prod_dns_servers"
+  hosts: prod_dns_servers
   gather_facts: true
   become: true
 
   roles:
     - role: system
       tags: system
+    - role: geerlingguy.ntp
+      tags: ntp
     - role: geerlingguy.security
       tags: security
     - role: ufw
       tags: ufw
 
   tasks:
-    - name: Set timezone to Europe/Copenhagen
-      become: true
-      community.general.timezone:
-        name: Europe/Copenhagen
 
     - name: Upgrade apt packages (Debian and Ubuntu)
       when: enable_os_update
