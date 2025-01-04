@@ -1,4 +1,3 @@
-# tasks file
 ---
 - name: Fix dropped ssh sessions | configure kernel
   ansible.posix.sysctl:
@@ -7,3 +6,4 @@
     state: present
     sysctl_set: true
     reload: true
+  when: enable_ufw | d(false) | bool

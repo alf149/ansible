@@ -1,19 +1,17 @@
-# tasks file
 ---
-- name: Install package ufw
+- name: Install package UFW
   tags: ufw
   ansible.builtin.package:
     state: present
     name: ufw
   notify:
-    - Reload ufw
-  when:
-    - enable_ufw is defined
-    - enable_ufw
+    - Reloadufw
+  when: enable_ufw | d(false) | bool
 
-- name: Ufw disable IPv6
+- name: Disable IPv6 for UFW
   ansible.builtin.replace:
     path: "/etc/default/ufw"
     regexp: 'IPV6=yes'
     replace: 'IPV6=no'
     backup: true
+  when: enable_ufw | d(false) | bool

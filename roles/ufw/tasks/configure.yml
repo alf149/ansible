@@ -6,27 +6,21 @@
     comment: default allow outgoing
     default: allow
     direction: outgoing
-  when:
-    - enable_ufw is defined
-    - not enable_ufw_deny_out
+  when: enable_ufw | d(false) | bool
 
 - name: Deny outgoing
   community.general.ufw:
     comment: default allow outgoing
     default: deny
     direction: outgoing
-  when:
-    - enable_ufw is defined
-    - enable_ufw_deny_out
+  when: enable_ufw | d(false) | bool
 
 - name: Disallow incoming
   community.general.ufw:
     comment: default deny incoming
     default: deny
     direction: incoming
-  when:
-    - enable_ufw is defined
-    - enable_ufw
+  when: enable_ufw | d(false) | bool
 
 - name: Allow necessary ports in UFW
   community.general.ufw:
@@ -38,14 +32,12 @@
     proto: "{{ item.proto | default('any') }}"
     comment: "{{ item.comment }}"
   loop: "{{ open_ports }}"
-  notify: Reload ufw
-  when:
-    - enable_ufw is defined
-    - enable_ufw
+  notify: Reloadufw
+  when: enable_ufw | d(false) | bool
 
+## maby this shuld be a handler.
 # - name: configure | reset
 #   community.general.ufw:
 #     state: reset
 #   when: configuration is changed
-#   tags:
-#     - ufw-configure-reset
+#   tags: ufw-configure-reset

@@ -1,29 +1,20 @@
 ---
-# - name: Fix dropped ssh sessions
-#   ansible.builtin.import_tasks: fix-dropped-ssh-sessions.yml
-#   when:
-#     - enable_ufw is defined
-#     - enable_ufw
-#     - enable_ufw_fix_sessions
-
 - name: Install UFW
   ansible.builtin.import_tasks: install.yml
 
-- name: Configure
+- name: Configure UFW
   ansible.builtin.import_tasks: configure.yml
 
-- name: Fix dropped ssh sessions
-  ansible.builtin.import_tasks: fix-dropped-ssh-sessions.yml
+# - name: Fix dropped ssh sessions
+#   ansible.builtin.import_tasks: fix-dropped-ssh-sessions.yml
 
-- name: Set logging
+- name: Set logging for UFW
   community.general.ufw:
     logging: 'on'
 
-- name: Enable Firewall ufw
+- name: Enable Firewall UFW
   community.general.ufw:
     state: enabled
   notify:
-    - Reload ufw
-  when:
-    - enable_ufw is defined
-    - enable_ufw
+    - Reloadufw
+  when: enable_ufw | d(false) | bool
