@@ -1,5 +1,5 @@
 ---
-###
+
 - name: Run on all PROD_SERVERS
   hosts: prod_servers
   gather_facts: true
@@ -17,7 +17,7 @@
     - name: Set timezone to Europe/Copenhagen
       become: true
       community.general.timezone:
-        name: Europe/Copenhagen
+        name: {{ ntp_timezone }}
 
     - name: Upgrade apt packages (Debian and Ubuntu)
       when: enable_os_update
