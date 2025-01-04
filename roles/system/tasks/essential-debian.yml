@@ -1,4 +1,5 @@
 ---
+
 - name: Upgrade apt packages (Debian and Ubuntu)
   when: enable_os_update | d(false) | bool
   tags: os_update
