@@ -2,5 +2,6 @@
 roles:
   - src: geerlingguy.security
   - src: geerlingguy.pip
+  - src: geerlingguy.ntp
   - src: geerlingguy.docker
   - src: ironicbadger.docker_compose_generator 
