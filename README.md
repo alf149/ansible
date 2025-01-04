@@ -73,6 +73,87 @@ ad service to caddyfile in role.
 
 
 
+# Ansible palybooks that is neede for automations 
+## Asuming we have 
+* a VLAN segmentet network. 
+* Hardware for servers running the vitualisation. eg Proxmox. 
+* Hardware for servers running storage. eg Synology
 
+* Security considerations. 
+  * Backup and data security. 
+  * Where to place data. NFS, NAS or local on OS. 
+  * VM or lxc?
 
+## Shot on VlAN segragation
+External VLAN/ DMZ VLAN is used for incomming trafic. 
+* Cloudflare tunnel or portforwarding. 
+* Tailscale/headscale/netbird or similar have a hub here.  
+* if ssh jumphost it is also placed here. 
+* All web based trafic ends in Caddy as a reverse proxy.
+* this is the palce to monitor log for incomming trafic. 
 
+### Centralized DNS
+* Internal DNS for new server or services. 
+* external DNS for new server or services. 
+
+### Internal homelab servers on anther VLAN. 
+* Mail relay
+* Docker hosts
+* Git system
+* Automation system eg. semaphore
+
+### Storage, monitoring and logging on it own VLAN. Could be mere VLANs
+* NAS
+* ELK or similar
+* Zabbix
+* Crowdsec
+
+### Host spec. ansible on single hosts or set of hosts
+#### OS install
+* Curently Ubuntu server 22.04   
+  Have seen chanlenge with Ansible and python when ansble master is on 22.04 and host on 24.04. 
+#### OS Users 
+* On vm's use cloudinit 
+* on lxc create user using bootstrap and root on first run. 
+* Limit number of users. 
+* Uses same uid/gui on all servers for the same user. Makes trubleshooting easier. 
+
+#### OS Configuration and security
+* SSH 
+  * No root login after bootstrap and first run. 
+  * No login with username and password, only Key's
+* Firewall
+  * Using UFW for now. 
+  * Only allow outgoing port 22, 53, 123, 80, 443
+    * 25 out to internal mail relay
+  * Only allow incomming on ports that i in use. eg. Docker ports. 
+  System and service specific. 
+
+### Specific software
+#### Docker
+* Configure Docker
+* Where ar data stored. is acces to data from host neede? 
+* NFS mount og local bindmount or volumes. 
+  * sqllite db dont run on NFS storage. 
+* Install Apps with Docker compose and configure
+* Place docker compose file in /home/USER/system/compose.yml
+* Place docker data on /opt/Docker/system  
+
+#### Install Software and Configure on OS
+* if software or service is not on docker then a manual instal on lxc container i an option. Or if the setup/mainternace task is easier. 
+
+## Not Host spec. ansible to run acrose multiple hosts. 
+#### Maintain users
+* Create and set security and lifetime
+* Maintain Users and lifetime
+* Delete User not needed 
+
+#### Maintain OS
+* Unatenden updates instalede and configfured. 
+* Monitor updates 
+* Reboot if needed
+* Maintain Spec. Software 
+#### Maintain Docker Apps.
+* Automate if posible, could mee breaking changes. 
+* Read update instruktions. 
+* Manualy update if needed. ** (colud be host spec.) **
