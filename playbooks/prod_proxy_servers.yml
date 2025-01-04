@@ -1,13 +1,12 @@
 ---
 
 - name: Run on "prod_proxy_servers"
-  hosts: prod_proxy_servers
+  hosts: prod_proxy_servers:!hardware
   gather_facts: true
   become: true
 
   roles:
     - role: system
-      tags: system
     - role: geerlingguy.security
       tags: security
     - role: geerlingguy.ntp

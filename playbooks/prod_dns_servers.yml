@@ -1,13 +1,12 @@
 ---
 
 - name: Run on "prod_dns_servers"
-  hosts: prod_dns_servers
+  hosts: prod_dns_servers:!hardware
   gather_facts: true
   become: true
 
   roles:
     - role: system
-      tags: system
     - role: geerlingguy.ntp
       tags: ntp
     - role: geerlingguy.security
@@ -16,30 +15,6 @@
       tags: ufw
 
   tasks:
-
-    - name: Upgrade apt packages (Debian and Ubuntu)
-      when: enable_os_update
-      tags: os_update
-      block:
-        - name: Upgrade apt packages (Debian and Ubuntu)
-          ansible.builtin.apt:
-            force_apt_get: true
-            upgrade: true
-            autoremove: true
-            update_cache: true
-            cache_valid_time: 3600
-          when:
-            - ansible_os_family | lower == "debian"
-            - enable_os_update
-          changed_when: false
-        - name: Check if a reboot is needed on all servers
-          register: reboot_required_file
-          ansible.builtin.stat:
-            path: /var/run/reboot-required
-        - name: Reboot the box if kernel updated
-          ansible.builtin.reboot:
-            msg: "Reboot initiated by Ansible for kernel updates"
-          when: reboot_required_file.stat.exists
 
     - name: Add ssh authorized_keys to users
       ansible.posix.authorized_key:

@@ -2,5 +2,5 @@
 
 - name: Ensure enterprise repo file is not present
   ansible.builtin.file:
-    path: /etc/apt/sources.list.d/pve-enterprise.list
+    path: /etc/apt/sources.list.d/pbs-install-repo.list
     state: absent

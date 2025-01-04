@@ -1,13 +1,12 @@
 ---
 
 - name: Run on "prod_docker_servers"
-  hosts: prod_docker_servers
+  hosts: prod_docker_servers:!hardware
   gather_facts: true
   become: true
 
   roles:
     - role: system
-      tags: system
     - role: geerlingguy.security
       tags: security
     - role: geerlingguy.ntp

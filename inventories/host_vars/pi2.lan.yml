@@ -1,4 +1,3 @@
-enable_os_update: false
 enable_extra_packages: true
 extra_packages_nettools: false
 enable_pihole_update: false

@@ -1,28 +1,17 @@
 ---
 
-- name: Run on all PROD Hardware Servers
-  hosts: hardware !prod_servers
-  become: true
-  gather_facts: true
-
-  pre_tasks:
-    - name: Upgrade apt packages (Debian and Ubuntu)
-      ansible.builtin.apt:
-        upgrade: true
-        autoremove: true
-        update_cache: true
-        cache_valid_time: 3600
-      when:
-        - ansible_os_family | lower == "debian"
-        - enable_os_update
-      changed_when: false
-
-###
-- name: Run on "ProxMox Servers"
+- name: Run on "proxmox_ve_servers"
   hosts: proxmox_ve_servers
   gather_facts: true
   become: true
 
   roles:
     - role: proxmox_nag_removal
-  # Does work on PBS but restart this service insted systemctl status proxmox-backup-proxy
+
+- name: Run on "proxmox_backup_servers"
+  hosts: proxmox_backup_servers
+  gather_facts: true
+  become: true
+
+  roles:
+    - role: proxmox_pbs_nag_removal

@@ -1,7 +1,7 @@
 ---
 
 - name: Run on prod_servers but not HW servers
-  hosts: prod_servers, !hardware
+  hosts: prod!hardware
   become: true
   gather_facts: false
   tasks:

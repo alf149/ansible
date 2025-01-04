@@ -1,5 +1,6 @@
 ---
 - name: Add users
+  tags: users
   ansible.builtin.user:
     name: "{{ item.name }}"
     comment: "{{ item.comment }}"
@@ -11,9 +12,9 @@
     create_home: true
     state: present
   loop: "{{ users }}"
-  tags: users
 
 - name: Add ssh authorized_keys to users
+  tags: users
   ansible.posix.authorized_key:
     user: "{{ item.name }}"
     key: "{{ item.ssh_key }}"
@@ -21,6 +22,7 @@
   loop: "{{ users }}"
 
 - name: User | Suppress login messages for users
+  tags: users
   ansible.builtin.file:
     name: /home/{{ item.name }}/.hushlogin
     mode: '644'
@@ -28,16 +30,15 @@
     modification_time: preserve
     access_time: preserve
   loop: "{{ users }}"
-  tags: users
 
 - name: User | copy '.bash_aliases' file. to users
+  tags: users
   ansible.builtin.copy:
     src: files/dot_files/.bash_aliases
     dest: /home/{{ item.name }}/.bash_aliases
     owner: "{{ item.name }}"
     mode: '644'
   loop: "{{ users }}"
-  tags: users
 
 - name: User | copy '.bash_aliases' file to root user.
   ansible.builtin.copy:
@@ -45,9 +46,9 @@
     dest: /root/.bash_aliases
     owner: root
     mode: '644'
-  tags: users
 
 - name: Make sudo without password for sudoers
+  tags: users
   ansible.builtin.copy:
     dest: /etc/sudoers.d/{{ item }}
     content: "{{ item }} ALL=(ALL) NOPASSWD:ALL"

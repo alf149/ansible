@@ -1,0 +1,6 @@
+---
+- name: Add No Subscription Repository
+  ansible.builtin.apt_repository:
+    repo: deb http://download.proxmox.com/debian/pbs {{ ansible_distribution_release }} pbs-no-subscription
+    filename: pbs-no-subscription
+    state: present

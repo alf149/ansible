@@ -1,13 +1,12 @@
 ---
 
 - name: Run on "mail servers/relays"
-  hosts: prod_mail_servers
-  gather_facts: true
+  hosts: prod_mail_servers:!hardware
+  gather_facts: false
   become: true
 
   roles:
     - role: system
-      tags: system
     - role: geerlingguy.security
       tags: security
     - role: geerlingguy.ntp

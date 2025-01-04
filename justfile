@@ -15,8 +15,8 @@ ansi_inv *VARS:
   echo 'Show Ansible inventory'
   ansible-inventory --vault-password-file ~/.vault_pass --graph {{VARS}}
 
-ansi_hardware HOST *TAGS:
-  ansible-playbook playbooks/servers_hardware.yml -i inventories/hardware.ini --vault-password-file ~/.vault_pass  --limit {{HOST}} {{TAGS}} 
+ansi_hardware *TAGS:
+  ansible-playbook playbooks/servers_hardware.yml -i inventories/hardware.ini {{TAGS}} 
 
 ansi_prod HOST *TAGS:
   ansible-playbook playbooks/prod_servers_all.yml -i inventories/prod.ini --vault-password-file ~/.vault_pass --limit {{HOST}} {{TAGS}} 
@@ -24,11 +24,11 @@ ansi_prod HOST *TAGS:
 ansi_prod_first HOST *TAGS:
   ansible-playbook playbooks/prod_servers_all.yml -i inventories/bootstrap.ini --vault-password-file ~/.vault_pass -t system --limit {{HOST}} {{TAGS}} 
 
-ansi_prod_upd HOST:
-  ansible-playbook playbooks/prod_servers_all.yml -i inventories/prod.ini --vault-password-file ~/.vault_pass --tags os_update --extra-vars "enable_os_update=true" --limit {{HOST}} 
+ansi_prod_upd *TAGS:
+  ansible-playbook playbooks/prod_servers_all.yml -i inventories/prod.ini --vault-password-file ~/.vault_pass --tags os_update --extra-vars "enable_os_update=true" {{TAGS}} 
   
 ansi_prod_piupdate:
-  ansible-playbook playbooks/servers_dns_lan.yml -i inventories/prod.ini --vault-password-file ~/.vault_pass --tags=piholeupdate --extra-vars="enable_pihole_update=true"  --limit="prod_dns_servers"
+  ansible-playbook playbooks/prod_dns_servers.yml -i inventories/prod.ini --vault-password-file ~/.vault_pass --tags piholeupdate --extra-vars "enable_pihole_update=true"  --limit="prod_dns_servers"
 
 ansi_prod_reboot HOST *TAGS:
   ansible-playbook playbooks/servers_prod_reboot.yml --vault-password-file ~/.vault_pass --limit {{HOST}} {{TAGS}} 
