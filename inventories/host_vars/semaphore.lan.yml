@@ -62,6 +62,6 @@ containers:
       - SEMAPHORE_EMAIL_HOST=mail.lan
       - SEMAPHORE_EMAIL_PORT=25
       - ANSIBLE_HOST_KEY_CHECKING=false
-      - ansible_force_install_requirements=true
+      - SEMAPHORE_ANSIBLE_FORCE_INSTALL_REQUIREMENTS=true
     include_global_env_vars: true
     restart: unless-stopped
