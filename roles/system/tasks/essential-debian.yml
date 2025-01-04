@@ -1,10 +1,49 @@
 ---
-- name: essential-debian | Update apt packages cache (Debian and Ubuntu)
-  ansible.builtin.apt:
-    upgrade: false
-    autoremove: false
-    update_cache: true
-    cache_valid_time: 3600
-  when: ansible_os_family == 'Debian'
-  tags:
-    - update_cache
+- name: Upgrade apt packages (Debian and Ubuntu)
+  when: enable_os_update
+  tags: os_update
+  block:
+    - name: Upgrade apt packages (Debian and Ubuntu)
+      ansible.builtin.apt:
+        force_apt_get: true
+        upgrade: true
+        autoremove: true
+        update_cache: true
+        cache_valid_time: 3600
+      when:
+        - ansible_os_family | lower == "debian"
+        - enable_os_update
+      changed_when: false
+
+    - name: Check if a reboot is needed on all servers
+      register: reboot_required_file
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+    - name: Reboot the box if kernel updated
+      ansible.builtin.reboot:
+        msg: "Reboot initiated by Ansible for kernel updates"
+      when: reboot_required_file.stat.exists
+
+# extra packages
+- name: Install extra packages
+  tags: extra_packages
+  when: enable_extra_packages | d(false) | bool
+  ansible.builtin.package:
+    name: "{{ extra_packages }}"
+    state: present
+
+# extra packages tui
+- name: Install extra packages tui
+  tags: extra_packages_tui
+  when: enable_extra_packages_tui | d(false) | bool
+  ansible.builtin.package:
+    name: "{{ extra_packages_tui }}"
+    state: present
+
+# packages net-tools
+- name: Install extra packages net-tools
+  tags: extra_packages_nettools
+  when: enable_extra_packages_nettools | d(false) | bool
+  ansible.builtin.package:
+    name: "{{ extra_packages_nettools }}"
+    state: present

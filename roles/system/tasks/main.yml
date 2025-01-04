@@ -2,9 +2,8 @@
 - name: Essential-debian
   ansible.builtin.include_tasks: essential-debian.yml
 
-- name: Create users
-  ansible.builtin.include_tasks: users.yml
-
 - name: Disable_ipv6
   ansible.builtin.include_tasks: disable_ipv6.yml
 
+- name: Create users
+  ansible.builtin.include_tasks: users.yml

@@ -1,7 +1,4 @@
 ---
-
-## Missing a way to delete users not active og not in script.
-## Missing a way yo delete sudoers files in /etc/sudoers.d/ if user not exist or active.
 - name: Add users
   ansible.builtin.user:
     name: "{{ item.name }}"
