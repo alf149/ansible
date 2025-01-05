@@ -1,7 +1,4 @@
 ---
-### tested via just ansi_hardware on 04-01-2025
-### this was the test parameters
-###    ansible-playbook playbooks/prod_dns_servers.yml -i inventories/prod.ini --vault-password-file ~/.vault_pass --tags piholeupdate,os_update  --extra-vars "enable_pihole_update=true, enable_os_update=true"  --limit="prod_dns_servers"
 ### Should beable to run via automation (semaphore)
 
 - name: Run on "prod_dns_servers"

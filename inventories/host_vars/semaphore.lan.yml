@@ -1,10 +1,5 @@
-enable_extra_packages: true
-extra_packages_nettools: false
 
 ## Firewall 
-enable_ufw: true
-enable_ufw_deny_out: true
-
 open_ports:
   - { src: any, dest: any, port: '22', proto: 'tcp', direction: out, comment: 'SSH' }
   - { src: any, dest: any, port: '53', proto: any, direction: out, comment: 'DNS' }

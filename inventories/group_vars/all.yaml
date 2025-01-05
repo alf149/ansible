@@ -1,11 +1,11 @@
 ---
+
 # Used in Geerlingguy.ntp
 ntp_servers:
   - 0.dk.pool.ntp.org
   - 1.dk.pool.ntp.org
   - 2.dk.pool.ntp.org
   - 3.dk.pool.ntp.org
-
 timezone: Europe/Copenhagen
 ntp_tinker_panic: true
 ntp_manage_config: true
@@ -25,6 +25,11 @@ pip_install_packages:
 docker_daemon_options: {"iptables": true}
 docker_users: [ 'deploy' ]
 
+# for each host
+enable_os_update: false                 # Must be set ad -e enable_os_update=true on cli or in host vars. 
+enable_extra_packages: true
+enable_extra_packages_tui: false
+enable_extra_packages_nettools: false
 extra_packages: 
   - curl
   - wget
@@ -36,22 +41,29 @@ extra_packages:
   - ca-certificates
   - qemu-guest-agent
   - bash-completion
-  
 extra_packages_nettools: 
   - dnsutils
   - net-tools
   - nmap
   - netcat
+extra_packages_tui: 
+  - jq
+  - htop
+  - unzip
+  - plocate
+  - neovim
+  - ripgrep
+  - fd-find
+  - fzf
+  - bat 
 
+## Firewall on host
+enable_ufw: true
+enable_ufw_deny_out: true
+
+## Users on all hosts
 users:
-
-  - name: !vault |
-          $ANSIBLE_VAULT;1.1;AES256
-          32306365653061653732623066353232363763363362663036303336313563663331393431356563
-          6162313465373734373862623236393636336331616665370a373662333138353236396437616430
-          39303832333330396234653333366331396366666164643761386262663934313866636364633238
-          6330363463306339380a353839656537373530653139303063363436303631313439653932353163
-          3034
+  - name: deploy
     comment: System Administration
     password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
@@ -67,7 +79,6 @@ users:
     groups:
       - sudo
     ssh_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG5iPUMbwcXyBjEp3rJA/d7Qv4HRo83BXo5az0H74kzj
-
   - name: rolf
     comment: Rolf
     password: !vault |
@@ -85,6 +96,7 @@ users:
       - sudo
     ssh_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGr//oYSrumw4PR7+dY1LVwhAkn29mECyrt1q5jyM3VR
 
+## Suduers on all hosts
 sudoers: 
  - deploy
  - rolf

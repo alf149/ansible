@@ -1,5 +1,4 @@
 ---
-### test via just ansi_hardware den 04-01-2025
 ### Should NOT run via automation (semaphore) since HW that automation is running on can restart.
 ### automation server should be moved to other HW.
 
