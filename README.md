@@ -157,3 +157,38 @@ External VLAN/ DMZ VLAN is used for incomming trafic.
 * Automate if posible, could mee breaking changes. 
 * Read update instruktions. 
 * Manualy update if needed. ** (colud be host spec.) **
+
+
+
+# Naming of servers and services
+## servers
+
+type_name[xx].srv[env].amfelt.dk
+  * dmz_caddy01.srvp.amfelt.dk
+  * dns_pi01.srvp.amfelt.dk
+  * dns_pi02.srvp.amfelt.dk
+test_type_name.srvt.amfelt.dk
+  * dmz_caddy01.srvt.amfelt.dk
+  * auto_semaphore01.srvt.amfelt.dk
+dev_type_name.srvd.amfelt.dk
+  * dmz_caddy01.srvd.amfelt.dk
+  * auto_semaphore01.srvd.amfelt.dk
+
+## services
+
+[service].intra.amfelt.dk
+  * dns1.intra.amfelt.dk -> (Via proxy) -> dns_pi01.srvp.amfelt.dk
+  * dns2.intra.amfelt.dk -> (Via proxy) -> dns_pi02.srvp.amfelt.dk
+  * auto.intra.amfelt.dk -> (Via proxy) -> auto_semaphore01.srvp.amfelt.dk
+  * git.intra.amfelt.dk -> (Via proxy) -> auto_git01.srvp.amfelt.dk
+  * [div_docker_services].intra.amfelt.dk -> (Via proxy) -> docker01.srvp.amfelt.dk
+  * [div_docker_services].intra.amfelt.dk -> (Via proxy) -> docker02.srvp.amfelt.dk
+
+[service].intra-t.amfelt.dk for TEST enviroment
+[service].intra-d.amfelt.dk for TEST enviroment
+
+DNS
+Auto
+Git 
+is shared between enviroments. 
+! It's only a homelab. 
