@@ -1,5 +1,14 @@
 ---
 
+### 
+### ansible vault vault_passwrod_file in ansible.cfg
+### ansible-vault no ENV eg PROD, TEST, DEV
+### ansible-vault encrypt_string 'password' --name 'semaphore_admin' 
+### ansible-vault with ENV eg. PROD
+### ansible-vault encrypt_string --vault-id prod@~/.vault_pass_prod 'secret text to encrypt' --name 'var_prod_secret'
+### view a encryptet string. 
+### ansible localhost -m ansible.builtin.debug -a var="var_prod_secret" -e "@inventories/group_vars/prod.yml" --vault-id prod@~/.vault_pass_prod
+
 # Used in Geerlingguy.ntp
 ntp_servers:
   - 0.dk.pool.ntp.org
@@ -26,7 +35,7 @@ docker_daemon_options: {"iptables": true}
 docker_users: [ 'deploy' ]
 
 # for each host
-enable_os_update: false                 # Must be set ad -e enable_os_update=true on cli or in host vars. 
+enable_os_update: false
 enable_extra_packages: true
 enable_extra_packages_tui: false
 enable_extra_packages_nettools: false
