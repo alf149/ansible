@@ -5,7 +5,7 @@
   gather_facts: false
   become: false
 
-- name: Include dns servers setup/configuration
+- name: Include DNS servers setup/configuration
   ansible.builtin.import_playbook: prod_dns_servers.yml
   when: group_names | select('regex', '^.*(prod_dns_servers)$') | list | count > 0
 
@@ -17,7 +17,7 @@
   ansible.builtin.import_playbook: prod_mail_servers.yml
   when: group_names | select('regex', '^.*(prod_mail_servers)$') | list | count > 0
 
-- name: Include proxy servers servers setup/configuration
+- name: Include PROXY servers servers setup/configuration
   ansible.builtin.import_playbook: prod_proxy_servers.yml
   when: group_names | select('regex', '^.*(prod_proxy_servers)$') | list | count > 0
 
@@ -25,10 +25,14 @@
   ansible.builtin.import_playbook: prod_source_servers.yml
   when: group_names | select('regex', '^.*(prod_source_servers)$') | list | count > 0
 
-- name: Include docker servers setup/configuration
+- name: Include Docker servers setup/configuration
   ansible.builtin.import_playbook: prod_docker_servers.yml
   when: group_names | select('regex', '^.*(prod_docker_servers)$') | list | count > 0
 
-- name: Include automation servers setup/configuration
+- name: Include Automation servers setup/configuration
   ansible.builtin.import_playbook: prod_auto_servers.yml
   when: group_names | select('regex', '^.*(prod_auto_servers)$') | list | count > 0
+
+- name: Include First boot setup/configuration
+  ansible.builtin.import_playbook: prod_servers_first.yml
+  when: group_names | select('regex', '^.*(boot)$') | list | count > 0

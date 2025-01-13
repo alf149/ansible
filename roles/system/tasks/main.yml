@@ -6,9 +6,11 @@
   ansible.builtin.include_tasks: essential-debian.yml
 
 - name: Disable_ipv6
-  tags: system
+  tags:
+    - system
   ansible.builtin.include_tasks: disable_ipv6.yml
 
 - name: Create users
-  tags: users
+  tags:
+    - users
   ansible.builtin.include_tasks: users.yml

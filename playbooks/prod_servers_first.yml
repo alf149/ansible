@@ -1,0 +1,12 @@
+---
+###
+- name: Run on "First Boot"
+  hosts: boot
+  gather_facts: true
+  become: true
+
+  roles:
+    - role: system
+    - role: geerlingguy.security
+    - role: geerlingguy.ntp
+    - role: ufw

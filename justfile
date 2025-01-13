@@ -22,7 +22,7 @@ ansi_prod HOST *TAGS:
   ansible-playbook playbooks/prod_servers_all.yml -i inventory/prod.ini --vault-password-file ~/.vault_pass --limit {{HOST}} {{TAGS}} 
 
 ansi_prod_first HOST *TAGS:
-  ansible-playbook playbooks/prod_servers_all.yml -i inventory/bootstrap.ini --vault-password-file ~/.vault_pass -t system --limit {{HOST}} {{TAGS}} 
+  ansible-playbook playbooks/prod_servers_first.yml -i inventory/bootstrap.ini --vault-password-file ~/.vault_pass -t system --limit {{HOST}} {{TAGS}} 
 
 ansi_prod_upd *TAGS:
   ansible-playbook playbooks/prod_servers_all.yml -i inventory/prod.ini --vault-password-file ~/.vault_pass --tags os_update --extra-vars "enable_os_update=true" {{TAGS}} 

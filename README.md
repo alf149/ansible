@@ -192,3 +192,11 @@ Auto
 Git 
 is shared between enviroments. 
 ! It's only a homelab. 
+
+
+Local domains not public. 
+Can be accesseble from cloudflare tunnel with auth. 
+
+*.intra.amfelt.dk Working services
+*.dev.amfelt.dk Deveope services
+*.demo.amfelt.dk

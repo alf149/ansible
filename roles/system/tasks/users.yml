@@ -41,6 +41,7 @@
   loop: "{{ users }}"
 
 - name: User | copy '.bash_aliases' file to root user.
+  tags: users
   ansible.builtin.copy:
     src: files/dot_files/.bash_aliases
     dest: /root/.bash_aliases

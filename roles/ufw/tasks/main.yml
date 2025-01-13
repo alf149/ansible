@@ -1,18 +1,22 @@
 ---
 - name: Install UFW
+  tags: ufw
   ansible.builtin.import_tasks: install.yml
 
 - name: Configure UFW
+  tags: ufw
   ansible.builtin.import_tasks: configure.yml
 
 # - name: Fix dropped ssh sessions
 #   ansible.builtin.import_tasks: fix-dropped-ssh-sessions.yml
 
 - name: Set logging for UFW
+  tags: ufw
   community.general.ufw:
     logging: 'on'
 
 - name: Enable Firewall UFW
+  tags: ufw
   community.general.ufw:
     state: enabled
   notify:
