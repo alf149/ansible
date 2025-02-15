@@ -42,6 +42,8 @@ ansi_test HOST *TAGS:
 ansi_dev HOST *TAGS:
   ansible-playbook playbooks/dev_servers.yml -i inventory/dev.ini --vault-password-file ~/.vault_pass --limit {{HOST}} {{TAGS}} 
 
+ansi_testing HOST *TAGS:
+  ansible-playbook playbooks/testing.yml -i inventory/prod.ini --vault-password-file ~/.vault_pass --limit {{HOST}} {{TAGS}} 
 ## Docker tasks
 
 
