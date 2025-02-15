@@ -1,0 +1,25 @@
+---
+
+- name: Output ansible_distribution
+  hosts: prod
+  gather_facts: true
+  become: true
+
+  tasks:
+  - name: Output ansible_distribution
+    ansible.builtin.debug:
+      msg: "{{ ansible_distribution }}"
+
+  - name: Output ansible_os_family
+    ansible.builtin.debug:
+      msg: "{{ ansible_os_family }}"
+
+
+  - name: Essential-debian | Update apt packages cache (Debian and Ubuntu)
+    ansible.builtin.apt:
+      upgrade: true
+      autoremove: false
+      update_cache: true
+      cache_valid_time: 600
+    when: ansible_os_family == 'Debian'
+    tags: forceupdate
