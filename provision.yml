@@ -3,39 +3,45 @@
   hosts: all
   gather_facts: true
   become: true
-
-  vars_files:
-    - group_vars/secrets.yml
-
-  roles:
-    - role: system
-      tags: system
+  vars:
+    users:
+      - name: deploy
+        password: $6$7s7I5a3fAbW1uW7S$SU43fNrt24wpZ5rQetOPIdMgCSn.OJNYJngQDGbPg3YZzg4NEQaRLWlZUWufhHgHLXeomlbv45bN0pJMYGff91
+        comment: System Administration
+        ssh_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGr//oYSrumw4PR7+dY1LVwhAkn29mECyrt1q5jyM3VR
+        groups:
+          - sudo
+        
 
   tasks:
-    - name: Install package ufw
-      tags: ufw
-      ansible.builtin.package:
+    - name: Add users
+      tags: users
+      ansible.builtin.user:
+        name: "{{ item.name }}"
+        comment: "{{ item.comment }}"
+        password: "{{ item.password }}"
+        groups: "{{ item.groups }}"
+        append: true
+        shell: /bin/bash
+        update_password: always
+        create_home: true
         state: present
-        name: ufw
-      notify:
-        - Reload ufw
+      loop: "{{ users }}"
 
-    - name: Set logging
-      community.general.ufw:
-        logging: 'on'
+    - name: Add ssh authorized_keys to users
+      tags: users
+      ansible.posix.authorized_key:
+        user: "{{ item.name }}"
+        key: "{{ item.ssh_key }}"
+        exclusive: false
+      loop: "{{ users }}"
 
-    - name: Allow necessary ports in UFW
-      community.general.ufw:
-        rule: allow
-        direction: 'in'
-        from_ip: 'any'
-        to_ip: 'any'
-        port: 22
-        proto: 'tcp'
-        comment: "Allow ssh from any"
-
-    - name: Enable Firewall ufw
-      community.general.ufw:
-        state: enabled
-      notify:
-        - Reload ufw
+    - name: User | Suppress login messages for users
+      tags: users
+      ansible.builtin.file:
+        name: /home/{{ item.name }}/.hushlogin
+        mode: '644'
+        state: touch
+        modification_time: preserve
+        access_time: preserve
+      loop: "{{ users }}"

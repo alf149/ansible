@@ -19,8 +19,8 @@
       tags: ufw
     - role: nfsclient
       tags: nfs
-    - role: ironicbadger.docker_compose_generator
-      tags: docker
+    # - role: ironicbadger.docker_compose_generator
+    #   tags: docker
 
   tasks:
     - name: Check if nonfs folder exits exists

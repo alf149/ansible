@@ -18,6 +18,9 @@
           {% for host in groups['hardware'] %}
           {{ hostvars[host].ansible_host }}   {{ host }}
           {% endfor %}
+          {% for host in groups['dev'] %}
+          {{ hostvars[host].ansible_host }}   {{ host }}
+          {% endfor %}
   
     - name: Add Ansible inventory mappings to ~/.ssh/config
       become: false
@@ -42,6 +45,16 @@
                 User root
                 Port 22
                 IdentityFile ~/.ssh/deploy_hw
+                StrictHostKeyChecking no
+                UserKnownHostsFile /dev/null
+
+            {% endfor %}
+            {% for host in groups['dev'] %}
+            host {{ host }}
+                HostName {{ hostvars[host].ansible_host }}
+                User deploy
+                Port 22
+                IdentityFile ~/.ssh/deploy
                 StrictHostKeyChecking no
                 UserKnownHostsFile /dev/null
 

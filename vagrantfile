@@ -71,8 +71,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     srv02.vm.hostname = "srv02.test"
     srv02.vm.network :private_network, ip: "192.168.56.32", hostname: true
     srv02.vm.provision "ansible" do |ansible|
-      ansible.compatibility_mode = "2.0"
-      ansible.config_file = "ansible.cfg"
       ansible.playbook = "provision.yml"
     end
   end
