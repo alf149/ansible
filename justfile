@@ -37,10 +37,10 @@ ansi_prod_reboot HOST *TAGS:
   ansible-playbook playbooks/servers_prod_reboot.yml --vault-password-file ~/.vault_pass --limit {{HOST}} {{TAGS}} 
 
 ansi_test HOST *TAGS:
-  ansible-playbook playbooks/test_servers.yml -i inventory/test.ini --vault-password-file ~/.vault_pass --limit {{HOST}} {{TAGS}} 
+  ansible-playbook playbooks/test_servers_all.yml -i inventory/test.ini --vault-password-file ~/.vault_pass --limit {{HOST}} {{TAGS}} 
 
 ansi_dev HOST *TAGS:
-  ansible-playbook playbooks/dev_servers.yml -i inventory/dev.ini --vault-password-file ~/.vault_pass --limit {{HOST}} {{TAGS}} 
+  ansible-playbook playbooks/dev_servers_all.yml -i inventory/dev.ini --vault-password-file ~/.vault_pass_dev --vault-password-file ~/.vault_pass --limit {{HOST}} {{TAGS}} 
 
 ansi_testing HOST *TAGS:
   ansible-playbook playbooks/testing.yml -i inventory/prod.ini --vault-password-file ~/.vault_pass --limit {{HOST}} {{TAGS}} 
