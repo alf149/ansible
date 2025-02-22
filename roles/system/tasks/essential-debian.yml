@@ -11,7 +11,6 @@
         autoremove: true
         update_cache: true
         cache_valid_time: 3600
-      when: ansible_os_family | lower == "debian"
       changed_when: false
     - name: Check if a reboot is needed on all servers
       register: reboot_required_file
@@ -21,6 +20,16 @@
       ansible.builtin.reboot:
         msg: "Reboot initiated by Ansible for kernel updates"
       when: reboot_required_file.stat.exists
+
+- name: Upgrade apt packages chache
+  when: not enable_os_update | d(false) | bool
+  ansible.builtin.apt:
+    force_apt_get: true
+    upgrade: false
+    autoremove: true
+    update_cache: true
+    cache_valid_time: 3600
+  changed_when: false
 
 # extra packages
 - name: Install extra packages

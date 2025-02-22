@@ -1,17 +1,18 @@
 ---
 - name: Provision a new server on test og lab
   hosts: all
-  gather_facts: true
+  gather_facts: false
   become: true
   vars:
     users:
       - name: deploy
         password: $6$7s7I5a3fAbW1uW7S$SU43fNrt24wpZ5rQetOPIdMgCSn.OJNYJngQDGbPg3YZzg4NEQaRLWlZUWufhHgHLXeomlbv45bN0pJMYGff91
         comment: System Administration
-        ssh_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGr//oYSrumw4PR7+dY1LVwhAkn29mECyrt1q5jyM3VR
+        ssh_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG5iPUMbwcXyBjEp3rJA/d7Qv4HRo83BXo5az0H74kzj
         groups:
           - sudo
-        
+    sudoers:
+      - deploy
 
   tasks:
     - name: Add users
@@ -45,3 +46,35 @@
         modification_time: preserve
         access_time: preserve
       loop: "{{ users }}"
+
+    - name: Make sudo without password for sudoers
+      tags: users
+      ansible.builtin.copy:
+        dest: /etc/sudoers.d/{{ item }}
+        content: "{{ item }} ALL=(ALL) NOPASSWD:ALL"
+        mode: "0440"
+        validate: visudo -cf %s
+      loop: "{{ sudoers }}"
+
+    - name: Install package UFW
+      tags: ufw
+      ansible.builtin.package:
+        state: present
+        name: ufw
+    - name: Clear Previous Rules
+      community.general.ufw:
+        state: reset
+    - name: Allow Firewall UFW port 22
+      community.general.ufw:
+        rule: allow
+        port: 22
+        proto: tcp
+    - name: Set logging for UFW
+      tags: ufw
+      community.general.ufw:
+        logging: 'on'
+    - name: Enable Firewall UFW
+      tags: ufw
+      community.general.ufw:
+        state: enabled
+

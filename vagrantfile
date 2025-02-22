@@ -17,11 +17,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     dev01.vm.box = "generic/ubuntu2204"
     dev01.vm.box_check_update = false
-    dev01.vm.hostname = "dev01.test"
+    dev01.vm.hostname = "dev01.dev"
     dev01.vm.network :private_network, ip: "192.168.56.20", hostname: true
     dev01.vm.provision "ansible" do |ansible|
-      ansible.compatibility_mode = "2.0"
-      ansible.config_file = "ansible.cfg"
       ansible.playbook = "provision.yml"
     end
   end
@@ -29,12 +27,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # dev02
   config.vm.define "dev02.dev", autostart: false do |dev02|
     dev02.vm.provider "libvirt" do |v|
-      v.memory = 4096
-      v.cpus = 4
+      v.memory = 2048
+      v.cpus = 2
     end
     dev02.vm.box = "generic/ubuntu2204"
     dev02.vm.box_check_update = false
-    dev02.vm.hostname = "dev02.test"
+    dev02.vm.hostname = "dev02.dev"
     dev02.vm.network :private_network, ip: "192.168.56.21", hostname: true
     dev02.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
@@ -54,8 +52,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     srv01.vm.hostname = "srv01.test"
     srv01.vm.network :private_network, ip: "192.168.56.31", hostname: true
     srv01.vm.provision "ansible" do |ansible|
-      ansible.compatibility_mode = "2.0"
-      ansible.config_file = "ansible.cfg"
       ansible.playbook = "provision.yml"
     end
   end

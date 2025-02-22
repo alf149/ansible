@@ -1,18 +1,19 @@
 ---
 - name: Run on all DEV_SERVERS
   hosts: dev
-  gather_facts: false
+  gather_facts: true
   become: true
 
   roles:
     - role: system
     - role: geerlingguy.ntp
+      tags: ntp
     - role: geerlingguy.security
 
 ###
-- name: Run on "dev01.dev"
-  hosts: dev01.dev
-  gather_facts: true
+- name: Run on "dev01.dev and dev02.dev"
+  hosts: dev01.dev:dev02.dev
+  gather_facts: false
   become: true
 
   roles:
@@ -20,18 +21,182 @@
       tags: ufw
 
   tasks:
-    - name: Essential-debian | Install extra packages
-      ansible.builtin.package:
-        name: "{{ extra_packages }}"
-        state: present
+    - name: Create a directory ~/.local/bin
+      become_user: deploy
+      ansible.builtin.file:
+        path: ~/.local/bin
+        state: directory
+        mode: '0755'
 
-    - name: Check if a reboot is required on Ubuntu
-      when: ansible_facts['os_family'] == 'Debian'
-      ansible.builtin.stat:
-        path: /var/run/reboot-required
-      register: ubuntu_reboot_required
+    - name: Install | helix editor
+      tags: helix
+      become: true
+      when: helix | d(false) | bool
+      block:
+        - name: Add helix editor ppa
+          ansible.builtin.apt_repository:
+            repo: ppa:maveonair/helix-editor
+        - name: Upgrade apt packages helix ppa and Ubuntu
+          ansible.builtin.apt:
+            force_apt_get: true
+            upgrade: false
+            autoremove: true
+            update_cache: true
+            cache_valid_time: 3600
+        - name: Install helix editor
+          ansible.builtin.apt:
+            name: helix
+            state: present
 
-    - name: Reboot Debian/Ubuntu if required
-      when: ubuntu_reboot_required.stat.exists | default(false)
-      ansible.builtin.reboot:
-        reboot_timeout: 600
+    - name: Install | starship
+      tags: starship
+      # become_user: deploy
+      when: starship | d(false) | bool
+      block:
+        - name: Check that the startship exists
+          ansible.builtin.stat:
+            path: /usr/local/bin/starship
+          register: stat_starship
+        - name: Fetch starship script
+          when: not stat_starship.stat.exists
+          ansible.builtin.uri:
+            url: https://starship.rs/install.sh
+            return_content: true
+          register: starship_installer
+        - name: Run starship installer
+          when: not stat_starship.stat.exists
+          ansible.builtin.command:
+            cmd: sh -s -- -b /usr/local/bin -y
+            stdin: "{{ starship_installer.content }}"
+          register: my_starship
+          changed_when: my_starship.rc != 0
+        - name: Add starship to bash
+          become_user: deploy
+          # when: not stat_starship.stat.exists
+          ansible.builtin.lineinfile:
+            path: ~/.bash_aliases
+            line: 'eval "$(starship init bash)"'
+            mode: '0755'
+            create: true
+
+    - name: Install | docker
+      tags: docker
+      become: true
+      when: docker | d(false) | bool
+      block:
+        - name: Check If Docker Is Installed
+          ansible.builtin.command: docker --version
+          register: docker_valid
+          ignore_errors: true
+          changed_when: false
+        - name: Fetch docker script
+          when: docker_valid.failed
+          ansible.builtin.uri:
+            url: https://get.docker.com
+            return_content: true
+          register: docker_installer
+        - name: Run docker installer
+          when: docker_valid.failed
+          ansible.builtin.command:
+            cmd: sh
+            stdin: "{{ docker_installer.content }}"
+          register: my_docker
+          changed_when: my_docker.rc != 0
+        - name: Create "docker" group
+          become: true
+          ansible.builtin.group:
+            name: docker
+            state: present
+        - name: Ensure docker users are added to the docker group.
+          ansible.builtin.user:
+            name: "{{ item }}"
+            groups: docker
+            append: true
+          with_items: "{{ docker_users }}"
+
+    - name: Install | lazydocker
+      tags: lazydocker
+      # become_user: deploy
+      when: lazydocker | d(false) | bool
+      block:
+        - name: Check that the lazydocker exists
+          ansible.builtin.stat:
+            path: /usr/local/bin/lazydocker
+          register: stat_lazydocker
+        - name: Install | lazydocker
+          when: not stat_lazydocker.stat.exists
+          ansible.builtin.unarchive:
+            src: "{{ lazydocker_dl_url }}"
+            dest: /usr/local/bin
+            extra_opts:
+              - lazydocker
+            remote_src: true
+            mode: '0755'
+
+    - name: Install | lazygit
+      tags: lazygit
+      # become_user: deploy
+      when: lazygit | d(false) | bool
+      block:
+        - name: Check that the lazygit exists
+          ansible.builtin.stat:
+            path: /usr/local/bin/lazygit
+          register: stat_lazygit
+        - name: Install | lazygit
+          when: not stat_lazygit.stat.exists
+          ansible.builtin.unarchive:
+            src: "{{ lazygit_dl_url }}"
+            dest: /usr/local/bin
+            extra_opts:
+              - lazygit
+            remote_src: true
+            mode: '0755'
+
+    - name: Install | mscorefonts, NerdFontsSymbols, CascadiaCode
+      tags: fonts
+      # become_user: deploy
+      when: fonts | d(false) | bool
+      block:
+        - name: Install Fonts
+          become_user: root
+          become: true
+          ansible.builtin.package:
+            name:
+              - ttf-mscorefonts-installer
+              - fontconfig
+          tags: fonts
+        - name: Create a directory /usr/local/share/fonts
+          ansible.builtin.file:
+            path: /usr/local/share/fonts
+            state: directory
+            mode: '0755'
+        - name: Check that the SymbolsNerdFont exists
+          ansible.builtin.stat:
+            path: /usr/local/share/fonts/SymbolsNerdFont-Regular.ttf
+          register: stat_nerdfontssymbolsonly
+        - name: Download NerdFontsSymbolsOnly.zip Fonts
+          ansible.builtin.unarchive:
+            src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/NerdFontsSymbolsOnly.zip
+            dest: /usr/local/share/fonts
+            remote_src: true
+          when: not stat_nerdfontssymbolsonly.stat.exists
+        - name: Check that the CascadiaCode exists
+          ansible.builtin.stat:
+            path: /usr/local/share/fonts/CaskaydiaCoveNerdFont-Italic.ttf
+          register: stat_cascadiacode
+        - name: Download CascadiaCode.zip Fonts
+          ansible.builtin.unarchive:
+            src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/CascadiaCode.zip
+            dest: /usr/local/share/fonts
+            remote_src: true
+          when: not stat_cascadiacode.stat.exists
+        - name: Update the font cache
+          ansible.builtin.command: fc-cache /usr/local/share/fonts
+          changed_when: false
+          when:
+            - not stat_cascadiacode.stat.exists
+            - not stat_nerdfontssymbolsonly.stat.exists
+        - name: Update the font cache
+          become: true
+          ansible.builtin.command: fc-cache -f -v
+          changed_when: false

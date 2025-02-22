@@ -5,7 +5,7 @@
 ## Ansible stuff
 # optionally use --force to force reinstall all requirements
 ansi_reqs:
-  ansible-galaxy install -r playbooks/requirements.yml --force 
+  ansible-galaxy install -r playbooks/roles/requirements.yml --force 
 
 ansi_env:
   echo 'Use localhost password'
