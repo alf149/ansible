@@ -39,6 +39,7 @@ enable_os_update: false
 enable_extra_packages: true
 enable_extra_packages_tui: false
 enable_extra_packages_nettools: false
+
 extra_packages: 
   - curl
   - wget
@@ -50,17 +51,18 @@ extra_packages:
   - ca-certificates
   - qemu-guest-agent
   - bash-completion
+
 extra_packages_nettools: 
   - dnsutils
   - net-tools
   - nmap
   - netcat
+
 extra_packages_tui: 
   - jq
   - htop
   - unzip
   - plocate
-  - neovim
   - ripgrep
   - fd-find
   - fzf
