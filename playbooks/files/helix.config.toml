@@ -1,0 +1,16 @@
+theme = "catppuccin_mocha"
+
+[editor]
+line-number = "relative"
+bufferline = "multiple"
+true-color = true
+auto-save = true
+auto-format = true
+auto-completion = true
+end-of-line-diagnostics = "hint"
+
+[keys.normal]
+"A-," = "goto_previous_buffer"
+"A-." = "goto_next_buffer"
+"A-w" = ":buffer-close"
+"A-/" = "repeat_last_motion"
