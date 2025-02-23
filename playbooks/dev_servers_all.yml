@@ -30,23 +30,63 @@
 
     - name: Install | helix editor
       tags: helix
-      become: true
+      become_user: deploy
       when: helix | d(false) | bool
       block:
-        - name: Add helix editor ppa
-          ansible.builtin.apt_repository:
-            repo: ppa:maveonair/helix-editor
-        - name: Upgrade apt packages helix ppa and Ubuntu
-          ansible.builtin.apt:
-            force_apt_get: true
-            upgrade: false
-            autoremove: true
-            update_cache: true
-            cache_valid_time: 3600
-        - name: Install helix editor
-          ansible.builtin.apt:
-            name: helix
-            state: present
+        - name: Check that the helix exists
+          ansible.builtin.stat:
+            path: /usr/local/bin/helix
+          register: stat_helix
+        - name: Install | helix
+          when: not stat_helix.stat.exists
+          ansible.builtin.uri:
+            url: "{{ helix_dl_url }}"
+            dest: /tmp/helix_dl.tar.xz
+            remote_src: true
+            mode: '0755'
+        - name: Extract helix into /tmp
+          ansible.builtin.unarchive:
+            src: /tmp/helix_dl.tar.xz
+            dest: /tmp
+            remote_src: true
+            list_files: true
+          register: helix_contents
+        # - name: Debug helix_contents
+        #   ansible.builtin.debug: var=helix_contents
+        - name: Debug helix_contents
+          ansible.builtin.debug:
+            var: helix_contents.files[0]
+        - name: Copy Helix to ~/.local/bin
+          ansible.builtin.copy:
+            src: "/tmp/{{ helix_contents.files[0] }}hx"
+            dest: "~/.local/bin/hx"
+            remote_src: true
+            mode: '0755'
+        - name: Copy Helix runtime to ~/.config/helix
+          ansible.builtin.copy:
+            src: "/tmp/{{ helix_contents.files[0] }}"
+            dest: "~/.config/helix"
+            remote_src: true
+            mode: '0644'
+
+        - name: Remove file /tmp/helix_dl.tar.xz
+          ansible.builtin.file:
+            path: /tmp/helix_dl.tar.xz
+            state: absent
+        - name: Remove file "/tmp/dir"
+          ansible.builtin.file:
+            path: "/tmp/{{ helix_contents.files[0] }}"
+            state: absent
+        - name: Ensures .config/helix/ dir exists
+          ansible.builtin.file:
+            path: "~/.config/helix"
+            state: directory
+            mode: '0700'
+        - name: Configure Helix config from vars
+          ansible.builtin.copy:
+            src: files/helix.config.toml
+            dest: "~/.config/helix/config.toml"
+            mode: '0644'
 
     - name: Install | starship
       tags: starship
