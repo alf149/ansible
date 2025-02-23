@@ -3,3 +3,20 @@ enable_os_update: false
 enable_extra_packages: true
 enable_extra_packages_tui: true
 enable_extra_packages_nettools: true
+
+helix: true
+helix_ver: '25.01.1'
+helix_dl_url: https://github.com/helix-editor/helix/releases/download/{{ helix_ver }}/helix-{{ helix_ver }}-x86_64-linux.tar.xz
+
+docker: true
+docker_users: [ 'deploy' ]
+fonts: true
+starship: true
+
+lazydocker: true
+lazydocker_ver: '0.24.1'
+lazydocker_dl_url: https://github.com/jesseduffield/lazydocker/releases/download/v{{ lazydocker_ver }}/lazydocker_{{ lazydocker_ver }}_Linux_x86_64.tar.gz
+
+lazygit: true
+lazygit_ver: '0.46.0'
+lazygit_dl_url: https://github.com/jesseduffield/lazygit/releases/download/v{{ lazygit_ver }}/lazygit_{{ lazygit_ver }}_Linux_x86_64.tar.gz
