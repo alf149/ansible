@@ -2,5 +2,5 @@
 
 - name: Restart proxmox-backup-proxy
   ansible.builtin.service:
-    name: "systemctl restart proxmox-backup-proxy"
+    name: "proxmox-backup-proxy"
     state: restarted
