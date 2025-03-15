@@ -30,8 +30,9 @@ ansi_prod_upd *TAGS:
 ansi_prod_docker:
   ansible-playbook playbooks/prod_docker_servers.yml -i inventory/prod.ini --vault-password-file ~/.vault_pass  --limit="prod_docker_servers"
 
-ansi_prod_piupdate *TAGS:
-  ansible-playbook playbooks/prod_dns_servers.yml -i inventory/prod.ini --vault-password-file ~/.vault_pass -t piholeupdate,os_update  -e enable_pihole_update=true,enable_os_update=true  --limit="prod_dns_servers" {{TAGS}} 
+ansi_prod_piupdate:
+  ansible-playbook playbooks/prod_dns_servers.yml -i inventory/prod.ini --vault-password-file ~/.vault_pass -t os_update -e "enable_os_update=true" -t "piholeupdate"  -e "enable_pihole_update=true" --limit="prod_dns_servers"
+
 
 ansi_prod_reboot HOST *TAGS:
   ansible-playbook playbooks/servers_prod_reboot.yml --vault-password-file ~/.vault_pass --limit {{HOST}} {{TAGS}} 

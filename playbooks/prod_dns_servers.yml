@@ -33,17 +33,17 @@
       register: ouputup
       changed_when: ouputup.rc != 0
       ansible.builtin.command: "/usr/local/bin/pihole -up"
-      when: enable_pihole_update
+      when: enable_pihole_update | d(false) | bool
       tags: piholeupdate
     - name: Update PiHole Gravaty with bash
       register: ouputg
       changed_when: ouputg.rc != 0
       ansible.builtin.command: "/usr/local/bin/pihole -g"
-      when: enable_pihole_update
+      when: enable_pihole_update | d(false) | bool
       tags: piholeupdate
     - name: Restart PiHole DNS with bash
       register: ouputdns
       changed_when: ouputdns.rc != 0
       ansible.builtin.command: "/usr/local/bin/pihole restartdns reload"
-      when: enable_pihole_update
+      when: enable_pihole_update | d(false) | bool
       tags: piholeupdate

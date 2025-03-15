@@ -12,6 +12,7 @@ open_ports:
   - { src: '192.168.30.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # Secure Vlan' }
   - { src: '192.168.3.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # VPN Vlan' }
 
+  - { src: any, dest: any, port: '443', proto: 'tcp', direction: in, comment: 'HTTPS' }
   - { src: '192.168.31.5', dest: any, port: '3001', proto: 'tcp', direction: in, comment: 'uptimekuma' }
   - { src: '192.168.31.5', dest: any, port: '3000', proto: 'tcp', direction: in, comment: 'homepage' }
   - { src: '192.168.31.5', dest: any, port: '4000', proto: 'tcp', direction: in, comment: 'speedtest' }
@@ -26,7 +27,8 @@ open_ports:
   - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } #Docker
   - { src: '172.18.0.0/16', dest: '172.18.0.0/16', port: '', proto: 'any', direction: out, comment: 'Docker' } #Docker
   - { src: '172.18.0.0/16', dest: '172.18.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } #Docker
-
+  - { src: '172.19.0.0/16', dest: '172.19.0.0/16', port: '', proto: 'any', direction: out, comment: 'Docker' } #Docker
+  - { src: '172.19.0.0/16', dest: '172.19.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } #Docker
   - { src: '172.20.0.0/16', dest: '172.20.0.0/16', port: '', proto: 'any', direction: out, comment: 'Docker' } #Docker
   - { src: '172.20.0.0/16', dest: '172.20.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } #Docker
 
@@ -149,3 +151,14 @@ containers:
     ports:
       - '3300:3000'
     restart: unless-stopped
+
+  - service_name: nebula-sync
+    # https://github.com/lovelaze/nebula-sync
+    active: true
+    image: ghcr.io/lovelaze/nebula-sync:latest
+    restart: unless-stopped
+    environment:
+      - PRIMARY=https://pi1.intra.amfelt.dk|Annerice12!
+      - REPLICAS=https://pi1.intra.amfelt.dk|Annerice12!
+      - FULL_SYNC=true
+      - CRON=0 * * * *

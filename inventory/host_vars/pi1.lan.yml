@@ -7,6 +7,9 @@ open_ports:
   - { src: any, dest: any, port: '80', proto: 'tcp', direction: out, comment: 'http' }
   - { src: any, dest: any, port: '443', proto: 'tcp', direction: out, comment: 'https' }
 
+  - { src: any, dest: '192.168.30.101', port: '8080', proto: 'tcp', direction: out, comment: 'http pi sync' }
+  - { src: any, dest: '192.168.30.102', port: '8080', proto: 'tcp', direction: out, comment: 'http pi sync' }
+
   - { src: '192.168.10.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # Secure Vlan' }
   - { src: '192.168.30.101', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # pihole 1' }
   - { src: '192.168.30.102', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # pihole 2' }
@@ -14,6 +17,9 @@ open_ports:
   - { src: '192.168.3.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'Allow from VPN' }
 
   - { src: '192.168.31.0/24', dest: any, port: '80', proto: 'tcp', direction: in, comment: 'HTTP # Secure Vlan' }
+  - { src: '192.168.31.0/24', dest: any, port: '8080', proto: 'tcp', direction: in, comment: 'HTTP # Secure Vlan' }
+  - { src: '192.168.30.101', dest: any, port: '8080', proto: 'tcp', direction: in, comment: 'HTTP # Secure Vlan' }
+  - { src: '192.168.30.102', dest: any, port: '8080', proto: 'tcp', direction: in, comment: 'HTTP # Secure Vlan' }
 
   - { src: '192.168.3.0/24', dest: any, port: '53', proto: any, direction: in, comment: 'DNS # VPN VLAN' }
   - { src: '192.168.10.0/24', dest: any, port: '53', proto: any, direction: in, comment: 'DNS # Secure Vlan' }

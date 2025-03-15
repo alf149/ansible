@@ -17,7 +17,9 @@ open_ports:
   - { src: '192.168.31.5', dest: '192.168.30.151', port: '3100', proto: 'tcp', direction: out, comment: 'PDF Tools' }
   - { src: '192.168.31.5', dest: '192.168.30.151', port: '3200', proto: 'tcp', direction: out, comment: 'IT-Tools' }  
   - { src: '192.168.31.5', dest: '192.168.30.151', port: '3300', proto: 'tcp', direction: out, comment: 'Webcheks' }
-  
+
+  - { src: '192.168.31.5', dest: '192.168.30.101', port: '8080', proto: 'tcp', direction: out, comment: 'Caddy to PI-hole' }  
+  - { src: '192.168.31.5', dest: '192.168.30.102', port: '8080', proto: 'tcp', direction: out, comment: 'Caddy to PI-hole' }  
   - { src: '192.168.31.5', dest: '192.168.30.80', port: '5001', proto: 'tcp', direction: out, comment: 'Caddy to NAS' }
   - { src: '192.168.31.5', dest: '192.168.30.30', port: '8006', proto: 'tcp', direction: out, comment: 'Caddy to PVE' }
   - { src: '192.168.31.5', dest: '192.168.30.31', port: '8006', proto: 'tcp', direction: out, comment: 'Caddy to PVE1' }

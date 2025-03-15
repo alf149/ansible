@@ -57,7 +57,7 @@ www.intra.amfelt.dk {
 ## pihole dns
 dns.intra.amfelt.dk {
         redir / /admin
-        reverse_proxy http://192.168.30.101
+        reverse_proxy http://192.168.30.101:8080
         import cloudflare
         log {
                 output file /var/log/caddy/dns_access.log
@@ -67,7 +67,7 @@ dns.intra.amfelt.dk {
 ## pihole pi1
 pi1.intra.amfelt.dk {
         redir / /admin
-        reverse_proxy http://192.168.30.101
+        reverse_proxy http://192.168.30.101:8080
         import cloudflare
         log {
                 output file /var/log/caddy/dns_access.log
@@ -77,7 +77,7 @@ pi1.intra.amfelt.dk {
 ## pihole pi2
 pi2.intra.amfelt.dk {
         redir / /admin
-        reverse_proxy http://192.168.30.102
+        reverse_proxy http://192.168.30.102:8080
         import cloudflare
         log {
                 output file /var/log/caddy/dns_access.log
