@@ -15,13 +15,9 @@ open_ports:
   - { src: any, dest: any, port: '443', proto: 'tcp', direction: in, comment: 'HTTPS' }
   - { src: '192.168.31.5', dest: any, port: '3001', proto: 'tcp', direction: in, comment: 'uptimekuma' }
   - { src: '192.168.31.5', dest: any, port: '3000', proto: 'tcp', direction: in, comment: 'homepage' }
-  - { src: '192.168.31.5', dest: any, port: '4000', proto: 'tcp', direction: in, comment: 'speedtest' }
   - { src: '192.168.31.5', dest: any, port: '8001', proto: 'tcp', direction: in, comment: 'Littlelink' }
   - { src: '192.168.31.5', dest: any, port: '3100', proto: 'tcp', direction: in, comment: 'stirling-pdf' }
   - { src: '192.168.31.5', dest: any, port: '3200', proto: 'tcp', direction: in, comment: 'it-tools' }
-  - { src: '192.168.31.5', dest: any, port: '3300', proto: 'tcp', direction: in, comment: 'webcheck' }
-
-  - { src: '192.168.10.0/24', dest: any, port: '4000', proto: 'tcp', direction: in, comment: 'speedtest' }
 
   - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: '', proto: 'any', direction: out, comment: 'Docker' } #Docker
   - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } #Docker
