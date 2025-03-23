@@ -54,16 +54,6 @@ www.intra.amfelt.dk {
         }
 }
 
-## pihole dns
-dns.intra.amfelt.dk {
-        redir / /admin
-        reverse_proxy http://192.168.30.101:8080
-        import cloudflare
-        log {
-                output file /var/log/caddy/dns_access.log
-        }
-}
-
 ## pihole pi1
 pi1.intra.amfelt.dk {
         redir / /admin
@@ -145,19 +135,6 @@ uptime.intra.amfelt.dk {
         }
 }
 
-## SPEED at lan
-speed.intra.amfelt.dk {
-        reverse_proxy http://192.168.30.151:4000 {
-                request_buffers 35MiB
-                response_buffers 35MiB
-                flush_interval -1
-        }
-        import cloudflare
-        log {
-                output file /var/log/caddy/speed_access.log
-        }
-}
-
 ## PDF-Tools at lan
 pdf.intra.amfelt.dk {
         reverse_proxy http://192.168.30.151:3100
@@ -176,14 +153,6 @@ ittools.intra.amfelt.dk {
         }
 }
 
-## webcheck
-webcheck.intra.amfelt.dk {
-        reverse_proxy http://192.168.30.151:3300
-        import cloudflare
-        log {
-                output file /var/log/caddy/webcheck_access.log
-        }
-}
 
 ## GIT
 ## lock at top to se how ssh is handled
@@ -192,14 +161,5 @@ git.intra.amfelt.dk {
         import cloudflare
         log {
                 output file /var/log/caddy/git_access.log
-        }
-}
-
-## SEMAPHORE
-semaphore.intra.amfelt.dk {
-        reverse_proxy http://192.168.30.105:3000
-        import cloudflare
-        log {
-                output file /var/log/caddy/semaphore_access.log
         }
 }
