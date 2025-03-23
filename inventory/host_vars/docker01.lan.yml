@@ -154,7 +154,20 @@ containers:
     image: ghcr.io/lovelaze/nebula-sync:latest
     restart: unless-stopped
     environment:
-      - PRIMARY=https://pi1.intra.amfelt.dk|Password123456!
-      - REPLICAS=https://pi1.intra.amfelt.dk|Password123456!
-      - FULL_SYNC=true
+      - PRIMARY=http://pi1.lan:8080|PASSWORD
+      - REPLICAS=https://pi2.lan|PASSWORD
+      - CLIENT_SKIP_TLS_VERIFICATION=true
+      - TZ=Europe/Copenhagen
+      - FULL_SYNC=false
+      - SYNC_CONFIG_DNS=true
+      - SYNC_CONFIG_RESOLVER=true
+      - SYNC_CONFIG_DATABASE=true
+      - SYNC_CONFIG_MISC=true
+      - SYNC_GRAVITY_AD_LIST=true
+      - SYNC_GRAVITY_AD_LIST_BY_GROUP=true
+      - SYNC_GRAVITY_DOMAIN_LIST=true
+      - SYNC_GRAVITY_DOMAIN_LIST_BY_GROUP=true
+      - SYNC_GRAVITY_CLIENT=true
+      - SYNC_GRAVITY_CLIENT_BY_GROUP=true
+      - RUN_GRAVITY=false
       - CRON=0 * * * *
