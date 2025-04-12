@@ -2,22 +2,6 @@
 ### Should NOT run via automation (semaphore) since HW that automation is running on can restart.
 ### automation server should be moved to other HW.
 
-- name: Run on "proxmox_ve_servers"
-  hosts: proxmox_ve_servers
-  gather_facts: true
-  become: true
-
-  roles:
-    - role: proxmox_nag_removal
-
-- name: Run on "proxmox_backup_servers"
-  hosts: proxmox_backup_servers
-  gather_facts: true
-  become: true
-
-  roles:
-    - role: proxmox_pbs_nag_removal
-
 - name: Run on "hardware"
   hosts: hardware
   gather_facts: true
@@ -46,3 +30,21 @@
           ansible.builtin.reboot:
             msg: "Reboot initiated by Ansible for kernel updates"
           when: reboot_required_file.stat.exists
+
+- name: Run on "proxmox_ve_servers"
+  hosts: proxmox_ve_servers
+  gather_facts: true
+  become: true
+
+  roles:
+    - role: proxmox_nag_removal
+      tags: nag_removal
+
+- name: Run on "proxmox_backup_servers"
+  hosts: proxmox_backup_servers
+  gather_facts: true
+  become: true
+
+  roles:
+    - role: proxmox_pbs_nag_removal
+      tags: nag_removal

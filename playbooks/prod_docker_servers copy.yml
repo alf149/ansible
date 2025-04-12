@@ -1,0 +1,85 @@
+---
+
+- name: Run on "prod_docker_servers"
+  hosts: prod_docker_servers:!hardware
+  gather_facts: true
+  become: true
+
+  roles:
+    - role: system
+    - role: geerlingguy.security
+      tags: security
+    - role: geerlingguy.ntp
+      tags: ntp
+    - role: geerlingguy.pip
+      tags: containers
+    - role: geerlingguy.docker
+      tags: containers
+    - role: ufw
+      tags: ufw
+    - role: nfsclient
+      tags: nfs
+    # - role: ironicbadger.docker_compose_generator
+    #   tags: docker
+
+  tasks:
+    - name: Check if nonfs folder exits exists
+      tags: docker
+      ansible.builtin.stat:
+        path: "{{ nonfs_appdata_path }}"
+      register: stat_nonfs
+    - name: Create a directory if it does not exist
+      tags: docker
+      ansible.builtin.file:
+        path: "{{ nonfs_appdata_path }}"
+        state: directory
+        mode: '0755'
+      when: not stat_nonfs.stat.exists
+
+    - name: Check if  nfs/appdata_path/homepage/config folder exits exists
+      tags: docker
+      ansible.builtin.stat:
+        path: "{{ appdata_path }}/homepage/config"
+      register: stat_homepage
+
+    - name: Create a directory if it does not exist
+      tags: docker
+      ansible.builtin.file:
+        path: "{{ appdata_path }}/homepage/config"
+        state: directory
+        mode: '0755'
+      when: not stat_homepage.stat.exists
+
+    - name: Docker | backup uptime-kuma
+      become_user: deploy
+      changed_when: false
+      tags: uptimebackup
+      ansible.builtin.command: 'rsync -rvz /opt/docker_static/uptimekuma /opt/docker/'
+      # rsync -rvz /opt/docker_static/uptimekuma /opt/docker/
+      # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/cron_module.html#examples
+
+    # - name: Synchronize two directories on one remote host.
+    #   ansible.posix.synchronize:
+    #     src: "{{ nonfs_appdata_path }}/uptimekuma"
+    #     dest: "{{ nfsclient_local_folder }}/uptimekuma"
+    #   delegate_to: "{{ docker01.lan }}"
+
+    - name: Docker | docker compose installed?
+      tags: docker
+      ansible.builtin.command: which docker
+      ignore_errors: true
+      register: dcp_installed
+      changed_when: dcp_installed.rc != 0
+    - name: Docker | container update procedure
+      tags: docker
+      when: dcp_installed.rc == 0
+      block:
+        - name: Docker | pull containers
+          changed_when: false
+          ansible.builtin.command: docker compose pull
+        - name: Docker | start updated containers
+          changed_when: false
+          ansible.builtin.command: docker compose up -d
+        - name: Docker | cleanup old containers
+          changed_when: false
+          ansible.builtin.command: docker system prune --all -f

@@ -1,0 +1,31 @@
+
+## Firewall 
+open_ports:
+  - { src: any, dest: any, port: '22', proto: 'tcp', direction: out, comment: 'SSH' }
+  - { src: any, dest: any, port: '53', proto: any, direction: out, comment: 'DNS' }
+  - { src: any, dest: any, port: '123', proto: 'udp', direction: out, comment: 'NTP' }
+  - { src: any, dest: any, port: '80', proto: 'tcp', direction: out, comment: 'http' }
+  - { src: any, dest: any, port: '443', proto: 'tcp', direction: out, comment: 'https' }
+  - { src: any, dest: '192.168.30.103', port: '25', proto: 'tcp', direction: out, comment: 'MAIL' }
+
+  - { src: '192.168.10.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # Secure Vlan' }
+  - { src: '192.168.30.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # Secure Vlan' }
+  - { src: '192.168.3.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # VPN Vlan' }
+
+  - { src: any, dest: any, port: '443', proto: 'tcp', direction: in, comment: 'HTTPS' }
+
+  - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: '', proto: 'any', direction: out, comment: 'Docker' } #Docker
+  - { src: '172.17.0.0/16', dest: '172.17.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } #Docker
+  - { src: '172.18.0.0/16', dest: '172.18.0.0/16', port: '', proto: 'any', direction: out, comment: 'Docker' } #Docker
+  - { src: '172.18.0.0/16', dest: '172.18.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } #Docker
+  - { src: '172.19.0.0/16', dest: '172.19.0.0/16', port: '', proto: 'any', direction: out, comment: 'Docker' } #Docker
+  - { src: '172.19.0.0/16', dest: '172.19.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } #Docker
+  - { src: '172.20.0.0/16', dest: '172.20.0.0/16', port: '', proto: 'any', direction: out, comment: 'Docker' } #Docker
+  - { src: '172.20.0.0/16', dest: '172.20.0.0/16', port: '', proto: 'any', direction: in, comment: 'Docker' } #Docker
+
+docker_compose_user: deploy
+appdata_path: /home/{{ docker_compose_user }}/docker
+docker_compose_generator_uid: 1000
+docker_compose_generator_gid: 1000
+docker_compose_generator_output_path: /home/{{ docker_compose_user }}
+docker_compose_hostname: docker02
