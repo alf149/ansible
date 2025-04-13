@@ -19,7 +19,7 @@ ansi_hardware *TAGS:
   ansible-playbook playbooks/servers_hardware.yml -i inventory/hardware.ini {{TAGS}} 
 
 ansi_hardware_upd:
-  ansible-playbook playbooks/servers_hardware.yml -i inventory/hardware.ini -t os_update -t nag_removal -e "enable_os_update=true"
+  ansible-playbook playbooks/servers_hardware.yml -i inventory/hardware.ini -e "enable_os_update=true"
 
 ansi_prod HOST *TAGS:
   ansible-playbook playbooks/prod_servers_all.yml -i inventory/prod.ini --vault-password-file ~/.vault_pass --limit {{HOST}} {{TAGS}} 
@@ -36,7 +36,6 @@ ansi_prod_docker:
 ansi_prod_piupdate:
   ansible-playbook playbooks/prod_dns_servers.yml -i inventory/prod.ini --vault-password-file ~/.vault_pass -t os_update -e "enable_os_update=true" -t "piholeupdate"  -e "enable_pihole_update=true" --limit="prod_dns_servers"
 
-
 ansi_prod_reboot HOST *TAGS:
   ansible-playbook playbooks/servers_prod_reboot.yml --vault-password-file ~/.vault_pass --limit {{HOST}} {{TAGS}} 
 
@@ -48,6 +47,10 @@ ansi_dev HOST *TAGS:
 
 ansi_testing HOST *TAGS:
   ansible-playbook playbooks/testing.yml -i inventory/prod.ini --vault-password-file ~/.vault_pass --limit {{HOST}} {{TAGS}} 
+ansi_encrypt_string TEXT SECRET:
+  ansible-vault encrypt_string --vault-id prod@~/.vault_pass '{{TEXT}}' --name '{{SECRET}}'
+
+
 ## Docker tasks
 
 

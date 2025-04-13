@@ -7,6 +7,8 @@ open_ports:
   - { src: any, dest: any, port: '80', proto: 'tcp', direction: out, comment: 'http' }
   - { src: any, dest: any, port: '443', proto: 'tcp', direction: out, comment: 'https' }
   - { src: any, dest: '192.168.30.103', port: '25', proto: 'tcp', direction: out, comment: 'MAIL' }
+  - { src: any, dest: '192.168.30.101', port: '8080', proto: 'tcp', direction: out, comment: '8080 PISYNC' }
+  - { src: any, dest: '192.168.30.102', port: '8080', proto: 'tcp', direction: out, comment: '8080 PISYNC' }
 
   - { src: '192.168.10.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # Secure Vlan' }
   - { src: '192.168.30.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # Secure Vlan' }
@@ -29,3 +31,12 @@ docker_compose_generator_uid: 1000
 docker_compose_generator_gid: 1000
 docker_compose_generator_output_path: /home/{{ docker_compose_user }}
 docker_compose_hostname: docker02
+
+pihole_password: !vault |
+          $ANSIBLE_VAULT;1.2;AES256;prod
+          66316336386139363035356363313635333833626366353964343437313735373630653130323465
+          3665353961623237623535613735343533656261306632330a653165386330653738663438386661
+          32353433393731336330663734643066343961393432633163336233316636373965653133663934
+          3637663536633563370a313035633664336332643030356362353465326533643739623162313265
+          3039
+

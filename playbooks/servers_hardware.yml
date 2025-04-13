@@ -11,7 +11,6 @@
 
     - name: Upgrade apt packages (Debian and Ubuntu)
       when: enable_os_update | d(false) | bool
-      tags: os_update
       block:
         - name: Upgrade apt packages (Debian and Ubuntu)
           ansible.builtin.apt:
@@ -38,7 +37,6 @@
 
   roles:
     - role: proxmox_nag_removal
-      tags: nag_removal
 
 - name: Run on "proxmox_backup_servers"
   hosts: proxmox_backup_servers
@@ -47,4 +45,3 @@
 
   roles:
     - role: proxmox_pbs_nag_removal
-      tags: nag_removal
