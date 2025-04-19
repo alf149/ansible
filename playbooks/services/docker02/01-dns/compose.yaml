@@ -4,11 +4,12 @@ services:
     container_name: nebula-sync
     restart: unless-stopped
     environment:
-      - PRIMARY=http://pi1.lan:8080|{{ pihole_password}}
-      - REPLICAS=http://pi2.lan:8080|{{ pihole_password}}
+      - PRIMARY=https://pi1.lan|{{ pihole_password}}
+      - REPLICAS=https://pi2.lan|{{ pihole_password}}
       - CLIENT_SKIP_TLS_VERIFICATION=true
-      - TZ=Europe/Copenhagen
       - FULL_SYNC=false
+      - RUN_GRAVITY=false
+      - TZ=Europe/Copenhagen
       - SYNC_CONFIG_DNS=true
       - SYNC_CONFIG_RESOLVER=true
       - SYNC_CONFIG_DATABASE=true
@@ -19,5 +20,4 @@ services:
       - SYNC_GRAVITY_DOMAIN_LIST_BY_GROUP=true
       - SYNC_GRAVITY_CLIENT=true
       - SYNC_GRAVITY_CLIENT_BY_GROUP=true
-      - RUN_GRAVITY=false
       - CRON=*/10 * * * *

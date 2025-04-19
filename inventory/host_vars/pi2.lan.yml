@@ -7,19 +7,12 @@ open_ports:
   - { src: any, dest: any, port: '80', proto: 'tcp', direction: out, comment: 'http' }
   - { src: any, dest: any, port: '443', proto: 'tcp', direction: out, comment: 'https' }
 
-  - { src: any, dest: '192.168.30.101', port: '8080', proto: 'tcp', direction: out, comment: 'http pi sync' }
-  - { src: any, dest: '192.168.30.102', port: '8080', proto: 'tcp', direction: out, comment: 'http pi sync' }
+  - { src: '192.168.30.152', dest: any, port: '443', proto: 'tcp', direction: in, comment: 'HTTPS # From Docker02/Nebula-sync' }
+  - { src: '192.168.31.5', dest: any, port: '443', proto: 'tcp', direction: in, comment: 'HTTPS # From caddy proxy' }
 
-  - { src: '192.168.10.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # Secure Vlan' }
-  - { src: '192.168.30.101', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # pihole 1' }
-  - { src: '192.168.30.102', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # pihole 2' }
-  - { src: '192.168.3.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'Allow from VPN' }
+  - { src: '192.168.10.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # Allow from Secure Vlan' }
+  - { src: '192.168.3.0/24', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # Allow from VPN' }
 
-  - { src: '192.168.31.0/24', dest: any, port: '80', proto: 'tcp', direction: in, comment: 'HTTP # Secure Vlan' }
-  - { src: '192.168.31.0/24', dest: any, port: '8080', proto: 'tcp', direction: in, comment: 'HTTP # Secure Vlan' }
-  - { src: '192.168.30.101', dest: any, port: '8080', proto: 'tcp', direction: in, comment: 'HTTP # Secure Vlan' }
-  - { src: '192.168.30.102', dest: any, port: '8080', proto: 'tcp', direction: in, comment: 'HTTP # Secure Vlan' }
-  
   - { src: '192.168.3.0/24', dest: any, port: '53', proto: any, direction: in, comment: 'DNS # VPN VLAN' }
   - { src: '192.168.10.0/24', dest: any, port: '53', proto: any, direction: in, comment: 'DNS # Secure Vlan' }
   - { src: '192.168.20.0/24', dest: any, port: '53', proto: any, direction: in, comment: 'DNS # Mart Vlan' }
@@ -27,4 +20,14 @@ open_ports:
   - { src: '192.168.31.0/24', dest: any, port: '53', proto: any, direction: in, comment: 'DNS # HomeLab DMZ Vlan' }
   - { src: '192.168.99.0/24', dest: any, port: '53', proto: any, direction: in, comment: 'DNS # Insecure Vlan' }
 
-pi_sync_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCyhRuBOH2A3HsJKLoT0uQc1l6jhsoDCKkAEsUoSSPPNDaG9ltsH0w/R3hOHj00FshsvMDINEYxv93kxsdd9Knzzb27WFnmyMthowfNzvEeA25Bh40Mq/vSp7j2YCCxvjwc9Yyx/JRHuVVTwoqJWh9uNI2xdTZPtZAcLpBM6AYuikWzFaeQCuF8FGuh1pfQKZOxIClO0JOkGfzxzVM0EHaKIlHGPd2UmtBHyfHQGTaQkIDftsGSuYLFlLkvRTadUKkT1QQE6udhoF5orMfeDSOATKvXL2nPZx5GJf9vNY55cIHjn9Uw8bif64dPTXLx+kYYPhS3OZg0sVE6DPwwL26PUf46HaUzU/KrU2lkMckAVylhDO6YkrCtn8S2UXO6+eZ5/fIjZbuO30hEQxzrpN00ua/DPc/Lv0+zbE0tbyXeDyXSNdrooMsiPoiAvc8bAqtKrism6VbwHJ+uNsp8h0NV7Tc0J++eN026BI1oeyec7uBYc/mo/RbIJ1xeJdv7pqs= deploy@pi1
+#  - { src: any, dest: '192.168.30.101', port: '8080', proto: 'tcp', direction: out, comment: 'http pi sync' }
+#  - { src: any, dest: '192.168.30.102', port: '8080', proto: 'tcp', direction: out, comment: 'http pi sync' }
+
+#  - { src: '192.168.30.101', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # pihole 1' }
+#  - { src: '192.168.30.102', dest: any, port: '22', proto: 'tcp', direction: in, comment: 'SSH # pihole 2' }
+
+#  - { src: '192.168.31.0/24', dest: any, port: '80', proto: 'tcp', direction: in, comment: 'HTTP # Secure Vlan' }
+#  - { src: '192.168.31.0/24', dest: any, port: '8080', proto: 'tcp', direction: in, comment: 'HTTP # Secure Vlan' }
+#  - { src: '192.168.30.101', dest: any, port: '8080', proto: 'tcp', direction: in, comment: 'HTTP # Secure Vlan' }
+#  - { src: '192.168.30.102', dest: any, port: '8080', proto: 'tcp', direction: in, comment: 'HTTP # Secure Vlan' }
+
