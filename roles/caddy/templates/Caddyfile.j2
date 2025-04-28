@@ -1,10 +1,5 @@
 ## Caddyfile
 
-## Missing SSH 
-# Eks https://caddy.community/t/l4-module-ssh-reverse-proxy-example/18371/2
-# https://caddy.community/t/difference-between-caddy-l4-and-sslh/25382/4
-# https://github.com/mholt/caddy-l4/pull/217
-
 # Config
 
 (cloudflare) {
@@ -18,6 +13,23 @@
         format console
         level ERROR
 }
+
+(subdomain-log) {
+	log {
+		hostnames {args[0]}
+		output file /var/log/caddy/{args[0]}.log
+	}
+}
+
+{
+        servers {             
+                trusted_proxies cloudflare  
+                client_ip_headers CF-Connecting-IP  
+        }    
+}
+
+
+
 
 (headers) {
         header {
@@ -33,141 +45,106 @@
         }
 }
 
-# Site Block
-
-## intra_domain
-intra.amfelt.dk {
-        reverse_proxy http://192.168.30.151:3000
+{{ intra_domain }}  {
+        reverse_proxy http://docker01.lan:3000
         import cloudflare
         log {
                 output file /var/log/caddy/intra_access.log
         }
 }
 
-## www.intra.amfelt.dk
-www.intra.amfelt.dk {
-        reverse_proxy http://192.168.30.151:8001
-        import cloudflare
+*.{{ intra_domain }}   {
+	import cloudflare
+        import subdomain-log www.{{ intra_domain }}
         import headers
-        log {
-                output file /var/log/caddy/www_access.log
-        }
-}
+	@www host www.{{ intra_domain }} 
+	handle @www {
+	        reverse_proxy http://docker01.lan:8001
+                handle /.well-known/* {
+                        abort
+                }
+	}
 
-## pihole pi1
-pi1.intra.amfelt.dk {
-        redir / /admin
-        reverse_proxy https://192.168.30.101 {
-                transport http {
-                        tls_insecure_skip_verify
+	@pi1 host pi1.{{ intra_domain }} 
+        import subdomain-log pi1.{{ intra_domain }}
+	handle @pi1 {
+                redir / /admin
+                reverse_proxy https://pi1.lan {
+                        transport http {
+                                tls_insecure_skip_verify
+                        }
                 }
         }
-        import cloudflare
-        log {
-                output file /var/log/caddy/dns_access.log
-        }
-}
 
-## pihole pi2
-pi2.intra.amfelt.dk {
-        redir / /admin
-        reverse_proxy https://192.168.30.102 {
-                transport http {
-                        tls_insecure_skip_verify
+        @pi2 host pi2.{{ intra_domain }} 
+	handle @pi2 {
+                redir / /admin
+                reverse_proxy https://pi2.lan {
+                        transport http {
+                                tls_insecure_skip_verify
+                        }
                 }
         }
-        import cloudflare
-        log {
-                output file /var/log/caddy/dns_access.log
-        }
-}
 
-## NAS at lan
-nas.intra.amfelt.dk {
-        reverse_proxy https://192.168.30.80:5001 {
-                transport http {
-                        tls_insecure_skip_verify
+        @nas host nas.{{ intra_domain }}
+        handle @nas {        
+                reverse_proxy https://nas.lan:5001 {
+                        transport http {
+                                tls_insecure_skip_verify
+                        }
                 }
         }
-        import cloudflare
-        log {
-                output file /var/log/caddy/nas_access.log
-        }
-}
 
-## proxmox pve
-pve.intra.amfelt.dk {
-        reverse_proxy https://192.168.30.30:8006 {
-                transport http {
-                        tls_insecure_skip_verify
+        @pve host pve.{{ intra_domain }}
+        handle @pve { 
+                reverse_proxy https://pve.lan:8006 {
+                        transport http {
+                                tls_insecure_skip_verify
+                        }
                 }
         }
-        import cloudflare
-        log {
-                output file /var/log/caddy/pve_access.log
-        }
-}
 
-## PBS at lan
-PBS.intra.amfelt.dk {
-        reverse_proxy https://192.168.30.200:8007 {
-                transport http {
-                        tls_insecure_skip_verify
+        @pbs host pbs.{{ intra_domain }}
+        handle @pbs { 
+                reverse_proxy https://pbs.lan:8007 {
+                        transport http {
+                                tls_insecure_skip_verify
+                        }
                 }
         }
-        import cloudflare
-        log {
-                output file /var/log/caddy/pbs_access.log
-        }
-}
 
-## UDR at lan
-udr.intra.amfelt.dk {
-        reverse_proxy https://192.168.1.1 {
-                transport http {
-                        tls_insecure_skip_verify
+        @udr host udr.{{ intra_domain }}
+        handle @udr { 
+                reverse_proxy https://192.168.1.1 {
+                        transport http {
+                                tls_insecure_skip_verify
+                        }
                 }
         }
-        import cloudflare
-        log {
-                output file /var/log/caddy/udr_access.log
-        }
-}
 
-## Uptime-Kuma at lan
-uptime.intra.amfelt.dk {
-        reverse_proxy http://192.168.30.151:3001
-        import cloudflare
-        log {
-                output file /var/log/caddy/uptime_access.log
+        @uptime host uptime.{{ intra_domain }}
+        handle @uptime { 
+                reverse_proxy http://docker01.lan:3001
         }
-}
-
-## PDF-Tools at lan
-pdf.intra.amfelt.dk {
-        reverse_proxy http://192.168.30.151:3100
-        import cloudflare
-        log {
-                output file /var/log/caddy/pdf_access.log
+        
+        @pdf host pdf.{{ intra_domain }}
+        handle @pdf { 
+                reverse_proxy http://docker01.lan:3100
         }
-}
 
-## IT-Tools at lan
-ittools.intra.amfelt.dk {
-        reverse_proxy http://192.168.30.151:3200
-        import cloudflare
-        log {
-                output file /var/log/caddy/ittools_access.log
+        @ittools host ittools.{{ intra_domain }}
+        handle @ittools {
+                reverse_proxy http://docker01.lan:3200
         }
-}
 
-
-## GIT
-## lock at top to se how ssh is handled
-git.intra.amfelt.dk {
-        reverse_proxy http://192.168.30.104:3000
-        import cloudflare
-        log {
-                output file /var/log/caddy/git_access.log
+        @git host git.{{ intra_domain }}
+        handle @git {
+                reverse_proxy http://git.lan:3000
         }
+
+	# Fallback for otherwise unhandled domains
+	handle {
+		abort
+	}
+
 }
