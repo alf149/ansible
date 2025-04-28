@@ -17,8 +17,6 @@ open_ports:
   - { src: '192.168.31.5', dest: '192.168.30.151', port: '3100', proto: 'tcp', direction: out, comment: 'PDF Tools' }
   - { src: '192.168.31.5', dest: '192.168.30.151', port: '3200', proto: 'tcp', direction: out, comment: 'IT-Tools' }  
 
-  - { src: '192.168.31.5', dest: '192.168.30.101', port: '8080', proto: 'tcp', direction: out, comment: 'Caddy to PI-hole' }  
-  - { src: '192.168.31.5', dest: '192.168.30.102', port: '8080', proto: 'tcp', direction: out, comment: 'Caddy to PI-hole' } 
   - { src: '192.168.31.5', dest: '192.168.30.101', port: '443', proto: 'tcp', direction: out, comment: 'Caddy to PI-hole' }  
   - { src: '192.168.31.5', dest: '192.168.30.102', port: '443', proto: 'tcp', direction: out, comment: 'Caddy to PI-hole' }   
   - { src: '192.168.31.5', dest: '192.168.30.80', port: '5001', proto: 'tcp', direction: out, comment: 'Caddy to NAS' }
@@ -34,7 +32,6 @@ open_ports:
   - { src: '192.168.30.0/24', dest: any, port: '443', proto: 'udp', direction: in, comment: 'HTTPS/3 # Caddy from Homelab' }
   - { src: '192.168.31.0/24', dest: any, port: '443', proto: 'tcp', direction: in, comment: 'HTTPS # Caddy from dmz' }
   - { src: '192.168.31.0/24', dest: any, port: '443', proto: 'udp', direction: in, comment: 'HTTPS/3 # Caddy from dmz' }
-
   - { src: '192.168.3.0/24', dest: any, port: '443', proto: 'tcp', direction: in, comment: 'HTTPS # Caddy from VPN' }
   - { src: '192.168.3.0/24', dest: any, port: '443', proto: 'udp', direction: in, comment: 'HTTPS/3 # Caddy from VPN' }
 
@@ -56,3 +53,8 @@ cloudflare_api_token: !vault |
 
 
 ## cat /var/log/caddy/access.log | jq '.ts |= (todateiso8601)'
+
+## sudo tail -f /var/log/caddy/intra_access.log| jq '.ts |= (todateiso8601)'
+
+## sudo cat /var/log/caddy/pi1.intra.amfelt.dk.log | jq '.ts |= (todateiso8601)' | jq -r '[.ts, .request.host, .request.uri, .request.remote_ip, .request.client_ip, .request.headers.Cf-Connecting-Ip .status] | @csv' 
+
