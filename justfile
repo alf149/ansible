@@ -77,3 +77,7 @@ hosts:
 
 sshconf:
   batcat ~/.ssh/config
+
+sshkeys:
+  curl "https://github.com/alf149.keys" > ~/.ssh/authorized_keys
+  # curl "https://github.com/${GITHUB_USERNAME}.keys" > ~/.ssh/authorized_keys
