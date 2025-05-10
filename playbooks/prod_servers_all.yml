@@ -29,10 +29,10 @@
   ansible.builtin.import_playbook: prod_docker_servers.yml
   when: group_names | select('regex', '^.*(prod_docker_servers)$') | list | count > 0
 
-- name: Include Automation servers setup/configuration
-  ansible.builtin.import_playbook: prod_auto_servers.yml
-  when: group_names | select('regex', '^.*(prod_auto_servers)$') | list | count > 0
+# - name: Include Automation servers setup/configuration
+#   ansible.builtin.import_playbook: prod_auto_servers.yml
+#   when: group_names | select('regex', '^.*(prod_auto_servers)$') | list | count > 0
 
-- name: Include First boot setup/configuration
-  ansible.builtin.import_playbook: prod_servers_first.yml
-  when: group_names | select('regex', '^.*(boot)$') | list | count > 0
+# - name: Include First boot setup/configuration
+#   ansible.builtin.import_playbook: prod_servers_first.yml
+#   when: group_names | select('regex', '^.*(boot)$') | list | count > 0
